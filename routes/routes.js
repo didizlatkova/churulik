@@ -11,7 +11,8 @@ module.exports = function(database) {
 		// 	- profile preview : # of tvyts, followers, following
 		//	- popular tags
 		//	- last 20 tvyts of following users (endless scrolling), update in 20s
-		// 2. if new user - show login/register home page      
+		// 2. if new user - show login/register home page    
+		res.send('Hello World!');  
 	});
 
 	router.get('/feed', function(req, res) {
@@ -19,6 +20,7 @@ module.exports = function(database) {
 		// 	- profile preview : # of tvyts, followers, following
 		//	- popular tags
 		//	- last 20 tvyts of following users (endless scrolling), update in 20s
+		res.send('feed'); 
 	});
 
 	router.get('/profile', function(req, res) {
@@ -62,4 +64,6 @@ module.exports = function(database) {
 	router.post('/search', function(req, res) {
 		// searches tvyts by hashtags
 	});
+
+	return router;
 };
