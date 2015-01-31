@@ -1,3 +1,6 @@
+var express = require('express'),
+	router = express.Router();
+
 module.exports = function(database) {
 	var users = database.collection('users');
 	var messages = database.collection('messages');
@@ -21,7 +24,7 @@ module.exports = function(database) {
 	router.get('/profile', function(req, res) {
 		// profile page + description
 		// show the profile of currently logged user
-		// 	- profile preview : # of tvyts, followers, following
+		// 	- profile preview : # of tvyts (with delete button), followers, following
 		//	- popular tags
 		//	- last 20 tvyts (endless scrolling)
 	});
@@ -59,4 +62,4 @@ module.exports = function(database) {
 	router.post('/search', function(req, res) {
 		// searches tvyts by hashtags
 	});
-}
+};
