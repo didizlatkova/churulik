@@ -76,16 +76,17 @@ module.exports = function(database, templates) {
 
 	router.get('/:userName', function(req, res) {
 		var userName = req.params.userName;
-		try {
-			users.getUserByUserName(userName, function(user) {
-				user.messages = user.messages ? user.messages.length : 0;
-				user.following = user.following ? user.following.length : 0;
-				user.followers = user.followers ? user.followers.length : 0;
-				res.send(templates.mainTemplate(user));
-			});
-		} catch (err) {
-			return res.status(500).send();
-		}
+		users.getUserByUserName(userName, function(user, err) {
+			if (err) {
+				return res.status(err.status).send(templates.errorTemplate({
+					message: err.message
+				}));
+			}
+			user.messages = user.messages ? user.messages.length : 0;
+			user.following = user.following ? user.following.length : 0;
+			user.followers = user.followers ? user.followers.length : 0;
+			res.send(templates.mainTemplate(user));
+		});
 	});
 
 	return router;
