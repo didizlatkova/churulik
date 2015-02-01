@@ -6,7 +6,7 @@ var express = require('express'),
 function from_database(user) {
 	user.id = user._id;
 	delete user._id;
-	
+
 	return user;
 }
 
@@ -27,9 +27,15 @@ module.exports = function(users) {
 			}, function(err, user) {
 				if (err) {
 					console.error('Cannot get user', err);
-					throw err;
-				}				
-				return from_database(user);
+					callback(null, err);
+				}
+				if (user !== null) {
+					callback(from_database(user));
+				} else {
+					var e = new Error("Page not found.");
+					e.status = 404;
+					callback(null, e);
+				}
 			});
 		},
 
@@ -39,9 +45,15 @@ module.exports = function(users) {
 			}, function(err, user) {
 				if (err) {
 					console.error('Cannot get user', err);
-					throw err;					
+					callback(null, err);
 				}
-				callback(from_database(user));
+				if (user !== null) {
+					callback(from_database(user));
+				} else {
+					var e = new Error("Page not found.");
+					e.status = 404;
+					callback(null, e);
+				}
 			});
 		},
 

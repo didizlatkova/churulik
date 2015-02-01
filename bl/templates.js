@@ -3,6 +3,7 @@ var fs = require("fs"),
 	handlebars = require("handlebars"),
 	mainTemplateFile = fs.readFileSync(path.join(__dirname, '../views/main.html'), 'utf8'),
 	homeTemplateFile = fs.readFileSync(path.join(__dirname, '../views/home.html'), 'utf8'),
+	errorTemplateFile = fs.readFileSync(path.join(__dirname, '../views/error.html'), 'utf8'),
 	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8');
 
 module.exports = {
@@ -35,7 +36,8 @@ module.exports = {
 		});
 
 		return {
-			mainTemplate: handlebars.compile(mainTemplateFile)
+			mainTemplate: handlebars.compile(mainTemplateFile),
+			errorTemplate: handlebars.compile(errorTemplateFile)
 		};
 	}
 };
