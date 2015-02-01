@@ -1,0 +1,28 @@
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{names}}</h3>
+    </div>
+    <div class="panel-body">
+        <img class="tvit-avatar" src='{{picture}}'>
+        <div>{{userName}}</div>
+        {{#ifCond messages '===' 1}}
+        <div>{{messages}} твит</div>
+        {{else}}
+        <div>{{messages}} твита</div>
+        {{/ifCond}}
+
+        {{#ifCond following '===' 1}}
+        <div>{{following}} следван</div>
+        {{else}}
+        <div>{{following}} следвани</div>
+        {{/ifCond}}
+
+        {{#ifCond followers '===' 1}}
+        <div>{{followers}} следващ</div>
+        {{else}}
+        <div>{{followers}} следващи</div>
+        {{/ifCond}}
+        <div class="up-border">{{description}}</div>
+    </div>
+</div>
+
