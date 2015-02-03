@@ -8,8 +8,8 @@ var express = require('express'),
 
 function setup_express(routes, templates) {
 	app.use(bodyParser.json());
-	// app.use(bodyParser.urlencoded({ extended: false }));
-	app.use('/node_modules/bootstrap', express.static(path.join(__dirname, 'node_modules/bootstrap')));
+	app.use(bodyParser.urlencoded({ extended: false }));
+	app.use('/public', express.static(path.join(__dirname, 'public')));
 	app.use('/img', express.static(path.join(__dirname, 'views/img')));
 	app.use('/', routes);
 	
