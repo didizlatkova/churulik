@@ -5,7 +5,8 @@ var express = require('express'),
 module.exports = function(database, templates) {
 	var usersDb = database.collection('users'),
 		messagesDb = database.collection('messages'),
-		users = require('../db/users')(usersDb);
+		users = require('../db/users')(usersDb),
+		manager = require('../bl/manager')(database);
 
 	router.get('/', function(req, res) {
 		// tvyter homepage
@@ -16,7 +17,7 @@ module.exports = function(database, templates) {
 		// VIEW: main.html, PARTIALS: profile.html (without description), popular.html, addMessage.html, messages.html
 		// 2. if new user - show login/register home page
 		// VIEW: home.html, PARTIALS: login.html, register.html
-		res.send('Hello World!');
+		res.send(templates.homeTemplate({}));
 	});
 
 	router.get('/feed', function(req, res) {
@@ -63,7 +64,38 @@ module.exports = function(database, templates) {
 	});
 
 	router.post('/register', function(req, res) {
-		// registers the user by name, username and password
+		manager.validateRegisterModel(req.body, function(model, valid) {
+			if (valid) {
+				var err = users.createUser(req.body);
+				if (err) {
+					res.status(err.status).write(templates.errorTemplate({
+						message: err.message
+					}));
+				} else {
+					res.write(req.body.userName + "successfully registered on Tvityr!");
+				}
+			} else {
+				res.send(templates.homeTemplate(model));
+			}
+			
+			res.end();
+		});
+
+		// if (valid) {
+		// 	res.write('valid');
+		// 	// var err = users.createUser(req.body);
+		// 	// if (err) {
+		// 	// 	res.status(err.status).write(templates.errorTemplate({
+		// 	// 		message: err.message
+		// 	// 	}));
+		// 	// } else {
+		// 	// 	res.write(req.body.userName);
+		// 	// }
+		// } else {
+		// 	console.log('invalid');
+		// 	res.send(templates.homeTemplate(model));
+		// }
+
 	});
 
 	router.post('/post', function(req, res) {

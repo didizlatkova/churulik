@@ -4,12 +4,16 @@ var fs = require("fs"),
 	mainTemplateFile = fs.readFileSync(path.join(__dirname, '../views/main.html'), 'utf8'),
 	homeTemplateFile = fs.readFileSync(path.join(__dirname, '../views/home.html'), 'utf8'),
 	errorTemplateFile = fs.readFileSync(path.join(__dirname, '../views/error.html'), 'utf8'),
-	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8');
+	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8'),
+	loginTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/login.html'), 'utf8'),
+	registerTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/register.html'), 'utf8');
 
 module.exports = {
 	setup: function() {
 		handlebars.registerPartial({
 			profile: profileTemplateFile,
+			login: loginTemplateFile,
+			register: registerTemplateFile
 		});
 
 		handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -37,6 +41,7 @@ module.exports = {
 
 		return {
 			mainTemplate: handlebars.compile(mainTemplateFile),
+			homeTemplate: handlebars.compile(homeTemplateFile),
 			errorTemplate: handlebars.compile(errorTemplateFile)
 		};
 	}

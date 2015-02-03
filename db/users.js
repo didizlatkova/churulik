@@ -1,7 +1,8 @@
 var express = require('express'),
 	moment = require('moment'),
 	ObjectID = require('mongodb').ObjectID,
-	router = express.Router();
+	router = express.Router(),
+	PAGE_NOT_FOUND_ERROR = 'Страницата не е намерена';
 
 function from_database(user) {
 	user.id = user._id;
@@ -32,7 +33,7 @@ module.exports = function(users) {
 				if (user !== null) {
 					callback(from_database(user));
 				} else {
-					var e = new Error("Page not found.");
+					var e = new Error(PAGE_NOT_FOUND_ERROR);
 					e.status = 404;
 					callback(null, e);
 				}
@@ -50,7 +51,7 @@ module.exports = function(users) {
 				if (user !== null) {
 					callback(from_database(user));
 				} else {
-					var e = new Error("Page not found.");
+					var e = new Error(PAGE_NOT_FOUND_ERROR);
 					e.status = 404;
 					callback(null, e);
 				}
@@ -78,7 +79,20 @@ module.exports = function(users) {
 		},
 
 		createUser: function(user) {
+			var user = to_database(user);
 
+			users.insert(user, function(err) {
+				if (err) {
+					console.error('Cannot insert user', err);
+					return err;
+				}
+			});
+		},
+
+		isUserAlreadyCreated: function(userName, callback) {
+			this.getUserByUserName(userName, function(user, err) {
+				callback(user && user !== null);
+			});
 		},
 
 		updateUser: function(user) {
