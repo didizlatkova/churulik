@@ -26,7 +26,7 @@ module.exports = function(database, templates, passport) {
 		//	- popular tags
 		//	- last 20 tvyts of following users (endless scrolling), update in 20s
 		// VIEW: main.html, PARTIALS: profile.html (without description), popular.html, addMessage.html, messages.html
-		res.send(req.user.userName);
+		res.redirect('/' + req.user.userName);
 	});
 
 	router.get('/profile', function(req, res) {
@@ -57,10 +57,34 @@ module.exports = function(database, templates, passport) {
 
 	router.post('/login', function(req, res) {
 		// logs the user by username and password
+		manager.validateLoginModel(req.body, function(user, valid) {
+			if (valid) {
+				var publicUser = {
+					userName: user.userNameLogin,
+					id: user._id
+				}
+				req.login(publicUser, function(err) {
+					if (err) {
+						console.log(err);
+						res.status(err.status).write(templates.errorTemplate({
+							message: err.message
+						}));
+					} else {
+						res.redirect('/feed');
+					}
+					res.end();
+				});
+			} else {
+				res.send(templates.homeTemplate(user));
+				res.end();
+			}
+		});
 	});
 
-	router.post('/logout', function(req, res) {
+	router.get('/logout', function(req, res) {
 		// logs out the user
+		req.logout();
+		res.redirect('/');
 	});
 
 	router.post('/register', function(req, res, next) {
