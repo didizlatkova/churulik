@@ -3,12 +3,17 @@
         <h3 class="panel-title">Влез</h3>
     </div>
     <div class="panel-body">
-        <div class="form-group">
-            <input class="form-control" id="inputUser" placeholder="Потребителско име" type="text">
-        </div>
-        <div class="form-group">
-            <input class="form-control" id="inputPassword" placeholder="Парола" type="password">
-        </div>
-        <button type="submit" class="btn btn-primary">Влез</button>
+        <form method="post" action="/login">
+            <div class="form-group">
+                <input class="form-control" value="{{userNameLogin}}" id="inputUser" placeholder="Потребителско име" type="text" name="userNameLogin">
+                <p class="text-danger">{{userNameLoginError}}</p>
+            </div>
+            <div class="form-group">
+                <input class="form-control" id="inputPassword" placeholder="Парола" type="password" name="passwordLogin">
+                <p class="text-danger">{{passwordLoginError}}</p>
+            </div>
+            <p class="text-danger">{{generalError}}</p>
+            <button type="submit" class="btn btn-primary">Влез</button>
+        </form>
     </div>
 </div>

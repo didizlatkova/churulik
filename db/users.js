@@ -51,9 +51,9 @@ module.exports = function(users) {
 				if (user !== null) {
 					callback(from_database(user));
 				} else {
-					var e = new Error(PAGE_NOT_FOUND_ERROR);
-					e.status = 404;
-					callback(null, e);
+					var err = new Error(PAGE_NOT_FOUND_ERROR);
+					err.status = 404;
+					callback(null, err);
 				}
 			});
 		},
