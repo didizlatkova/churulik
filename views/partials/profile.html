@@ -22,7 +22,10 @@
         {{else}}
         <div>{{followers}} следващи</div>
         {{/ifCond}}
+
+        {{#ifCond description '!==' undefined}}
         <div class="up-border">{{description}}</div>
+        {{/ifCond}}
     </div>
 </div>
 

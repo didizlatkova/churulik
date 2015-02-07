@@ -6,14 +6,20 @@ var fs = require("fs"),
 	errorTemplateFile = fs.readFileSync(path.join(__dirname, '../views/error.html'), 'utf8'),
 	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8'),
 	loginTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/login.html'), 'utf8'),
-	registerTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/register.html'), 'utf8');
+	registerTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/register.html'), 'utf8'),
+	navTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav.html'), 'utf8'),
+	navAnonTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav-anon.html'), 'utf8'),
+	popularTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/popular.html'), 'utf8');
 
 module.exports = {
 	setup: function() {
 		handlebars.registerPartial({
 			profile: profileTemplateFile,
 			login: loginTemplateFile,
-			register: registerTemplateFile
+			register: registerTemplateFile,
+			nav: navTemplateFile,
+			navAnon: navAnonTemplateFile,
+			popular: popularTemplateFile
 		});
 
 		handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -22,6 +28,8 @@ module.exports = {
 					return (v1 == v2) ? options.fn(this) : options.inverse(this);
 				case '===':
 					return (v1 === v2) ? options.fn(this) : options.inverse(this);
+				case '!==':
+					return (v1 !== v2) ? options.fn(this) : options.inverse(this);
 				case '<':
 					return (v1 < v2) ? options.fn(this) : options.inverse(this);
 				case '<=':
