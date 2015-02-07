@@ -56,7 +56,7 @@ module.exports = function(database, templates, passport) {
 	});
 
 	router.post('/login', function(req, res) {
-		// logs the user by username and password		
+		// logs the user by username and password
 	});
 
 	router.post('/logout', function(req, res) {
@@ -66,6 +66,7 @@ module.exports = function(database, templates, passport) {
 	router.post('/register', function(req, res, next) {
 		manager.validateRegisterModel(req.body, function(model, valid) {
 			if (valid) {
+				req.body.password = manager.generateHash(req.body.password);
 				users.createUser(req.body, function(user, err) {
 					if (err) {
 						res.status(err.status).write(templates.errorTemplate({

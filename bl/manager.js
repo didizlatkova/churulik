@@ -2,6 +2,7 @@ module.exports = function(database) {
 	var usersDb = database.collection('users'),
 		messagesDb = database.collection('messages'),
 		users = require('../db/users')(usersDb),
+		bcrypt = require('bcrypt-nodejs'),
 		REQUIRED_ERROR = 'Полето е задължително',
 		EXISTING_USER_ERROR = 'Такъв потребител вече съществува';
 
@@ -30,11 +31,19 @@ module.exports = function(database) {
 			users.isUserAlreadyCreated(model.userName, function(created) {
 				if (created) {
 					model.userNameError = EXISTING_USER_ERROR;
-					valid = false;					
+					valid = false;
 				}
 
 				callback(model, valid);
 			});
 		},
+
+		generateHash: function(password) {
+			return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+		},
+
+		validPassword: function(password, userPassword) {
+			return bcrypt.compareSync(password, userPassword);
+		}
 	}
 };

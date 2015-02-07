@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "clone of twitter",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.10.2",
     "express": "^4.11.1",
     "express-session": "^1.10.2",
