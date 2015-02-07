@@ -5,15 +5,11 @@ module.exports = function(database) {
 		bcrypt = require('bcrypt-nodejs'),
 		REQUIRED_ERROR = 'Полето е задължително',
 		EXISTING_USER_ERROR = 'Такъв потребител вече съществува',
-		INVALID_LOGIN_DATA = 'Грешен потребител или парола';
+		INVALID_LOGIN_DATA = 'Грешен потребител или парола',
+		SHORT_USERNAME = 'Името трябва да е поне 5 символа',
+		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа';
 
 	return {
-		getUser: function(userName, callback) {
-			users.getUserByUserName(userName, function(user) {
-
-			});
-		},
-
 		generateHash: function(password) {
 			return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 		},
@@ -55,9 +51,16 @@ module.exports = function(database) {
 			if (!model.userName || model.userName === null) {
 				model.userNameError = REQUIRED_ERROR;
 				valid = false;
+			} else if (model.userName.length < 5) {
+				model.userNameError = SHORT_USERNAME;
+				valid = false;
 			}
+
 			if (!model.password || model.password === null) {
 				model.passwordError = REQUIRED_ERROR;
+				valid = false;
+			} else if (model.password.length < 5) {
+				model.passwordError = SHORT_PASSWORD;
 				valid = false;
 			}
 

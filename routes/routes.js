@@ -17,7 +17,11 @@ module.exports = function(database, templates, passport) {
 		// VIEW: main.html, PARTIALS: profile.html (without description), popular.html, addMessage.html, messages.html
 		// 2. if new user - show login/register home page
 		// VIEW: home.html, PARTIALS: login.html, register.html
-		res.send(templates.homeTemplate({}));
+		if (req.user) {
+			res.redirect('/' + req.user.userName);
+		} else {
+			res.send(templates.homeTemplate({}));
+		}
 	});
 
 	router.get('/feed', function(req, res) {
