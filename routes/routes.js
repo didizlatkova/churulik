@@ -2,7 +2,7 @@ var express = require('express'),
 	router = express.Router(),
 	handlebars = require("handlebars");
 
-module.exports = function(database, templates) {
+module.exports = function(database, templates, passport) {
 	var usersDb = database.collection('users'),
 		messagesDb = database.collection('messages'),
 		users = require('../db/users')(usersDb),
@@ -63,39 +63,37 @@ module.exports = function(database, templates) {
 		// logs out the user
 	});
 
-	router.post('/register', function(req, res) {
+	router.post('/register', function(req, res, next) {
 		manager.validateRegisterModel(req.body, function(model, valid) {
 			if (valid) {
-				var err = users.createUser(req.body);
-				if (err) {
-					res.status(err.status).write(templates.errorTemplate({
-						message: err.message
-					}));
-				} else {
-					res.write(req.body.userName + "successfully registered on Tvityr!");
-				}
+				passport.authenticate('local-signup', function(err, user, info) {
+					if (err) {
+						res.status(err.status).write(templates.errorTemplate({
+							message: err.message
+						}));
+						res.end();
+					}
+					if (!user) {
+						res.redirect('/');
+						res.end();
+					}
+					req.login(user, function(err) {
+						if (err) {
+							console.log(err);
+							res.status(err.status).write(templates.errorTemplate({
+								message: err.message
+							}));
+							res.end();
+						}
+						res.redirect('/feed');
+						res.end();
+					});
+				})(req, res, next);
 			} else {
 				res.send(templates.homeTemplate(model));
+				res.end();
 			}
-			
-			res.end();
 		});
-
-		// if (valid) {
-		// 	res.write('valid');
-		// 	// var err = users.createUser(req.body);
-		// 	// if (err) {
-		// 	// 	res.status(err.status).write(templates.errorTemplate({
-		// 	// 		message: err.message
-		// 	// 	}));
-		// 	// } else {
-		// 	// 	res.write(req.body.userName);
-		// 	// }
-		// } else {
-		// 	console.log('invalid');
-		// 	res.send(templates.homeTemplate(model));
-		// }
-
 	});
 
 	router.post('/post', function(req, res) {
