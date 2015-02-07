@@ -4,9 +4,14 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	MongoClient = require('mongodb').MongoClient,
 	routes = require('./routes/routes'),
-	templates = require('./bl/templates');
+	templates = require('./bl/templates'),
+	passport = require('passport'),
+	session = require('express-session');
 
-function setup_express(routes, templates) {
+function setup_express(routes) {
+	app.use(session({ secret: 'nodejsisreallyawesome' })); // session secret
+	app.use(passport.initialize());
+	app.use(passport.session());
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: false }));
 	app.use('/public', express.static(path.join(__dirname, 'public')));
@@ -37,9 +42,11 @@ MongoClient.connect('mongodb://localhost/tvityr', function(err, db) {
 		return;
 	}
 
-	setup_express(routes(db, templates.setup()));
+	require('./bl/passport')(db, templates.setup(), passport);
+
+	setup_express(routes(db, templates.setup(), passport));
 
 	app.listen(3000, function() {
-		console.log('listening on port 3000');
+		console.log('The magic happens on port 3000');
 	});
 });

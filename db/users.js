@@ -22,7 +22,7 @@ function to_database(user) {
 
 module.exports = function(users) {
 	return {
-		getUserById: function(id) {
+		getUserById: function(id, callback) {
 			users.findOne({
 				_id: id
 			}, function(err, user) {
@@ -78,14 +78,15 @@ module.exports = function(users) {
 
 		},
 
-		createUser: function(user) {
+		createUser: function(user, callback) {
 			var user = to_database(user);
 
 			users.insert(user, function(err) {
 				if (err) {
 					console.error('Cannot insert user', err);
-					return err;
+					return callback(null, err);
 				}
+				return callback(user);
 			});
 		},
 
