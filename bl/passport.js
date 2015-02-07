@@ -6,13 +6,11 @@ module.exports = function(database, templates, passport) {
         manager = require('./manager')(database);
 
     passport.serializeUser(function(user, done) {
-        done(null, user._id);
+        done(null, user);
     });
 
-    passport.deserializeUser(function(id, done) {
-        users.getUserById(id, function(err, user) {
-            done(err, user);
-        });
+    passport.deserializeUser(function(user, done) {
+        done(null, user);
     });
 
     passport.use('local-signup', new LocalStrategy({
@@ -21,7 +19,6 @@ module.exports = function(database, templates, passport) {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function(req, userName, password, done) {
-            console.log(req.body);
             process.nextTick(function() {
                 users.createUser(req.body, function(user, err) {
                     if (err) {
@@ -30,6 +27,5 @@ module.exports = function(database, templates, passport) {
                     return done(null, user);
                 });
             });
-
         }));
 };
