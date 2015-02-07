@@ -18,7 +18,7 @@ module.exports = function(database, templates, passport) {
 		// 2. if new user - show login/register home page
 		// VIEW: home.html, PARTIALS: login.html, register.html
 		if (req.user) {
-			res.redirect('/' + req.user.userName);
+			res.redirect('/feed');
 		} else {
 			res.send(templates.homeTemplate({}));
 		}
@@ -30,7 +30,26 @@ module.exports = function(database, templates, passport) {
 		//	- popular tags
 		//	- last 20 tvyts of following users (endless scrolling), update in 20s
 		// VIEW: main.html, PARTIALS: profile.html (without description), popular.html, addMessage.html, messages.html
-		res.redirect('/' + req.user.userName);
+		if (req.user) {
+			users.getUserByUserName(req.user.userName, function(user, err) {
+				if (err) {
+					return res.status(err.status).send(templates.errorTemplate({
+						message: err.message,
+						username: req.user ? req.user.userName : ''
+					}));
+				}
+
+				user.messages = user.messages ? user.messages.length : 0;
+				user.following = user.following ? user.following.length : 0;
+				user.followers = user.followers ? user.followers.length : 0;
+
+				var model = user;
+				model.popular = ["asd", "yolo", "mongodb"];
+				res.send(templates.mainTemplate(model));
+			});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.get('/profile', function(req, res) {
@@ -71,7 +90,8 @@ module.exports = function(database, templates, passport) {
 					if (err) {
 						console.log(err);
 						res.status(err.status).write(templates.errorTemplate({
-							message: err.message
+							message: err.message,
+							username: req.user ? req.user.userName : ''
 						}));
 					} else {
 						res.redirect('/feed');
@@ -98,7 +118,8 @@ module.exports = function(database, templates, passport) {
 				users.createUser(req.body, function(user, err) {
 					if (err) {
 						res.status(err.status).write(templates.errorTemplate({
-							message: err.message
+							message: err.message,
+							username: req.user ? req.user.userName : ''
 						}));
 					} else if (!user) {
 						res.redirect('/');
@@ -111,7 +132,8 @@ module.exports = function(database, templates, passport) {
 							if (err) {
 								console.log(err);
 								res.status(err.status).write(templates.errorTemplate({
-									message: err.message
+									message: err.message,
+									username: req.user ? req.user.userName : ''
 								}));
 							} else {
 								res.redirect('/feed');
@@ -140,7 +162,8 @@ module.exports = function(database, templates, passport) {
 		users.getUserByUserName(userName, function(user, err) {
 			if (err) {
 				return res.status(err.status).send(templates.errorTemplate({
-					message: err.message
+					message: err.message,
+					username: req.user ? req.user.userName : ''
 				}));
 			}
 			user.messages = user.messages ? user.messages.length : 0;
