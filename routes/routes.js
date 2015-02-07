@@ -26,7 +26,7 @@ module.exports = function(database, templates, passport) {
 		//	- popular tags
 		//	- last 20 tvyts of following users (endless scrolling), update in 20s
 		// VIEW: main.html, PARTIALS: profile.html (without description), popular.html, addMessage.html, messages.html
-		res.send('feed');
+		res.send(req.user.userName);
 	});
 
 	router.get('/profile', function(req, res) {
@@ -56,7 +56,7 @@ module.exports = function(database, templates, passport) {
 	});
 
 	router.post('/login', function(req, res) {
-		// logs the user by username and password
+		// logs the user by username and password		
 	});
 
 	router.post('/logout', function(req, res) {
@@ -66,29 +66,31 @@ module.exports = function(database, templates, passport) {
 	router.post('/register', function(req, res, next) {
 		manager.validateRegisterModel(req.body, function(model, valid) {
 			if (valid) {
-				passport.authenticate('local-signup', function(err, user, info) {
+				users.createUser(req.body, function(user, err) {
 					if (err) {
 						res.status(err.status).write(templates.errorTemplate({
 							message: err.message
 						}));
-						res.end();
-					}
-					if (!user) {
+					} else if (!user) {
 						res.redirect('/');
-						res.end();
-					}
-					req.login(user, function(err) {
-						if (err) {
-							console.log(err);
-							res.status(err.status).write(templates.errorTemplate({
-								message: err.message
-							}));
-							res.end();
+					} else {
+						var publicUser = {
+							userName: user.userName,
+							id: user._id
 						}
-						res.redirect('/feed');
-						res.end();
-					});
-				})(req, res, next);
+						req.login(publicUser, function(err) {
+							if (err) {
+								console.log(err);
+								res.status(err.status).write(templates.errorTemplate({
+									message: err.message
+								}));
+							} else {
+								res.redirect('/feed');
+							}
+						});
+					}
+					res.end();
+				});
 			} else {
 				res.send(templates.homeTemplate(model));
 				res.end();
