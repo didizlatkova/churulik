@@ -37,49 +37,25 @@
                 <div class="col-lg-3 col-md-4 col-sm-4">
                     {{> profile}}
                     {{#ifCond popular '!==' undefined}}
-                    {{> popular}}
+                        {{> popular}}
                     {{/ifCond}}
                 </div>
                 <div class="col-lg-7 col-md-4 col-sm-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Твитни!</h3>
-                        </div>
-                        <div class="panel-body">
-                            <form method="post" action="/post">
-                                <div class="form-group">
-                                    <input class="form-control" id="tvit-content" placeholder="Какво се случва с теб?" type="text"name="content">
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-lg-6 col-lg-offset-6">
-                                        <div class="row">
-                                            <div class="col-lg-8 col-md-8 col-sm-8">
-                                                <input class="form-control float-left" placeholder="Къде си?" type="text" name="location">
-                                            </div>
-                                            <div class="col-lg-4 col-md-4 col-sm-4">
-                                                <button type="submit" id="tvit-button" class="btn btn-primary disabled">Твитни</button> 
-                                            </div>
-                                        </div>                            
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div>
-                        <img class="tvit-avatar" src='https://pbs.twimg.com/profile_images/458925991734169601/duDjlteZ_bigger.jpeg'>
-                        <blockquote>
-                            <small>dzlatkova, <cite title="Source Title">София</cite></small>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac dignissim lacus. Vivamus a orci vitae magna ornare facilisis posuere.</p>
-                        </blockquote>
-                    </div>
+                    {{#ifCond userName '===' loggedUser}}
+                        {{> addTvit}}
+                    {{/ifCond}}
 
-                    <div>
-                        <img class="tvit-avatar" src='https://pbs.twimg.com/profile_images/548260091225309184/YOcI8GEU_bigger.png'>
-                        <blockquote>
-                            <small>dzlatkova, <cite title="Source Title">София</cite></small>
-                            <p>Днес времето е слънчево. Тра-ла-ла. Искам този текст да е на два реда!</p>
-                        </blockquote>
-                    </div>
+                    {{#each messageContents}}
+                        <div>
+                            <img class="tvit-avatar" src='{{author.picture}}'>
+                            <blockquote>
+                                <small>{{author.userName}}{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
+                                    {{/ifCond}}
+                                </small>                                
+                                <p>{{content}}</p>
+                            </blockquote>
+                        </div>
+                    {{/each}}
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4">
                     <div class="sponsor">

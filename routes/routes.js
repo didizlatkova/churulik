@@ -64,11 +64,12 @@ module.exports = function(database, templates) {
 				req.body.userName = req.user.userName;
 				users.updateUser(req.body, function(user, err) {
 					if (err) {
-						res.status(err.status).write(templates.errorTemplate({
+						return res.status(err.status).write(templates.errorTemplate({
 							message: err.message,
 							loggedUser: req.user.userName
 						}));
-					} else if (!user) {
+					}
+					if (!user) {
 						res.redirect('/');
 					} else {
 						res.redirect('/' + user.userName);
@@ -98,13 +99,13 @@ module.exports = function(database, templates) {
 				};
 				req.login(publicUser, function(err) {
 					if (err) {
-						res.status(err.status).write(templates.errorTemplate({
+						return res.status(err.status).write(templates.errorTemplate({
 							message: err.message,
-							loggedUser: 'None'
+							loggedUser: undefined
 						}));
-					} else {
-						res.redirect('/feed');
 					}
+
+					res.redirect('/feed');
 				});
 			} else {
 				res.send(templates.homeTemplate(user));
@@ -123,11 +124,12 @@ module.exports = function(database, templates) {
 				req.body.password = manager.generateHash(req.body.password);
 				users.createUser(req.body, function(user, err) {
 					if (err) {
-						res.status(err.status).write(templates.errorTemplate({
+						return res.status(err.status).write(templates.errorTemplate({
 							message: err.message,
 							loggedUser: req.user ? req.user.userName : ''
 						}));
-					} else if (!user) {
+					}
+					if (!user) {
 						res.redirect('/');
 					} else {
 						var publicUser = {
@@ -135,13 +137,13 @@ module.exports = function(database, templates) {
 						};
 						req.login(publicUser, function(err) {
 							if (err) {
-								res.status(err.status).write(templates.errorTemplate({
+								return res.status(err.status).write(templates.errorTemplate({
 									message: err.message,
-									loggedUser: 'None'
+									loggedUser: undefined
 								}));
-							} else {
-								res.redirect('/feed');
 							}
+
+							res.redirect('/feed');
 						});
 					}
 				});
@@ -170,7 +172,7 @@ module.exports = function(database, templates) {
 						}));
 					}
 
-					res.redirect('/feed');
+					res.redirect(req.get('referer'));
 				});
 			});
 		} else {
@@ -187,13 +189,14 @@ module.exports = function(database, templates) {
 			if (err) {
 				return res.status(err.status).send(templates.errorTemplate({
 					message: err.message,
-					loggedUser: req.user ? req.user.userName : 'None'
+					loggedUser: req.user ? req.user.userName : undefined
 				}));
 			}
-			
-			var model = manager.getUserProfileModel(user);
-			model.loggedUser = req.user ? req.user.userName : 'None';
-			res.send(templates.mainTemplate(model));
+
+			manager.getUserProfileModel(user, function(model) {
+				model.loggedUser = req.user ? req.user.userName : undefined;
+				res.send(templates.mainTemplate(model));
+			});
 		});
 	});
 

@@ -16,14 +16,51 @@ function to_database(message) {
 }
 
 module.exports = function(messages, users) {
-	return {
-		getLatestNMessages: function(userNames, n) {
+	var getNByIds = function(ids, n, callback) {
+		messages.find({
+			_id: {
+				$in: ids
+			}
+		}).limit(n).sort({datePublished: -1}).toArray(function(err, messages) {
+			if (err) {
+				console.error('Cannot get messages', err);
+				return callback(null, err);
+			}
 
+			return callback(messages);
+		});
+	};
+
+	return {
+		getLatestN: function(userNames, n, callback) {
+			if (userNames.length === 1) {
+				users.findOne({
+					userName: userNames[0]
+				}, function(err, user) {
+					if (err) {
+						console.error('Cannot get user', err);
+						return callback(null, err);
+					}
+					if (user !== null) {
+						getNByIds(user.messages, n, function(messages, err) {
+							if (err) {
+								return callback(null, err);
+							}
+
+							return callback(messages);
+						});
+					} else {
+						return callback(null);
+					}
+				});
+			}
 		},
 
 		getNPopularHashTags: function(n) {
 
 		},
+
+		getNByIds: getNByIds,
 
 		createMessage: function(message, author, callback) {
 			message = to_database(message);
