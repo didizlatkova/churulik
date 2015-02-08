@@ -91,6 +91,7 @@ module.exports = function(database) {
 			model.following = user.following ? user.following.length : 0;
 			model.followers = user.followers ? user.followers.length : 0;
 			model.popular = ["asd", "yolo", "mongodb"];
+			model.description = undefined;
 			return model;
 		},
 
