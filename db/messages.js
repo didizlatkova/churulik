@@ -1,6 +1,6 @@
 var express = require('express'),
-    moment = require('moment'),
-    ObjectID = require('mongodb').ObjectID;    
+	moment = require('moment'),
+	ObjectID = require('mongodb').ObjectID;
 
 function from_database(message) {
 	message.id = message._id;
@@ -18,20 +18,48 @@ function to_database(message) {
 	return message;
 }
 
-module.exports = function(messages) {
-	getLatestNMessages: function(userNames, n){
+module.exports = function(messages, users) {
+	return {
+		getLatestNMessages: function(userNames, n) {
 
-	},
+		},
 
-	getNPopularHashTags: function(n){
+		getNPopularHashTags: function(n) {
 
-	},
+		},
 
-	deleteMessage: function(id){
+		createMessage: function(message, author, callback) {
+			message = to_database(message);
+			message.author = author;
+			messages.insert(message, function(err) {
+				if (err) {
+					console.error('Cannot insert message', err);
+					return callback(null, err);
+				}
 
-	},
+				users.update({
+					userName: author.userName
+				}, {
+					$push: {
+						"messages": message._id
+					}
+				}, function(err) {
+					if (err) {
+						console.error('Cannot update user', err);
+						return callback(null, err);
+					}
 
-	findMessageByHashtags: function(hashtags){
+					return callback(message);
+				});
+			});
+		},
 
-	},
+		deleteMessage: function(id) {
+
+		},
+
+		findMessageByHashtags: function(hashtags) {
+
+		}
+	};
 };

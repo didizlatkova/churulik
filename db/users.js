@@ -12,6 +12,8 @@ function from_database(user) {
 
 function to_database(user) {
 	user._id = new ObjectID(user.id);
+	user.dateRegistered = moment(user.dateRegistered).toDate();
+	user.picture = '../img/avatar.png';
 	delete user.id;
 	return user;
 }
@@ -72,8 +74,6 @@ module.exports = function(users) {
 
 		createUser: function(user, callback) {
 			user = to_database(user);
-			user.dateRegistered = moment(user.dateRegistered).toDate();
-			user.picture = '../img/avatar.png';
 
 			users.insert(user, function(err) {
 				if (err) {
@@ -93,7 +93,9 @@ module.exports = function(users) {
 		updateUser: function(user, callback) {
 			users.update({
 				userName: user.userName
-			},{$set: user}, function(err, n) {
+			}, {
+				$set: user
+			}, function(err) {
 				if (err) {
 					console.error('Cannot update user', err);
 					return callback(null, err);

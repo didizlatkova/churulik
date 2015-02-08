@@ -105,7 +105,16 @@ module.exports = function(database) {
 		getUserEditModel: function(user) {
 			var model = user;
 			model.loggedUser = user.userName;
-			model.description = user.description ? user.description : '';			
+			model.description = user.description || '';		
+			return model;
+		},
+
+		getAuthorModel: function(user){
+			var model = {
+				userName: user.userName,
+				picture: user.picture
+			};
+
 			return model;
 		}
 	};
