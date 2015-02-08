@@ -6,6 +6,7 @@ module.exports = function(database, templates) {
 	var usersDb = database.collection('users'),
 		messagesDb = database.collection('messages'),
 		users = require('../db/users')(usersDb),
+		messages = require('../db/messages')(messagesDb, usersDb),
 		manager = require('../bl/manager')(database);
 
 	router.get('/', function(req, res) {
@@ -155,7 +156,30 @@ module.exports = function(database, templates) {
 	});
 
 	router.post('/post', function(req, res) {
-		// posts a tvyt
+		if (req.user) {
+			users.getUserByUserName(req.user.userName, function(user, err) {
+				if (err) {
+					return res.status(err.status).send(templates.errorTemplate({
+						message: err.message,
+						loggedUser: req.user.userName
+					}));
+				}
+
+				var author = manager.getAuthorModel(user);
+				messages.createMessage(req.body, author, function(message, err) {
+					if (err) {
+						return res.status(err.status).write(templates.errorTemplate({
+							message: err.message,
+							loggedUser: req.user.userName
+						}));
+					}
+
+					res.redirect('/feed');
+				});
+			});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.post('/search/:query', function(req, res) {
