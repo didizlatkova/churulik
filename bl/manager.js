@@ -2,6 +2,7 @@ module.exports = function(database) {
 	var usersDb = database.collection('users'),
 		messagesDb = database.collection('messages'),
 		users = require('../db/users')(usersDb),
+		messages = require('../db/messages')(messagesDb, usersDb),
 		bcrypt = require('bcrypt-nodejs'),
 		REQUIRED_ERROR = 'Полето е задължително',
 		EXISTING_USER_ERROR = 'Такъв потребител вече съществува',
@@ -74,7 +75,7 @@ module.exports = function(database) {
 			});
 		},
 
-		validateEditModel: function(model, callback){
+		validateEditModel: function(model, callback) {
 			var valid = true;
 			if (!model.names || model.names === null) {
 				model.namesError = REQUIRED_ERROR;
@@ -87,7 +88,7 @@ module.exports = function(database) {
 		getUserFeedModel: function(user) {
 			var model = user;
 			model.loggedUser = user.userName;
-			model.messages = user.messages ? user.messages.length : 0;
+			model.messagesCount = user.messages ? user.messages.length : 0;
 			model.following = user.following ? user.following.length : 0;
 			model.followers = user.followers ? user.followers.length : 0;
 			model.popular = ["asd", "yolo", "mongodb"];
@@ -95,22 +96,28 @@ module.exports = function(database) {
 			return model;
 		},
 
-		getUserProfileModel: function(user) {
+		getUserProfileModel: function(user, callback) {
 			var model = user;
-			model.messages = user.messages ? user.messages.length : 0;
+			model.messagesCount = user.messages ? user.messages.length : 0;
 			model.following = user.following ? user.following.length : 0;
 			model.followers = user.followers ? user.followers.length : 0;
-			return model;
+			messages.getLatestN([user.userName], 20, function(messages, err) {
+				if (!err) {
+					model.messageContents = messages;
+				}
+
+				return callback(model);
+			});
 		},
 
 		getUserEditModel: function(user) {
 			var model = user;
 			model.loggedUser = user.userName;
-			model.description = user.description || '';		
+			model.description = user.description || '';
 			return model;
 		},
 
-		getAuthorModel: function(user){
+		getAuthorModel: function(user) {
 			var model = {
 				userName: user.userName,
 				picture: user.picture

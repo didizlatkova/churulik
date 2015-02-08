@@ -6,9 +6,9 @@
         <img class="tvit-avatar" src='{{picture}}'>
         <div>{{userName}}</div>
         {{#ifCond messages '===' 1}}
-        <div>{{messages}} твит</div>
+        <div>{{messagesCount}} твит</div>
         {{else}}
-        <div>{{messages}} твита</div>
+        <div>{{messagesCount}} твита</div>
         {{/ifCond}}
 
         {{#ifCond following '===' 1}}

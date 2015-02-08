@@ -10,7 +10,8 @@ var fs = require("fs"),
 	registerTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/register.html'), 'utf8'),
 	navTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav.html'), 'utf8'),
 	navAnonTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav-anon.html'), 'utf8'),
-	popularTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/popular.html'), 'utf8');
+	popularTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/popular.html'), 'utf8'),
+	addTvitTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/add-tvit.html'), 'utf8');
 
 module.exports = {
 	setup: function() {
@@ -20,7 +21,8 @@ module.exports = {
 			register: registerTemplateFile,
 			nav: navTemplateFile,
 			navAnon: navAnonTemplateFile,
-			popular: popularTemplateFile
+			popular: popularTemplateFile,
+			addTvit: addTvitTemplateFile
 		});
 
 		handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
