@@ -28,9 +28,10 @@ module.exports = function(database, templates) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message,
-						loggedUser: req.user ? req.user.userName : 'None'
+						loggedUser: req.user.userName
 					}));
 				}
+
 				var model = manager.getUserFeedModel(user);
 				res.send(templates.mainTemplate(model));
 			});
@@ -45,9 +46,10 @@ module.exports = function(database, templates) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message,
-						loggedUser: req.user ? req.user.userName : 'None'
+						loggedUser: req.user.userName
 					}));
 				}
+
 				var model = manager.getUserEditModel(user);
 				res.send(templates.editTemplate(model));
 			});
@@ -64,18 +66,16 @@ module.exports = function(database, templates) {
 					if (err) {
 						res.status(err.status).write(templates.errorTemplate({
 							message: err.message,
-							loggedUser: req.user ? req.user.userName : ''
+							loggedUser: req.user.userName
 						}));
 					} else if (!user) {
 						res.redirect('/');
 					} else {
 						res.redirect('/' + user.userName);
 					}
-					res.end();
 				});
 			} else {
 				res.send(templates.editTemplate(model));
-				res.end();
 			}
 		});
 	});
@@ -100,16 +100,14 @@ module.exports = function(database, templates) {
 					if (err) {
 						res.status(err.status).write(templates.errorTemplate({
 							message: err.message,
-							loggedUser: req.user ? req.user.userName : ''
+							loggedUser: 'None'
 						}));
 					} else {
 						res.redirect('/feed');
 					}
-					res.end();
 				});
 			} else {
 				res.send(templates.homeTemplate(user));
-				res.end();
 			}
 		});
 	});
@@ -134,23 +132,21 @@ module.exports = function(database, templates) {
 					} else {
 						var publicUser = {
 							userName: user.userName
-						}
+						};
 						req.login(publicUser, function(err) {
 							if (err) {
 								res.status(err.status).write(templates.errorTemplate({
 									message: err.message,
-									loggedUser: req.user ? req.user.userName : ''
+									loggedUser: 'None'
 								}));
 							} else {
 								res.redirect('/feed');
 							}
 						});
 					}
-					res.end();
 				});
 			} else {
 				res.send(templates.homeTemplate(model));
-				res.end();
 			}
 		});
 	});
@@ -194,6 +190,7 @@ module.exports = function(database, templates) {
 					loggedUser: req.user ? req.user.userName : 'None'
 				}));
 			}
+			
 			var model = manager.getUserProfileModel(user);
 			model.loggedUser = req.user ? req.user.userName : 'None';
 			res.send(templates.mainTemplate(model));

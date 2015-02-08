@@ -5,16 +5,13 @@ var express = require('express'),
 function from_database(message) {
 	message.id = message._id;
 	delete message._id;
-
 	return message;
 }
 
 function to_database(message) {
 	message._id = new ObjectID(message.id);
 	message.datePublished = moment(message.datePublished).toDate();
-
 	delete message.id;
-
 	return message;
 }
 
