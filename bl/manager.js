@@ -72,6 +72,41 @@ module.exports = function(database) {
 
 				callback(model, valid);
 			});
+		},
+
+		validateEditModel: function(model, callback){
+			var valid = true;
+			if (!model.names || model.names === null) {
+				model.namesError = REQUIRED_ERROR;
+				valid = false;
+			}
+
+			callback(model, valid);
+		},
+
+		getUserFeedModel: function(user) {
+			var model = user;
+			model.loggedUser = user.userName;
+			model.messages = user.messages ? user.messages.length : 0;
+			model.following = user.following ? user.following.length : 0;
+			model.followers = user.followers ? user.followers.length : 0;
+			model.popular = ["asd", "yolo", "mongodb"];
+			return model;
+		},
+
+		getUserProfileModel: function(user) {
+			var model = user;
+			model.messages = user.messages ? user.messages.length : 0;
+			model.following = user.following ? user.following.length : 0;
+			model.followers = user.followers ? user.followers.length : 0;
+			return model;
+		},
+
+		getUserEditModel: function(user) {
+			var model = user;
+			model.loggedUser = user.userName;
+			model.description = user.description ? user.description : '';			
+			return model;
 		}
 	};
 };
