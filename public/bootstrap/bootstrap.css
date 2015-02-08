@@ -7,8 +7,8 @@
  * Based on Bootstrap
 */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
-html {
-  font-family: sans-serif;
+html 
+{  font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -178,6 +178,7 @@ legend {
 }
 textarea {
   overflow: auto;
+  resize: none;
 }
 optgroup {
   font-weight: bold;

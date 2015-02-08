@@ -12,7 +12,6 @@ function from_database(user) {
 
 function to_database(user) {
 	user._id = new ObjectID(user.id);
-	user.dateRegistered = moment(user.dateRegistered).toDate();
 	delete user.id;
 	return user;
 }
@@ -48,7 +47,7 @@ module.exports = function(users) {
 				if (user !== null) {
 					callback(from_database(user));
 				} else {
-					var err = new Error(PAGE_NOT_FOUND_ERROR);
+					err = new Error(PAGE_NOT_FOUND_ERROR);
 					err.status = 404;
 					callback(null, err);
 				}
@@ -72,7 +71,9 @@ module.exports = function(users) {
 		},
 
 		createUser: function(user, callback) {
-			var user = to_database(user);
+			user = to_database(user);
+			user.dateRegistered = moment(user.dateRegistered).toDate();
+			user.picture = '../img/avatar.png';
 
 			users.insert(user, function(err) {
 				if (err) {
@@ -89,8 +90,17 @@ module.exports = function(users) {
 			});
 		},
 
-		updateUser: function(user) {
+		updateUser: function(user, callback) {
+			users.update({
+				userName: user.userName
+			},{$set: user}, function(err, n) {
+				if (err) {
+					console.error('Cannot update user', err);
+					return callback(null, err);
+				}
 
+				return callback(user);
+			});
 		}
 	};
 };

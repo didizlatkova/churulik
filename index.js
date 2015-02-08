@@ -49,9 +49,9 @@ MongoClient.connect('mongodb://localhost/tvityr', function(err, db) {
 		return;
 	}
 
-	require('./bl/passport')(db, templates.setup(), passport);
+	require('./bl/passport')(passport);
 
-	setup_express(routes(db, templates.setup(), passport));
+	setup_express(routes(db, templates.setup()));
 
 	app.listen(3000, function() {
 		console.log('The magic happens on port 3000');

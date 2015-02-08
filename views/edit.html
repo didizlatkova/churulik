@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -26,38 +26,35 @@
     </script>
 </head>
 <body>
-    {{#ifCond loggedUser '!==' undefined}}
     {{> nav}}
-    {{else}}
-    {{> navAnon}}
-    {{/ifCond}}
     <div class="container">
         <div class="page-header" id="banner">
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-4">
-                    {{> profile}}
-                    {{#ifCond popular '!==' undefined}}
-                    {{> popular}}
-                    {{/ifCond}}
+                <div class="col-lg-8 col-md-8 col-sm-8">
+                    <form method="post" action="/edit">
+                        <div class="panel panel-success has-success">
+                            <div class="panel-heading">
+                                <input class="form-control" id="inputSuccess" value="{{names}}" placeholder="Имена" type="text" name="names">
+                                <p class="text-danger">{{namesError}}</p>
+                            </div>
+                            <div class="panel-body">
+                                <img class="tvit-avatar" src='{{picture}}'>
+                                <p>{{userName}}</p>
+                                <div>
+                                <a href="#" class="btn btn-success btn-sm">Промени аватар</a>
+                                </div>
+                                    <textarea class="form-control" placeholder="Описание" rows="3" id="textArea" name="description">{{description}}</textarea>                                
+                            </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-lg-10 col-lg-offset-10">
+                            <button type="submit" class="btn btn-success">Запази</button>
+                          </div>
+                        </div>   
+                        <input type="hidden" value="{{picture}}" name="picture">                  
+                    </form>
                 </div>
-                <div class="col-lg-7 col-md-4 col-sm-4">
-                    <div>
-                        <img class="tvit-avatar" src='https://pbs.twimg.com/profile_images/458925991734169601/duDjlteZ_bigger.jpeg'>
-                        <blockquote>
-                            <small>dzlatkova, <cite title="Source Title">София</cite></small>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac dignissim lacus. Vivamus a orci vitae magna ornare facilisis posuere.</p>
-                        </blockquote>
-                    </div>
-
-                    <div>
-                        <img class="tvit-avatar" src='https://pbs.twimg.com/profile_images/548260091225309184/YOcI8GEU_bigger.png'>
-                        <blockquote>
-                            <small>dzlatkova, <cite title="Source Title">София</cite></small>
-                            <p>Днес времето е слънчево. Тра-ла-ла. Искам този текст да е на два реда!</p>
-                        </blockquote>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="col-lg-4 col-md-4 col-sm-4">
                     <div class="sponsor">
                         <img src="/img/tweety.png" alt="Туити">
                     </div>
