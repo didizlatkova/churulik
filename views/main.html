@@ -45,17 +45,9 @@
                         {{> addTvit}}
                     {{/ifCond}}
 
-                    {{#each messageContents}}
-                        <div>
-                            <img class="tvit-avatar" src='{{author.picture}}'>
-                            <blockquote>
-                                <small>{{author.userName}}{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
-                                    {{/ifCond}}
-                                </small>                                
-                                <p>{{content}}</p>
-                            </blockquote>
-                        </div>
-                    {{/each}}
+                    <div id="messages">
+                        {{> messages}}
+                    </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4">
                     <div class="sponsor">

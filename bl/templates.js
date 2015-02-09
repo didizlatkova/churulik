@@ -11,7 +11,8 @@ var fs = require("fs"),
 	navTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav.html'), 'utf8'),
 	navAnonTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav-anon.html'), 'utf8'),
 	popularTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/popular.html'), 'utf8'),
-	addTvitTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/add-tvit.html'), 'utf8');
+	addTvitTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/add-tvit.html'), 'utf8'),
+	messagesTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/messages.html'), 'utf8');
 
 module.exports = {
 	setup: function() {
@@ -22,7 +23,8 @@ module.exports = {
 			nav: navTemplateFile,
 			navAnon: navAnonTemplateFile,
 			popular: popularTemplateFile,
-			addTvit: addTvitTemplateFile
+			addTvit: addTvitTemplateFile,
+			messages: messagesTemplateFile
 		});
 
 		handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -54,7 +56,8 @@ module.exports = {
 			mainTemplate: handlebars.compile(mainTemplateFile),
 			homeTemplate: handlebars.compile(homeTemplateFile),
 			errorTemplate: handlebars.compile(errorTemplateFile),
-			editTemplate: handlebars.compile(editTemplateFile)
+			editTemplate: handlebars.compile(editTemplateFile),
+			messagesTemplate: handlebars.compile(messagesTemplateFile)
 		};
 	}
 };

@@ -1,0 +1,14 @@
+{{#each messageContents}}
+    <div class="message-wrapper">
+        <img class="tvit-avatar" src='{{author.picture}}'>
+        <blockquote>
+            <small>{{author.userName}}{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
+                {{/ifCond}}
+            </small>                                
+            <p>{{content}}</p>
+        </blockquote>
+        {{#ifCond author.userName '===' ../loggedUser}}
+            <img class="delete-btn" data-id="{{_id}}" data-author="{{author.userName}}" src='../img/delete.png'>
+        {{/ifCond}}
+    </div>
+{{/each}}
