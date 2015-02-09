@@ -172,7 +172,10 @@ module.exports = function(database, templates) {
 						}));
 					}
 
-					res.redirect(req.get('referer'));
+					manager.getUserProfileModel(req.user, function(model) {
+						model.loggedUser = req.user.userName;
+						res.send(templates.messagesTemplate(model));
+					});
 				});
 			});
 		} else {
@@ -181,14 +184,16 @@ module.exports = function(database, templates) {
 	});
 
 	router.post('/delete', function(req, res) {
-		messages.deleteMessage(req.body.id, req.body.authorName, function(success) {
-			users.getUserByUserName(req.body.authorName, function(user) {
-				manager.getUserProfileModel(user, function(model){
-					model.loggedUser = req.user ? req.user.userName : undefined;
+		if (req.user) {
+			messages.deleteMessage(req.body.id, req.user.userName, function(success) {
+				manager.getUserProfileModel(req.user, function(model) {
+					model.loggedUser = req.user.userName;
 					res.send(templates.messagesTemplate(model));
 				});
 			});
-		});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.post('/search/:query', function(req, res) {

@@ -1,8 +1,8 @@
 $('#tvit-content').keyup(function() {
-	if ($('#tvit-button').hasClass('disabled') && this.value.length > 0 && this.value.length <= 140) {
-		$('#tvit-button').removeClass('disabled');
+	if ($('#tvit-btn').hasClass('disabled') && this.value.length > 0 && this.value.length <= 140) {
+		$('#tvit-btn').removeClass('disabled');
 	} else if (this.value.length === 0 || this.value.length > 140) {
-		$('#tvit-button').addClass('disabled');
+		$('#tvit-btn').addClass('disabled');
 	}
 });
 
@@ -16,12 +16,21 @@ $(document).on('mouseleave', '.message-wrapper', function() {
 
 $(document).on('click', '.delete-btn', function() {
 	var id = $(this).data("id");
-	var authorName = $(this).data("author");
 
 	$.post("/delete", {
-		id: id,
-		authorName: authorName
+		id: id
 	}, function(data) {
 		$('#messages').html(data);
 	});
+});
+
+$(document).on('click', '#tvit-btn', function(e) {
+	e.preventDefault();
+	var data = $('#add-tvit').serialize();
+
+	$.post("/post", data, function(data) {
+		$('#messages').html(data);		
+	});
+
+	$('#add-tvit').trigger('reset');
 });

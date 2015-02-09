@@ -8,7 +8,7 @@
             <p>{{content}}</p>
         </blockquote>
         {{#ifCond author.userName '===' ../loggedUser}}
-            <img class="delete-btn" data-id="{{_id}}" data-author="{{author.userName}}" src='../img/delete.png'>
+            <img class="delete-btn" data-id="{{_id}}" src='../img/delete.png'>
         {{/ifCond}}
     </div>
 {{/each}}
