@@ -180,6 +180,17 @@ module.exports = function(database, templates) {
 		}
 	});
 
+	router.post('/delete', function(req, res) {
+		messages.deleteMessage(req.body.id, req.body.authorName, function(success) {
+			users.getUserByUserName(req.body.authorName, function(user) {
+				manager.getUserProfileModel(user, function(model){
+					model.loggedUser = req.user ? req.user.userName : undefined;
+					res.send(templates.messagesTemplate(model));
+				});
+			});
+		});
+	});
+
 	router.post('/search/:query', function(req, res) {
 		// searches tvyts by hashtags
 	});

@@ -21,7 +21,9 @@ module.exports = function(messages, users) {
 			_id: {
 				$in: ids
 			}
-		}).limit(n).sort({datePublished: -1}).toArray(function(err, messages) {
+		}).limit(n).sort({
+			datePublished: -1
+		}).toArray(function(err, messages) {
 			if (err) {
 				console.error('Cannot get messages', err);
 				return callback(null, err);
@@ -88,8 +90,30 @@ module.exports = function(messages, users) {
 			});
 		},
 
-		deleteMessage: function(id) {
+		deleteMessage: function(id, authorName, callback) {
+			messages.remove({
+				_id: new ObjectID(id)
+			}, function(err) {
+				if (err) {
+					console.error('Cannot remove message', err);
+					return false;
+				}
 
+				users.update({
+					userName: authorName
+				}, {
+					$pull: {
+						"messages": new ObjectID(id)
+					}
+				}, function(err) {
+					if (err) {
+						console.error('Cannot update user', err);
+						return callback(false);
+					}
+
+					return callback(true);
+				});
+			});
 		},
 
 		findMessageByHashtags: function(hashtags) {
