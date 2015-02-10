@@ -22,6 +22,14 @@ $(document).on('click', '.delete-btn', function() {
 	}, function(data) {
 		$('#messages').html(data);
 	});
+
+	var count = parseInt($('#messages-count').text()) - 1;
+	$('#messages-count').text(count);
+	if (count === 1) {
+		$('#messages-text').text('твит');
+	} else {
+		$('#messages-text').text('твита');
+	}
 });
 
 $(document).on('click', '#tvit-btn', function(e) {
@@ -29,8 +37,16 @@ $(document).on('click', '#tvit-btn', function(e) {
 	var data = $('#add-tvit').serialize();
 
 	$.post("/post", data, function(data) {
-		$('#messages').html(data);		
+		$('#messages').html(data);
 	});
 
 	$('#add-tvit').trigger('reset');
+
+	var count = parseInt($('#messages-count').text()) + 1;
+	$('#messages-count').text(count);
+	if (count === 1) {
+		$('#messages-text').text('твит');
+	} else {
+		$('#messages-text').text('твита');
+	}
 });
