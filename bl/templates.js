@@ -4,7 +4,7 @@ var fs = require("fs"),
 	mainTemplateFile = fs.readFileSync(path.join(__dirname, '../views/main.html'), 'utf8'),
 	homeTemplateFile = fs.readFileSync(path.join(__dirname, '../views/home.html'), 'utf8'),
 	errorTemplateFile = fs.readFileSync(path.join(__dirname, '../views/error.html'), 'utf8'),
-	editTemplateFile = fs.readFileSync(path.join(__dirname, '../views/edit.html'), 'utf8'),	
+	editTemplateFile = fs.readFileSync(path.join(__dirname, '../views/edit.html'), 'utf8'),
 	usersTemplateFile = fs.readFileSync(path.join(__dirname, '../views/users.html'), 'utf8'),
 	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8'),
 	loginTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/login.html'), 'utf8'),
@@ -13,7 +13,8 @@ var fs = require("fs"),
 	navAnonTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/nav-anon.html'), 'utf8'),
 	popularTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/popular.html'), 'utf8'),
 	addTvitTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/add-tvit.html'), 'utf8'),
-	messagesTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/messages.html'), 'utf8');
+	messagesTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/messages.html'), 'utf8'),
+	followTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/follow.html'), 'utf8');
 
 module.exports = {
 	setup: function() {
@@ -25,7 +26,8 @@ module.exports = {
 			navAnon: navAnonTemplateFile,
 			popular: popularTemplateFile,
 			addTvit: addTvitTemplateFile,
-			messages: messagesTemplateFile
+			messages: messagesTemplateFile,
+			follow: followTemplateFile
 		});
 
 		handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -59,7 +61,8 @@ module.exports = {
 			errorTemplate: handlebars.compile(errorTemplateFile),
 			editTemplate: handlebars.compile(editTemplateFile),
 			messagesTemplate: handlebars.compile(messagesTemplateFile),
-			usersTemplate: handlebars.compile(usersTemplateFile)
+			usersTemplate: handlebars.compile(usersTemplateFile),
+			followTemplate: handlebars.compile(followTemplateFile)
 		};
 	}
 };

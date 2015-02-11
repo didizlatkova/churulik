@@ -62,7 +62,7 @@ module.exports = function(users) {
 					console.error('Cannot get user', err);
 					callback(null, err);
 				}
-				
+
 				callback(users);
 			});
 		},
@@ -115,6 +115,35 @@ module.exports = function(users) {
 				return callback(user);
 			});
 		},
+
+		followUser: function(userName, followedUser, callback) {
+			users.update({
+				userName: userName
+			}, {
+				$addToSet: {
+					"following": followedUser
+				}
+			}, function(err) {
+				if (err) {
+					console.error('Cannot update user', err);
+					return callback(false, err);
+				}
+
+				users.update({
+					userName: followedUser
+				}, {
+					$addToSet: {
+						"followers": userName
+					}
+				}, function(err) {
+					if (err) {
+						console.error('Cannot update user', err);
+						return callback(false, err);
+					}
+					return callback(true);
+				});
+			});
+		}
 
 		// doesUserAFollowUserB: function(userA, userB, callback){
 		// 	users.findOne({

@@ -5557,7 +5557,7 @@ a.list-group-item-danger.active:focus {
 .panel-success {
   border-color: #18bc9c;
 }
-.panel-success > .panel-heading {
+.panel-success .panel-heading {
   color: #ffffff;
   background-color: #18bc9c;
   border-color: #18bc9c;
@@ -6862,7 +6862,7 @@ a:hover {
   margin-right: 3px;
 }
 
-.follow-btn{
+.follow-btn, .unfollow-btn{
   position: absolute;
   bottom: 0;
   right: 0;

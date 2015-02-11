@@ -1,39 +1,42 @@
 <div class="panel panel-success">
-    <div class="panel-heading message-wrapper">
-        <h3 class="panel-title">{{names}}</h3>
-        {{#ifCond verified '===' true}}
-            <img src="../img/verified.png" class="verified" title="верифициран">
-        {{/ifCond}}
-    </div>
+    <a href="/{{userName}}">
+        <div class="panel-heading message-wrapper">
+            <h3 class="panel-title">{{names}}</h3>
+            {{#ifCond verified '===' true}}
+                <img src="../img/verified.png" class="verified" title="верифициран">
+            {{/ifCond}}
+        </div>
+    </a>
     <div class="panel-body profile-wrapper">
-        <img class="tvit-avatar" src='{{picture}}'>
-        <div>{{userName}}</div>
-        {{#ifCond messagesCount '===' 1}}
-            <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твит</span></div>
-        {{else}}
-            <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твита</span></div>
-        {{/ifCond}}
+        <a href="/{{userName}}">
+            <img class="tvit-avatar" src='{{picture}}'>
+            <div>{{userName}}</div>
+            {{#ifCond messagesCount '===' 1}}
+                <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твит</span></div>
+            {{else}}
+                <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твита</span></div>
+            {{/ifCond}}
 
-        {{#ifCond following '===' 1}}
-            <div>{{following}} следван</div>
-        {{else}}
-            <div>{{following}} следвани</div>
-        {{/ifCond}}
+            {{#ifCond following '===' 1}}
+                <div><span id="following-count-{{userName}}">{{following}} </span> <span id="following-text-{{userName}}">следван</div>
+            {{else}}
+                <div><span id="following-count-{{userName}}">{{following}} </span> <span id="following-text-{{userName}}">следвани</div>
+            {{/ifCond}}
 
-        {{#ifCond followers '===' 1}}
-            <div>{{followers}} следващ</div>
-        {{else}}
-            <div>{{followers}} следващи</div>
-        {{/ifCond}}
+            {{#ifCond followers '===' 1}}
+                <div><span id="followers-count-{{userName}}">{{followers}}</span> <span id="followers-text-{{userName}}">следващ</span></div>
+            {{else}}
+                <div><span id="followers-count-{{userName}}">{{followers}}</span> <span id="followers-text-{{userName}}">следващи</span></div>
+            {{/ifCond}}
 
-        {{#ifCond description '!==' undefined}}
-            <div class="up-border">{{description}}</div>
-        {{/ifCond}}
+            {{#ifCond description '!==' undefined}}
+                <div class="up-border">{{description}}</div>
+            {{/ifCond}}
+        </a>
 
-<p>{{isFollowedByLoggedUser}}</p>
-        {{#ifCond userName '!==' loggedUser}}
-            <button href="#" class="btn btn-info btn-sm follow-btn">Последвай</button>
-        {{/ifCond}}
+        <div id="follow-wrapper-{{userName}}">
+            {{> follow}}  
+        </div>
     </div>
 </div>
 
