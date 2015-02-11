@@ -82,13 +82,31 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/followers', function(req, res) {
-		// profile previews for all followers + description + follow/unfollow link
-		// VIEW: main.html, PARTIALS: people.html (followers or following)
+		if (req.user) {
+			users.getFollowers(req.user.userName, function(users) {
+				var model = {};
+				model.loggedUser = req.user.userName;
+				model.title = 'Следват те';
+				model.users = manager.getUsersModel(users, model.loggedUser);
+				res.send(templates.usersTemplate(model));
+			});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.get('/following', function(req, res) {
-		// profile previews for all following + description + follow/unfollow link
-		// VIEW: main.html, PARTIALS: people.html (followers or following)
+		if (req.user) {
+			users.getFollowing(req.user.userName, function(users) {
+				var model = {};
+				model.loggedUser = req.user.userName;
+				model.title = 'Следваш';
+				model.users = manager.getUsersModel(users, model.loggedUser);
+				res.send(templates.usersTemplate(model));
+			});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.get('/users', function(req, res) {
@@ -209,7 +227,10 @@ module.exports = function(database, templates) {
 	router.post('/follow', function(req, res) {
 		if (req.user) {
 			users.followUser(req.user.userName, req.body.user, function(success) {
-				var model = { userName: req.body.user, loggedUser: req.user.userName};
+				var model = {
+					userName: req.body.user,
+					loggedUser: req.user.userName
+				};
 				if (success) {
 					model.isFollowedByLoggedUser = true;
 				} else {
@@ -226,13 +247,16 @@ module.exports = function(database, templates) {
 	router.post('/unfollow', function(req, res) {
 		if (req.user) {
 			users.unfollowUser(req.user.userName, req.body.user, function(success) {
-				var model = { userName: req.body.user, loggedUser: req.user.userName};
+				var model = {
+					userName: req.body.user,
+					loggedUser: req.user.userName
+				};
 				if (success) {
 					model.isFollowedByLoggedUser = false;
 				} else {
 					model.isFollowedByLoggedUser = true;
 				}
-				
+
 				res.send(templates.followTemplate(model));
 			});
 		} else {
