@@ -43,6 +43,7 @@ module.exports = function(messages, users) {
 						console.error('Cannot get user', err);
 						return callback(null, err);
 					}
+
 					if (user !== null) {
 						user.messages = user.messages || [];
 						getNByIds(user.messages, n, function(messages, err) {
@@ -55,6 +56,21 @@ module.exports = function(messages, users) {
 					} else {
 						return callback(null);
 					}
+				});
+			} else {
+				messages.find({
+					"author.userName": {
+						$in: userNames
+					}
+				}).limit(n).sort({
+					datePublished: -1
+				}).toArray(function(err, messages) {
+					if (err) {
+						console.error('Cannot get messages', err);
+						callback(null, err);
+					}
+
+					callback(messages);
 				});
 			}
 		},

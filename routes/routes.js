@@ -1,6 +1,7 @@
 var express = require('express'),
 	router = express.Router(),
-	handlebars = require("handlebars");
+	handlebars = require("handlebars"),
+	path = require('path');
 
 module.exports = function(database, templates) {
 	var usersDb = database.collection('users'),
@@ -32,8 +33,9 @@ module.exports = function(database, templates) {
 					}));
 				}
 
-				var model = manager.getUserFeedModel(user);
-				res.send(templates.mainTemplate(model));
+				manager.getUserFeedModel(user, function(model) {
+					res.send(templates.mainTemplate(model));
+				});
 			});
 		} else {
 			res.redirect('/');
@@ -200,10 +202,25 @@ module.exports = function(database, templates) {
 						}));
 					}
 
-					manager.getUserProfileModel(req.user, function(model) {
-						model.loggedUser = req.user.userName;
-						res.send(templates.messagesTemplate(model));
-					});
+					var loggedUser = req.user.userName;
+					if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
+						users.getUserByUserName(req.user.userName, function(user, err) {
+							if (err) {
+								return res.status(err.status).send(templates.errorTemplate({
+									message: err.message,
+									loggedUser: req.user.userName
+								}));
+							}
+
+							manager.getUserFeedModel(user, function(model) {
+								res.send(templates.messagesTemplate(model));
+							});
+						});
+					} else {
+						manager.getUserProfileModel(req.user, loggedUser, function(model) {
+							res.send(templates.messagesTemplate(model));
+						});
+					}
 				});
 			});
 		} else {
@@ -214,10 +231,25 @@ module.exports = function(database, templates) {
 	router.post('/delete', function(req, res) {
 		if (req.user) {
 			messages.deleteMessage(req.body.id, req.user.userName, function(success) {
-				manager.getUserProfileModel(req.user, function(model) {
-					model.loggedUser = req.user.userName;
-					res.send(templates.messagesTemplate(model));
-				});
+				var loggedUser = req.user.userName;
+				if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
+					users.getUserByUserName(req.user.userName, function(user, err) {
+						if (err) {
+							return res.status(err.status).send(templates.errorTemplate({
+								message: err.message,
+								loggedUser: req.user.userName
+							}));
+						}
+
+						manager.getUserFeedModel(user, function(model) {
+							res.send(templates.messagesTemplate(model));
+						});
+					});
+				} else {
+					manager.getUserProfileModel(req.user, loggedUser, function(model) {
+						res.send(templates.messagesTemplate(model));
+					});
+				}
 			});
 		} else {
 			res.redirect('/');
