@@ -71,15 +71,7 @@ module.exports = function(users) {
 
 		},
 
-		getNumberOfFollowers: function(userName) {
-
-		},
-
 		getFollowing: function(userName) {
-
-		},
-
-		getNumberOfFollowing: function(userName) {
 
 		},
 
@@ -143,22 +135,35 @@ module.exports = function(users) {
 					return callback(true);
 				});
 			});
-		}
+		},
 
-		// doesUserAFollowUserB: function(userA, userB, callback){
-		// 	users.findOne({
-		// 		userName: userA,
-		// 		followers: userB
-		// 	}, function(err, user) {
-		// 		if (err) {
-		// 			return callback(false);
-		// 		}
-		// 		if (user !== null) {
-		// 			callback(true);
-		// 		} else {
-		// 			return callback(false);
-		// 		}
-		// 	});
-		// }
+		unfollowUser: function(userName, followedUser, callback) {
+			users.update({
+				userName: userName
+			}, {
+				$pull: {
+					"following": followedUser
+				}
+			}, function(err) {
+				if (err) {
+					console.error('Cannot update user', err);
+					return callback(false, err);
+				}
+
+				users.update({
+					userName: followedUser
+				}, {
+					$pull: {
+						"followers": userName
+					}
+				}, function(err) {
+					if (err) {
+						console.error('Cannot update user', err);
+						return callback(false, err);
+					}
+					return callback(true);
+				});
+			});
+		}
 	};
 };
