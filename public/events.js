@@ -23,7 +23,7 @@ $(document).on('click', '.delete-btn', function() {
 		$('#messages').html(data);
 	});
 
-	var count = parseInt($('#messages-count').text()) - 1;
+	var count = parseInt($('#messages-count').text(), 10) - 1;
 	$('#messages-count').text(count);
 	if (count === 1) {
 		$('#messages-text').text('твит');
@@ -42,7 +42,7 @@ $(document).on('click', '#tvit-btn', function(e) {
 
 	$('#add-tvit').trigger('reset');
 
-	var count = parseInt($('#messages-count').text()) + 1;
+	var count = parseInt($('#messages-count').text(), 10) + 1;
 	$('#messages-count').text(count);
 	if (count === 1) {
 		$('#messages-text').text('твит');

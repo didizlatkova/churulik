@@ -44,6 +44,7 @@ module.exports = function(messages, users) {
 						return callback(null, err);
 					}
 					if (user !== null) {
+						user.messages = user.messages || [];
 						getNByIds(user.messages, n, function(messages, err) {
 							if (err) {
 								return callback(null, err);
