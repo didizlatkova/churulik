@@ -92,8 +92,6 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/users', function(req, res) {
-		// profile previews for all following + description + follow/unfollow link
-		// VIEW: main.html, PARTIALS: people.html (followers or following)
 		users.getAll(function(users) {
 			var model = {};
 			model.loggedUser = req.user ? req.user.userName : undefined;
@@ -166,7 +164,7 @@ module.exports = function(database, templates) {
 	});
 
 	router.post('/post', function(req, res) {
-		if (req.user) {
+		if (req.user && req.body.content) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
@@ -191,7 +189,7 @@ module.exports = function(database, templates) {
 				});
 			});
 		} else {
-			res.redirect('/');
+			res.send(undefined);
 		}
 	});
 
@@ -216,6 +214,23 @@ module.exports = function(database, templates) {
 					model.isFollowedByLoggedUser = true;
 				} else {
 					model.isFollowedByLoggedUser = false;
+				}
+
+				res.send(templates.followTemplate(model));
+			});
+		} else {
+			res.send(undefined);
+		}
+	});
+
+	router.post('/unfollow', function(req, res) {
+		if (req.user) {
+			users.unfollowUser(req.user.userName, req.body.user, function(success) {
+				var model = { userName: req.body.user, loggedUser: req.user.userName};
+				if (success) {
+					model.isFollowedByLoggedUser = false;
+				} else {
+					model.isFollowedByLoggedUser = true;
 				}
 				
 				res.send(templates.followTemplate(model));

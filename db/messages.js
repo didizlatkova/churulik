@@ -77,7 +77,7 @@ module.exports = function(messages, users) {
 				users.update({
 					userName: author.userName
 				}, {
-					$push: {
+					$addToSet: {
 						"messages": message._id
 					}
 				}, function(err) {
