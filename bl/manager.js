@@ -85,7 +85,7 @@ module.exports = function(database) {
 			callback(model, valid);
 		},
 
-		getUserFeedModel: function(user) {
+		getUserFeedModel: function(user, callback) {
 			var model = user;
 			model.loggedUser = user.userName;
 			model.messagesCount = user.messages ? user.messages.length : 0;
@@ -93,7 +93,14 @@ module.exports = function(database) {
 			model.followersCount = user.followers ? user.followers.length : 0;
 			model.popular = ["asd", "yolo", "mongodb"];
 			model.description = undefined;
-			return model;
+			user.following = user.following || [];
+			messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
+				if (!err) {
+					model.messageContents = messages;
+				}
+
+				return callback(model);
+			});
 		},
 
 		getUserProfileModel: function(user, loggedUser, callback) {
