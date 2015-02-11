@@ -124,6 +124,26 @@ module.exports = function(database) {
 			};
 
 			return model;
+		},
+
+		getUsersModel: function(allUsers, loggedUser) {
+			var resultUsers = [];
+			allUsers.forEach(function(user) {
+				user.followers = user.followers || [];
+				resultUsers.push({
+					names: user.names,
+					userName: user.userName,
+					picture: user.picture,
+					verified: user.verified,
+					loggedUser: loggedUser,
+					isFollowedByLoggedUser: user.followers.indexOf(loggedUser) > -1,
+					messagesCount: user.messages ? user.messages.length : 0,
+					following: user.following ? user.following.length : 0,
+					followers: user.followers ? user.followers.length : 0
+				});
+			});
+			
+			return resultUsers;
 		}
 	};
 };

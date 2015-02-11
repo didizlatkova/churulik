@@ -56,6 +56,17 @@ module.exports = function(users) {
 			});
 		},
 
+		getAll: function(callback) {
+			users.find({}).toArray(function(err, users) {
+				if (err) {
+					console.error('Cannot get user', err);
+					callback(null, err);
+				}
+				
+				callback(users);
+			});
+		},
+
 		getFollowers: function(userName) {
 
 		},
@@ -103,6 +114,22 @@ module.exports = function(users) {
 
 				return callback(user);
 			});
-		}
+		},
+
+		// doesUserAFollowUserB: function(userA, userB, callback){
+		// 	users.findOne({
+		// 		userName: userA,
+		// 		followers: userB
+		// 	}, function(err, user) {
+		// 		if (err) {
+		// 			return callback(false);
+		// 		}
+		// 		if (user !== null) {
+		// 			callback(true);
+		// 		} else {
+		// 			return callback(false);
+		// 		}
+		// 	});
+		// }
 	};
 };

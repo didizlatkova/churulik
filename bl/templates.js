@@ -4,7 +4,8 @@ var fs = require("fs"),
 	mainTemplateFile = fs.readFileSync(path.join(__dirname, '../views/main.html'), 'utf8'),
 	homeTemplateFile = fs.readFileSync(path.join(__dirname, '../views/home.html'), 'utf8'),
 	errorTemplateFile = fs.readFileSync(path.join(__dirname, '../views/error.html'), 'utf8'),
-	editTemplateFile = fs.readFileSync(path.join(__dirname, '../views/edit.html'), 'utf8'),
+	editTemplateFile = fs.readFileSync(path.join(__dirname, '../views/edit.html'), 'utf8'),	
+	usersTemplateFile = fs.readFileSync(path.join(__dirname, '../views/users.html'), 'utf8'),
 	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8'),
 	loginTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/login.html'), 'utf8'),
 	registerTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/register.html'), 'utf8'),
@@ -57,7 +58,8 @@ module.exports = {
 			homeTemplate: handlebars.compile(homeTemplateFile),
 			errorTemplate: handlebars.compile(errorTemplateFile),
 			editTemplate: handlebars.compile(editTemplateFile),
-			messagesTemplate: handlebars.compile(messagesTemplateFile)
+			messagesTemplate: handlebars.compile(messagesTemplateFile),
+			usersTemplate: handlebars.compile(usersTemplateFile)
 		};
 	}
 };

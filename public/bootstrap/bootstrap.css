@@ -6849,3 +6849,28 @@ img.tvit-avatar {
 .message-wrapper {
   position: relative;
 }
+
+a:hover {
+  text-decoration: none;
+}
+
+.verified {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 3px;
+  margin-right: 3px;
+}
+
+.follow-btn{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.profile-wrapper {
+  position: relative;
+  padding-bottom: 50px;
+}

@@ -91,6 +91,18 @@ module.exports = function(database, templates) {
 		// VIEW: main.html, PARTIALS: people.html (followers or following)
 	});
 
+	router.get('/users', function(req, res) {
+		// profile previews for all following + description + follow/unfollow link
+		// VIEW: main.html, PARTIALS: people.html (followers or following)
+		users.getAll(function(users){
+			var model = {};
+			model.loggedUser = req.user ? req.user.userName : undefined;
+			model.title = 'Потребители';
+			model.users = manager.getUsersModel(users, model.loggedUser);
+			res.send(templates.usersTemplate(model));
+		});
+	});
+
 	router.post('/login', function(req, res) {
 		manager.validateLoginModel(req.body, function(user, valid) {
 			if (valid) {
@@ -126,7 +138,7 @@ module.exports = function(database, templates) {
 					if (err) {
 						return res.status(err.status).write(templates.errorTemplate({
 							message: err.message,
-							loggedUser: req.user ? req.user.userName : ''
+							loggedUser: req.user ? req.user.userName : undefined
 						}));
 					}
 					if (!user) {
