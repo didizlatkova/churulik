@@ -67,12 +67,30 @@ module.exports = function(users) {
 			});
 		},
 
-		getFollowers: function(userName) {
+		getFollowers: function(userName, callback) {
+			users.find({
+				following: userName
+			}).toArray(function(err, users) {
+				if (err) {
+					console.error('Cannot get users', err);
+					callback(null, err);
+				}
 
+				callback(users);
+			});
 		},
 
-		getFollowing: function(userName) {
+		getFollowing: function(userName, callback) {
+			users.find({
+				followers: userName
+			}).toArray(function(err, users) {
+				if (err) {
+					console.error('Cannot get users', err);
+					callback(null, err);
+				}
 
+				callback(users);
+			});
 		},
 
 		createUser: function(user, callback) {
