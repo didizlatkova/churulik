@@ -89,18 +89,21 @@ module.exports = function(database) {
 			var model = user;
 			model.loggedUser = user.userName;
 			model.messagesCount = user.messages ? user.messages.length : 0;
-			model.following = user.following ? user.following.length : 0;
-			model.followers = user.followers ? user.followers.length : 0;
+			model.followingCount = user.following ? user.following.length : 0;
+			model.followersCount = user.followers ? user.followers.length : 0;
 			model.popular = ["asd", "yolo", "mongodb"];
 			model.description = undefined;
 			return model;
 		},
 
-		getUserProfileModel: function(user, callback) {
+		getUserProfileModel: function(user, loggedUser, callback) {
 			var model = user;
+			user.followers = user.followers || [];
 			model.messagesCount = user.messages ? user.messages.length : 0;
-			model.following = user.following ? user.following.length : 0;
-			model.followers = user.followers ? user.followers.length : 0;
+			model.followingCount = user.following ? user.following.length : 0;
+			model.followersCount = user.followers ? user.followers.length : 0;
+			model.loggedUser = loggedUser;
+			model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
 			messages.getLatestN([user.userName], 20, function(messages, err) {
 				if (!err) {
 					model.messageContents = messages;
@@ -138,8 +141,8 @@ module.exports = function(database) {
 					loggedUser: loggedUser,
 					isFollowedByLoggedUser: user.followers.indexOf(loggedUser) > -1,
 					messagesCount: user.messages ? user.messages.length : 0,
-					following: user.following ? user.following.length : 0,
-					followers: user.followers ? user.followers.length : 0
+					followingCount: user.following ? user.following.length : 0,
+					followersCount: user.followers ? user.followers.length : 0
 				});
 			});
 			

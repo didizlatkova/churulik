@@ -17,16 +17,16 @@
                 <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твита</span></div>
             {{/ifCond}}
 
-            {{#ifCond following '===' 1}}
-                <div><span id="following-count-{{userName}}">{{following}} </span> <span id="following-text-{{userName}}">следван</div>
+            {{#ifCond followingCount '===' 1}}
+                <div><span id="following-count-{{userName}}">{{followingCount}} </span> <span id="following-text-{{userName}}">следван</div>
             {{else}}
-                <div><span id="following-count-{{userName}}">{{following}} </span> <span id="following-text-{{userName}}">следвани</div>
+                <div><span id="following-count-{{userName}}">{{followingCount}} </span> <span id="following-text-{{userName}}">следвани</div>
             {{/ifCond}}
 
-            {{#ifCond followers '===' 1}}
-                <div><span id="followers-count-{{userName}}">{{followers}}</span> <span id="followers-text-{{userName}}">следващ</span></div>
+            {{#ifCond followersCount '===' 1}}
+                <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващ</span></div>
             {{else}}
-                <div><span id="followers-count-{{userName}}">{{followers}}</span> <span id="followers-text-{{userName}}">следващи</span></div>
+                <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващи</span></div>
             {{/ifCond}}
 
             {{#ifCond description '!==' undefined}}

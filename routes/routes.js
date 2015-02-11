@@ -253,8 +253,8 @@ module.exports = function(database, templates) {
 				}));
 			}
 
-			manager.getUserProfileModel(user, function(model) {
-				model.loggedUser = req.user ? req.user.userName : undefined;
+			var loggedUser = req.user ? req.user.userName : undefined;
+			manager.getUserProfileModel(user, loggedUser, function(model) {
 				res.send(templates.mainTemplate(model));
 			});
 		});
