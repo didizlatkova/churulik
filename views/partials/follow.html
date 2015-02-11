@@ -1,0 +1,7 @@
+{{#ifCond userName '!==' loggedUser}}
+    {{#if isFollowedByLoggedUser}}
+        <button href="#" class="btn btn-danger btn-sm unfollow-btn" data-user="{{userName}}" data-logged="{{loggedUser}}">Не следвай</button>
+    {{else}}
+        <button href="#" class="btn btn-info btn-sm follow-btn" data-user="{{userName}}" data-logged="{{loggedUser}}">Последвай</button>
+    {{/if}}            
+{{/ifCond}}

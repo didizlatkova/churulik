@@ -94,7 +94,7 @@ module.exports = function(database, templates) {
 	router.get('/users', function(req, res) {
 		// profile previews for all following + description + follow/unfollow link
 		// VIEW: main.html, PARTIALS: people.html (followers or following)
-		users.getAll(function(users){
+		users.getAll(function(users) {
 			var model = {};
 			model.loggedUser = req.user ? req.user.userName : undefined;
 			model.title = 'Потребители';
@@ -205,6 +205,23 @@ module.exports = function(database, templates) {
 			});
 		} else {
 			res.redirect('/');
+		}
+	});
+
+	router.post('/follow', function(req, res) {
+		if (req.user) {
+			users.followUser(req.user.userName, req.body.user, function(success) {
+				var model = { userName: req.body.user, loggedUser: req.user.userName};
+				if (success) {
+					model.isFollowedByLoggedUser = true;
+				} else {
+					model.isFollowedByLoggedUser = false;
+				}
+				
+				res.send(templates.followTemplate(model));
+			});
+		} else {
+			res.send(undefined);
 		}
 	});
 

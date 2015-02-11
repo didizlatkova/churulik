@@ -50,3 +50,34 @@ $(document).on('click', '#tvit-btn', function(e) {
 		$('#messages-text').text('твита');
 	}
 });
+
+$(document).on('click', '.follow-btn', function() {
+	var user = $(this).data("user");
+	var loggedUser = $(this).data("logged");
+
+	$.post("/follow", {
+		user: user
+	}, function(data) {
+		if (data) {
+			$('#follow-wrapper-' + user).html(data);
+		} else {
+			window.location.href = '/';
+		}
+	});
+
+	var countFollowers = parseInt($('#followers-count-' + user).text(), 10) + 1;
+	$('#followers-count-' + user).text(countFollowers);
+	if (countFollowers === 1) {
+		$('#followers-text-' + user).text('следващ');
+	} else {
+		$('#followers-text-' + user).text('следващи');
+	}
+
+	var countFollowing = parseInt($('#following-count-' + loggedUser).text(), 10) + 1;
+	$('#following-count-' + loggedUser).text(countFollowing);
+	if (countFollowing === 1) {
+		$('#following-text-' + loggedUser).text('следван');
+	} else {
+		$('#following-text-' + loggedUser).text('следвани');
+	}
+});
