@@ -2,7 +2,7 @@
     <div class="message-wrapper">
         <img class="tvit-avatar" src='{{author.picture}}'>
         <blockquote>
-            <small>{{author.userName}}{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
+            <small><a href="/{{author.userName}}">{{author.userName}}</a>{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
                 {{/ifCond}}
             </small>                                
             <p>{{content}}</p>
@@ -10,5 +10,6 @@
         {{#ifCond author.userName '===' ../loggedUser}}
             <img class="delete-btn" data-id="{{_id}}" src='../img/delete.png'>
         {{/ifCond}}
+        <div class="time">{{time}}</div>
     </div>
 {{/each}}

@@ -4,11 +4,43 @@ module.exports = function(database) {
 		users = require('../db/users')(usersDb),
 		messages = require('../db/messages')(messagesDb, usersDb),
 		bcrypt = require('bcrypt-nodejs'),
+		moment = require('moment'),
 		REQUIRED_ERROR = 'Полето е задължително',
 		EXISTING_USER_ERROR = 'Такъв потребител вече съществува',
 		INVALID_LOGIN_DATA = 'Грешен потребител или парола',
 		SHORT_USERNAME = 'Името трябва да е поне 5 символа',
-		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа';
+		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
+
+		getTimeInterval = function(datePublished) {
+			var interval = moment().diff(moment(datePublished), 'years');
+			var period = interval === 1 ? 'година' : 'години';
+			if (interval === 0) {
+				interval = moment().diff(moment(datePublished), 'months');
+				period = interval === 1 ? 'месец' : 'месеца';
+				if (interval === 0) {
+					interval = moment().diff(moment(datePublished), 'weeks');
+					period = interval === 1 ? 'седмица' : 'седмици';
+					if (interval === 0) {
+						interval = moment().diff(moment(datePublished), 'days');
+						period = interval === 1 ? 'ден' : 'дни';
+						if (interval === 0) {
+							interval = moment().diff(moment(datePublished), 'hours');
+							period = interval === 1 ? 'час' : 'часа';
+							if (interval === 0) {
+								interval = moment().diff(moment(datePublished), 'minutes');
+								period = interval === 1 ? 'минута' : 'минути';
+								if (interval === 0) {
+									interval = moment().diff(moment(datePublished), 'seconds');
+									period = interval === 1 ? 'секунда' : 'секунди';
+								}
+							}
+						}
+					}
+				}
+			}
+
+			return 'преди ' + interval + ' ' + period;
+		};
 
 	return {
 		generateHash: function(password) {
@@ -96,6 +128,9 @@ module.exports = function(database) {
 			user.following = user.following || [];
 			messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
 				if (!err) {
+					messages.forEach(function(message){
+						message.time = getTimeInterval(message.datePublished);
+					});
 					model.messageContents = messages;
 				}
 
@@ -113,6 +148,9 @@ module.exports = function(database) {
 			model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
 			messages.getLatestN([user.userName], 20, function(messages, err) {
 				if (!err) {
+					messages.forEach(function(message){
+						message.time = getTimeInterval(message.datePublished);
+					});
 					model.messageContents = messages;
 				}
 
@@ -152,7 +190,7 @@ module.exports = function(database) {
 					followersCount: user.followers ? user.followers.length : 0
 				});
 			});
-			
+
 			return resultUsers;
 		}
 	};
