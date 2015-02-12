@@ -27,9 +27,9 @@
 </head>
 <body>
     {{#ifCond loggedUser '!==' undefined}}
-    {{> nav}}
+    {{> nav true}}
     {{else}}
-    {{> navAnon}}
+    {{> navAnon true}}
     {{/ifCond}}
     <div class="container">
         <div class="page-header" id="banner">

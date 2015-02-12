@@ -296,8 +296,9 @@ module.exports = function(database, templates) {
 		}
 	});
 
-	router.post('/search/:query', function(req, res) {
+	router.get('/search/:query', function(req, res) {
 		// searches tvyts by hashtags
+		res.send(templates.searchTemplate());
 	});
 
 	router.get('/:userName', function(req, res) {
