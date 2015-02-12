@@ -6,6 +6,7 @@ var fs = require("fs"),
 	errorTemplateFile = fs.readFileSync(path.join(__dirname, '../views/error.html'), 'utf8'),
 	editTemplateFile = fs.readFileSync(path.join(__dirname, '../views/edit.html'), 'utf8'),
 	usersTemplateFile = fs.readFileSync(path.join(__dirname, '../views/users.html'), 'utf8'),
+	searchTemplateFile = fs.readFileSync(path.join(__dirname, '../views/search.html'), 'utf8'),
 	profileTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/profile.html'), 'utf8'),
 	loginTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/login.html'), 'utf8'),
 	registerTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/register.html'), 'utf8'),
@@ -14,7 +15,8 @@ var fs = require("fs"),
 	popularTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/popular.html'), 'utf8'),
 	addTvitTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/add-tvit.html'), 'utf8'),
 	messagesTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/messages.html'), 'utf8'),
-	followTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/follow.html'), 'utf8');
+	followTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/follow.html'), 'utf8'),
+	searchWidgetTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/search-widget.html'), 'utf8');
 
 module.exports = {
 	setup: function() {
@@ -27,7 +29,8 @@ module.exports = {
 			popular: popularTemplateFile,
 			addTvit: addTvitTemplateFile,
 			messages: messagesTemplateFile,
-			follow: followTemplateFile
+			follow: followTemplateFile,
+			searchWidget: searchWidgetTemplateFile
 		});
 
 		handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -62,7 +65,8 @@ module.exports = {
 			editTemplate: handlebars.compile(editTemplateFile),
 			messagesTemplate: handlebars.compile(messagesTemplateFile),
 			usersTemplate: handlebars.compile(usersTemplateFile),
-			followTemplate: handlebars.compile(followTemplateFile)
+			followTemplate: handlebars.compile(followTemplateFile),
+			searchTemplate: handlebars.compile(searchTemplateFile)
 		};
 	}
 };

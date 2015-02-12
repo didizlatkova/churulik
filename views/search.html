@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -27,19 +27,27 @@
 </head>
 <body>
     {{#ifCond loggedUser '!==' undefined}}
-    {{> nav true}}
+    {{> nav false}}
     {{else}}
-    {{> navAnon true}}
+    {{> navAnon false}}
     {{/ifCond}}
-    <div class="container">        
+    <div class="container">
         <div class="page-header" id="banner">
-            <h2>{{title}}</h2>
-            <div class="row">                
-                {{#each users}}
-                    <div class="col-lg-3 col-md-3 col-sm-3">                       
-                        {{> profile}}                     
-                    </div> 
-                {{/each}}                               
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                </div>
+                <div class="col-lg-7 col-md-4 col-sm-4">
+                    {{> searchWidget}}
+
+                    <div id="messages">
+                        {{> messages}}
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-sm-4">
+                    <div class="sponsor">
+                        <img src="/img/tweety.png" alt="Туити">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
