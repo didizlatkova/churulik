@@ -14,31 +14,42 @@ module.exports = function(database) {
 		getTimeInterval = function(datePublished) {
 			var interval = moment().diff(moment(datePublished), 'years');
 			var period = interval === 1 ? 'година' : 'години';
-			if (interval === 0) {
-				interval = moment().diff(moment(datePublished), 'months');
-				period = interval === 1 ? 'месец' : 'месеца';
-				if (interval === 0) {
-					interval = moment().diff(moment(datePublished), 'weeks');
-					period = interval === 1 ? 'седмица' : 'седмици';
-					if (interval === 0) {
-						interval = moment().diff(moment(datePublished), 'days');
-						period = interval === 1 ? 'ден' : 'дни';
-						if (interval === 0) {
-							interval = moment().diff(moment(datePublished), 'hours');
-							period = interval === 1 ? 'час' : 'часа';
-							if (interval === 0) {
-								interval = moment().diff(moment(datePublished), 'minutes');
-								period = interval === 1 ? 'минута' : 'минути';
-								if (interval === 0) {
-									interval = moment().diff(moment(datePublished), 'seconds');
-									period = interval === 1 ? 'секунда' : 'секунди';
-								}
-							}
-						}
-					}
-				}
+			if (interval > 0) {
+				return 'преди ' + interval + ' ' + period;
 			}
 
+			interval = moment().diff(moment(datePublished), 'months');
+			period = interval === 1 ? 'месец' : 'месеца';
+			if (interval > 0) {
+				return 'преди ' + interval + ' ' + period;
+			}
+
+			interval = moment().diff(moment(datePublished), 'weeks');
+			period = interval === 1 ? 'седмица' : 'седмици';
+			if (interval > 0) {
+				return 'преди ' + interval + ' ' + period;
+			}
+
+			interval = moment().diff(moment(datePublished), 'days');
+			period = interval === 1 ? 'ден' : 'дни';
+			if (interval > 0) {
+				return 'преди ' + interval + ' ' + period;
+			}
+
+			interval = moment().diff(moment(datePublished), 'hours');
+			period = interval === 1 ? 'час' : 'часа';
+			if (interval > 0) {
+				return 'преди ' + interval + ' ' + period;
+			}
+
+			interval = moment().diff(moment(datePublished), 'minutes');
+			period = interval === 1 ? 'минута' : 'минути';
+			if (interval > 0) {
+				return 'преди ' + interval + ' ' + period;
+			}
+
+			interval = moment().diff(moment(datePublished), 'seconds');
+			period = interval === 1 ? 'секунда' : 'секунди';
 			return 'преди ' + interval + ' ' + period;
 		};
 
@@ -128,7 +139,7 @@ module.exports = function(database) {
 			user.following = user.following || [];
 			messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
 				if (!err) {
-					messages.forEach(function(message){
+					messages.forEach(function(message) {
 						message.time = getTimeInterval(message.datePublished);
 					});
 					model.messageContents = messages;
@@ -148,7 +159,7 @@ module.exports = function(database) {
 			model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
 			messages.getLatestN([user.userName], 20, function(messages, err) {
 				if (!err) {
-					messages.forEach(function(message){
+					messages.forEach(function(message) {
 						message.time = getTimeInterval(message.datePublished);
 					});
 					model.messageContents = messages;
