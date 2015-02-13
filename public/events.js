@@ -114,3 +114,7 @@ $(document).on('click', '.unfollow-btn', function() {
 		$('#following-text-' + loggedUser).text('следвани');
 	}
 });
+
+$('#search-reset').click(function(){
+	$('#search-content').val('');
+});

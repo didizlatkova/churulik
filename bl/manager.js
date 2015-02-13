@@ -60,6 +60,15 @@ module.exports = function(database) {
 			return content.replace(pattern, anchor);
 		},
 
+		getMessagesModel = function(messages) {
+			messages.forEach(function(message) {
+				message.content = getMessageWithHashtags(escape(message.content));
+				message.time = getTimeInterval(message.datePublished);
+			});
+
+			return messages;
+		},
+
 		unique = function(value, index, self) {
 			return self.indexOf(value) === index;
 		};
@@ -146,7 +155,7 @@ module.exports = function(database) {
 			model.followingCount = user.following ? user.following.length : 0;
 			model.followersCount = user.followers ? user.followers.length : 0;
 			messages.getNPopularHashtags(5, function(hashtags) {
-				model.popular = hashtags.map(function(x){
+				model.popular = hashtags.map(function(x) {
 					return getMessageWithHashtags('#' + x._id);
 				});
 
@@ -154,11 +163,7 @@ module.exports = function(database) {
 				user.following = user.following || [];
 				messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
 					if (!err) {
-						messages.forEach(function(message) {
-							message.content = getMessageWithHashtags(escape(message.content));
-							message.time = getTimeInterval(message.datePublished);
-						});
-						model.messageContents = messages;
+						model.messageContents = getMessagesModel(messages);
 					}
 
 					return callback(model);
@@ -176,11 +181,7 @@ module.exports = function(database) {
 			model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
 			messages.getLatestN([user.userName], 20, function(messages, err) {
 				if (!err) {
-					messages.forEach(function(message) {
-						message.content = getMessageWithHashtags(escape(message.content));
-						message.time = getTimeInterval(message.datePublished);
-					});
-					model.messageContents = messages;
+					model.messageContents = getMessagesModel(messages);
 				}
 
 				return callback(model);
@@ -221,6 +222,8 @@ module.exports = function(database) {
 
 			return resultUsers;
 		},
+
+		getMessagesModel: getMessagesModel,
 
 		getMessageHashtags: function(message) {
 			var hashtags = message.match(pattern) || [];

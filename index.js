@@ -55,21 +55,15 @@ MongoClient.connect('mongodb://localhost/tvityr', function(err, db) {
 	db.collection("users").ensureIndex({
 			"userName": 1
 		},
-		function() {
-			db.close();
-		});
+		function() {});
 	db.collection("messages").ensureIndex({
 			"author.userName": 1
 		},
-		function() {
-			db.close();
-		});
+		function() {});
 	db.collection("messages").ensureIndex({
 			"hashtags": 1
 		},
-		function() {
-			db.close();
-		});
+		function() {});
 
 	app.listen(3000, function() {
 		console.log('The magic happens on port 3000');
