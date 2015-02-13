@@ -26,11 +26,7 @@
     </script>
 </head>
 <body>
-    {{#ifCond loggedUser '!==' undefined}}
     {{> nav true}}
-    {{else}}
-    {{> navAnon true}}
-    {{/ifCond}}
     <div class="container">
         <div class="page-header" id="banner">
             <div class="row">
@@ -41,9 +37,7 @@
                     {{/ifCond}}
                 </div>
                 <div class="col-lg-7 col-md-4 col-sm-4">
-                    {{#ifCond userName '===' loggedUser}}
-                        {{> addTvit}}
-                    {{/ifCond}}
+                    {{> addTvit}}
 
                     <div id="messages">
                         {{> messages}}
