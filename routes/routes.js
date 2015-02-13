@@ -194,6 +194,7 @@ module.exports = function(database, templates) {
 				}
 
 				var author = manager.getAuthorModel(user);
+				req.body.hashtags = manager.getMessageHashtags(req.body.content);
 				messages.createMessage(req.body, author, function(message, err) {
 					if (err) {
 						return res.status(err.status).write(templates.errorTemplate({
@@ -296,7 +297,7 @@ module.exports = function(database, templates) {
 		}
 	});
 
-	router.get('/search/:query', function(req, res) {
+	router.get('/search', function(req, res) {
 		// searches tvyts by hashtags
 		res.send(templates.searchTemplate());
 	});

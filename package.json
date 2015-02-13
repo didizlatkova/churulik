@@ -5,6 +5,7 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.10.2",
+    "escape-html": "^1.0.1",
     "express": "^4.11.1",
     "express-session": "^1.10.2",
     "handlebars": "^2.0.0",
