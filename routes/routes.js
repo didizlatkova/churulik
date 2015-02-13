@@ -27,7 +27,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
-					return res.status(err.status).send(templates.errorTemplate({
+					res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
@@ -45,7 +45,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
-					return res.status(err.status).send(templates.errorTemplate({
+					res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
@@ -65,15 +65,14 @@ module.exports = function(database, templates) {
 					req.body.userName = req.user.userName;
 					users.updateUser(req.body, function(user, err) {
 						if (err) {
-							return res.status(err.status).write(templates.errorTemplate({
+							res.status(err.status).write(templates.errorTemplate({
 								message: err.message
 							}));
 						}
 						if (!user) {
 							res.redirect('/');
-						} else {
-							res.redirect('/' + user.userName);
 						}
+						res.redirect('/' + user.userName);
 					});
 				} else {
 					res.send(templates.editTemplate(model));
@@ -147,7 +146,6 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			req.logout();
 		}
-
 		res.redirect('/');
 	});
 
@@ -186,7 +184,7 @@ module.exports = function(database, templates) {
 		if (req.user && req.body.content) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
-					return res.status(err.status).send(templates.errorTemplate({
+					res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
@@ -195,7 +193,7 @@ module.exports = function(database, templates) {
 				req.body.hashtags = manager.getMessageHashtags(req.body.content);
 				messages.createMessage(req.body, author, function(message, err) {
 					if (err) {
-						return res.status(err.status).write(templates.errorTemplate({
+						res.status(err.status).write(templates.errorTemplate({
 							message: err.message
 						}));
 					}
@@ -204,7 +202,7 @@ module.exports = function(database, templates) {
 					if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
 						users.getUserByUserName(req.user.userName, function(user, err) {
 							if (err) {
-								return res.status(err.status).send(templates.errorTemplate({
+								res.status(err.status).send(templates.errorTemplate({
 									message: err.message
 								}));
 							}
@@ -310,7 +308,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getUserByUserName(req.params.userName, function(user, err) {
 				if (err) {
-					return res.status(err.status).send(templates.errorTemplate({
+					res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
