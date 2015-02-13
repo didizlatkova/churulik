@@ -43,7 +43,8 @@ function setup_express(routes) {
 	});
 }
 
-MongoClient.connect('mongodb://localhost/tvityr', function(err, db) {
+//'mongodb://localhost/tvityr'
+MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
 	if (err) {
 		console.error('Cannot connect to the database', err);
 		return;
