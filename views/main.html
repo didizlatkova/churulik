@@ -54,6 +54,9 @@
     <script src="../public/bootstrap/jquery-1.js"></script>
     <script src="../public/bootstrap/bootstrap.js"></script>
     <script src="../public/bootstrap/bootswatch.js"></script>
-    <script src="../public/events.js"></script>
+    <script src="../public/events.js"></script>    
+    {{#ifCond popular '!==' undefined}}
+        <script src="../public/feed-update.js"></script>
+    {{/ifCond}}
 </body>
 </html>
