@@ -55,9 +55,13 @@ module.exports = function(database) {
 			return 'преди ' + interval + ' ' + period;
 		},
 
-		getMessageWithHashtags = function(content){
+		getMessageWithHashtags = function(content) {
 			var anchor = '$1<a href="/search?query=$2">$2</a>';
 			return content.replace(pattern, anchor);
+		},
+
+		unique = function(value, index, self) {
+			return self.indexOf(value) === index;
 		};
 
 	return {
@@ -141,19 +145,24 @@ module.exports = function(database) {
 			model.messagesCount = user.messages ? user.messages.length : 0;
 			model.followingCount = user.following ? user.following.length : 0;
 			model.followersCount = user.followers ? user.followers.length : 0;
-			model.popular = ["asd", "yolo", "mongodb"];
-			model.description = undefined;
-			user.following = user.following || [];
-			messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
-				if (!err) {
-					messages.forEach(function(message) {
-						message.content = getMessageWithHashtags(escape(message.content));
-						message.time = getTimeInterval(message.datePublished);
-					});
-					model.messageContents = messages;
-				}
+			messages.getNPopularHashtags(5, function(hashtags) {
+				model.popular = hashtags.map(function(x){
+					return getMessageWithHashtags('#' + x._id);
+				});
+				
+				model.description = undefined;
+				user.following = user.following || [];
+				messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
+					if (!err) {
+						messages.forEach(function(message) {
+							message.content = getMessageWithHashtags(escape(message.content));
+							message.time = getTimeInterval(message.datePublished);
+						});
+						model.messageContents = messages;
+					}
 
-				return callback(model);
+					return callback(model);
+				});
 			});
 		},
 
@@ -216,9 +225,11 @@ module.exports = function(database) {
 
 		getMessageHashtags: function(message) {
 			var hashtags = message.match(pattern) || [];
-			return hashtags.map(function(x) {
+			hashtags = hashtags.map(function(x) {
 				return x.split('#')[1];
 			});
+
+			return hashtags.filter(unique);
 		}
 	};
 };

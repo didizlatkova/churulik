@@ -75,8 +75,29 @@ module.exports = function(messages, users) {
 			}
 		},
 
-		getNPopularHashTags: function(n) {
+		getNPopularHashtags: function(n, callback) {
+			messages.aggregate([{
+				$unwind: '$hashtags'
+			}, {
+				$group: {
+					_id: '$hashtags',
+					numberOfMentions: {
+						$sum: 1
+					}
+				}
+			}, {
+				$sort: {
+					numberOfMentions: -1
+				}
+			}, {
+				$limit: n
+			}, ], function(err, hashtags) {
+				if (err) {
+					callback([]);
+				}
 
+				callback(hashtags || []);
+			});
 		},
 
 		getNByIds: getNByIds,
