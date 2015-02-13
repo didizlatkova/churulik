@@ -5,11 +5,13 @@ module.exports = function(database) {
 		messages = require('../db/messages')(messagesDb, usersDb),
 		bcrypt = require('bcrypt-nodejs'),
 		moment = require('moment'),
+		escape = require('escape-html'),
 		REQUIRED_ERROR = 'Полето е задължително',
 		EXISTING_USER_ERROR = 'Такъв потребител вече съществува',
 		INVALID_LOGIN_DATA = 'Грешен потребител или парола',
 		SHORT_USERNAME = 'Името трябва да е поне 5 символа',
 		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
+		pattern = /(^|\s)(#[a-zA-Z\u0400-\u04FF\d\-]+)/ig,
 
 		getTimeInterval = function(datePublished) {
 			var interval = moment().diff(moment(datePublished), 'years');
@@ -51,6 +53,11 @@ module.exports = function(database) {
 			interval = moment().diff(moment(datePublished), 'seconds');
 			period = interval === 1 ? 'секунда' : 'секунди';
 			return 'преди ' + interval + ' ' + period;
+		},
+
+		getMessageWithHashtags = function(content){
+			var anchor = '$1<a href="/search?query=$2">$2</a>';
+			return content.replace(pattern, anchor);
 		};
 
 	return {
@@ -140,6 +147,7 @@ module.exports = function(database) {
 			messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
 				if (!err) {
 					messages.forEach(function(message) {
+						message.content = getMessageWithHashtags(escape(message.content));
 						message.time = getTimeInterval(message.datePublished);
 					});
 					model.messageContents = messages;
@@ -160,6 +168,7 @@ module.exports = function(database) {
 			messages.getLatestN([user.userName], 20, function(messages, err) {
 				if (!err) {
 					messages.forEach(function(message) {
+						message.content = getMessageWithHashtags(escape(message.content));
 						message.time = getTimeInterval(message.datePublished);
 					});
 					model.messageContents = messages;
@@ -203,6 +212,13 @@ module.exports = function(database) {
 			});
 
 			return resultUsers;
+		},
+
+		getMessageHashtags: function(message) {
+			var hashtags = message.match(pattern) || [];
+			return hashtags.map(function(x) {
+				return x.split('#')[1];
+			});
 		}
 	};
 };

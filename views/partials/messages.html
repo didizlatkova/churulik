@@ -5,7 +5,7 @@
             <small><a href="/{{author.userName}}">{{author.userName}}</a>{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
                 {{/ifCond}}
             </small>                                
-            <p>{{content}}</p>
+            <p>{{{content}}}</p>
         </blockquote>
         {{#ifCond author.userName '===' ../loggedUser}}
             <img class="delete-btn" data-id="{{_id}}" src='../img/delete.png'>
