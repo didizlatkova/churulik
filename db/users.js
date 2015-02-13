@@ -57,7 +57,10 @@ module.exports = function(users) {
 		},
 
 		getAll: function(callback) {
-			users.find({}).toArray(function(err, users) {
+			users.find({}).sort({
+				names: 1,
+				userName: 1
+			}).toArray(function(err, users) {
 				if (err) {
 					console.error('Cannot get user', err);
 					callback(null, err);
@@ -70,6 +73,9 @@ module.exports = function(users) {
 		getFollowers: function(userName, callback) {
 			users.find({
 				following: userName
+			}).sort({
+				names: 1,
+				userName: 1
 			}).toArray(function(err, users) {
 				if (err) {
 					console.error('Cannot get users', err);
@@ -83,6 +89,9 @@ module.exports = function(users) {
 		getFollowing: function(userName, callback) {
 			users.find({
 				followers: userName
+			}).sort({
+				names: 1,
+				userName: 1
 			}).toArray(function(err, users) {
 				if (err) {
 					console.error('Cannot get users', err);
