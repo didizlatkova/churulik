@@ -5,12 +5,12 @@
     <div class="panel-body">
         <form id="search">
             <div class="form-group has-warning">
-                <input class="form-control" id="search-content" placeholder="Търси по хештагове" type="text" name="content" autocomplete="off">
+                <input class="form-control" id="search-content" placeholder="Търси по хештагове" type="text" name="query" value="{{query}}" autocomplete="off">
             </div>
             <div class="form-group">
                 <div class="col-lg-8 col-lg-offset-8">
                     <div class="row">
-                        <button type="reset" class="btn btn-primary">Изчисти</button>
+                        <a id="search-reset" class="btn btn-primary">Изчисти</a>
                         <button type="submit" id="search-btn" class="btn btn-warning">Търси</button>
                     </div>                            
                 </div>

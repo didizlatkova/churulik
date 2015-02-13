@@ -89,7 +89,7 @@ module.exports = function(database, templates) {
 			users.getFollowers(req.user.userName, function(users) {
 				var model = {};
 				model.title = 'Следват те';
-				model.users = manager.getUsersModel(users, model.loggedUser);
+				model.users = manager.getUsersModel(users, req.user.userName);
 				res.send(templates.usersTemplate(model));
 			});
 		} else {
@@ -102,7 +102,7 @@ module.exports = function(database, templates) {
 			users.getFollowing(req.user.userName, function(users) {
 				var model = {};
 				model.title = 'Следваш';
-				model.users = manager.getUsersModel(users, model.loggedUser);
+				model.users = manager.getUsersModel(users, req.user.userName);
 				res.send(templates.usersTemplate(model));
 			});
 		} else {
@@ -115,7 +115,7 @@ module.exports = function(database, templates) {
 			users.getAll(function(users) {
 				var model = {};
 				model.title = 'Потребители';
-				model.users = manager.getUsersModel(users, model.loggedUser);
+				model.users = manager.getUsersModel(users, req.user.userName);
 				res.send(templates.usersTemplate(model));
 			});
 		} else {
@@ -168,7 +168,7 @@ module.exports = function(database, templates) {
 						};
 						req.login(publicUser, function(err) {
 							if (err) {
-								user.generalError = err.message;
+								user.passwordError = err.message;
 								res.send(templates.homeTemplate(user));
 							}
 
@@ -227,7 +227,7 @@ module.exports = function(database, templates) {
 
 	router.post('/delete', function(req, res) {
 		if (req.user) {
-			messages.deleteMessage(req.body.id, req.user.userName, function(success) {				
+			messages.deleteMessage(req.body.id, req.user.userName, function(success) {
 				if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
 					users.getUserByUserName(req.user.userName, function(user, err) {
 						if (err) {
@@ -293,7 +293,14 @@ module.exports = function(database, templates) {
 
 	router.get('/search', function(req, res) {
 		if (req.user) {
-			res.send(templates.searchTemplate());
+			messages.findMessagesByHashtags(req.query.query.split(' '), function(messages) {
+				var model = {
+					messageContents: manager.getMessagesModel(messages),
+					query: req.query.query
+				};
+
+				res.send(templates.searchTemplate(model));
+			});
 		} else {
 			res.redirect('/');
 		}

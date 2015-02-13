@@ -154,8 +154,21 @@ module.exports = function(messages, users) {
 			});
 		},
 
-		findMessageByHashtags: function(hashtags) {
+		findMessagesByHashtags: function(hashtags, callback) {
+			messages.find({
+				hashtags: {
+					$all: hashtags
+				}
+			}).sort({
+				datePublished: -1
+			}).toArray(function(err, messages) {
+				if (err) {
+					console.error('Cannot get messages', err);
+					callback(null, err);
+				}
 
+				callback(messages);
+			});
 		}
 	};
 };
