@@ -6,7 +6,8 @@ var express = require('express'),
 	routes = require('./routes/routes'),
 	templates = require('./bl/templates'),
 	passport = require('passport'),
-	session = require('express-session');
+	session = require('express-session'),
+	port = process.env.PORT || 5000;
 
 function setup_express(routes) {
 	app.use(session({
@@ -66,7 +67,7 @@ MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
 		},
 		function() {});
 
-	app.listen(3000, function() {
-		console.log('The magic happens on port 3000');
+	app.listen(port, function() {
+		console.log('The magic happens on port ' + port);
 	});
 });
