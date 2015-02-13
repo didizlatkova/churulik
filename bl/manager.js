@@ -11,7 +11,7 @@ module.exports = function(database) {
 		INVALID_LOGIN_DATA = 'Грешен потребител или парола',
 		SHORT_USERNAME = 'Името трябва да е поне 5 символа',
 		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
-		pattern = /(^|\s)(#[a-zA-Z\u0400-\u04FF\d\-]+)/ig,
+		pattern = /(^|\s)#([a-zA-Z\u0400-\u04FF\d\-]+)/ig,
 
 		getTimeInterval = function(datePublished) {
 			var interval = moment().diff(moment(datePublished), 'years');
@@ -56,7 +56,7 @@ module.exports = function(database) {
 		},
 
 		getMessageWithHashtags = function(content) {
-			var anchor = '$1<a href="/search?query=$2">$2</a>';
+			var anchor = '$1<a href="/search?query=$2">#$2</a>';
 			return content.replace(pattern, anchor);
 		},
 
@@ -149,7 +149,7 @@ module.exports = function(database) {
 				model.popular = hashtags.map(function(x){
 					return getMessageWithHashtags('#' + x._id);
 				});
-				
+
 				model.description = undefined;
 				user.following = user.following || [];
 				messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
@@ -189,7 +189,6 @@ module.exports = function(database) {
 
 		getUserEditModel: function(user) {
 			var model = user;
-			model.loggedUser = user.userName;
 			model.description = user.description || '';
 			return model;
 		},

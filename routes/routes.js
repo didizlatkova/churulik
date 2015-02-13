@@ -28,8 +28,7 @@ module.exports = function(database, templates) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
-						message: err.message,
-						loggedUser: req.user.userName
+						message: err.message
 					}));
 				}
 
@@ -47,8 +46,7 @@ module.exports = function(database, templates) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
-						message: err.message,
-						loggedUser: req.user.userName
+						message: err.message
 					}));
 				}
 
@@ -61,33 +59,35 @@ module.exports = function(database, templates) {
 	});
 
 	router.post('/edit', function(req, res) {
-		manager.validateEditModel(req.body, function(model, valid) {
-			if (valid) {
-				req.body.userName = req.user.userName;
-				users.updateUser(req.body, function(user, err) {
-					if (err) {
-						return res.status(err.status).write(templates.errorTemplate({
-							message: err.message,
-							loggedUser: req.user.userName
-						}));
-					}
-					if (!user) {
-						res.redirect('/');
-					} else {
-						res.redirect('/' + user.userName);
-					}
-				});
-			} else {
-				res.send(templates.editTemplate(model));
-			}
-		});
+		if (req.user) {
+			manager.validateEditModel(req.body, function(model, valid) {
+				if (valid) {
+					req.body.userName = req.user.userName;
+					users.updateUser(req.body, function(user, err) {
+						if (err) {
+							return res.status(err.status).write(templates.errorTemplate({
+								message: err.message
+							}));
+						}
+						if (!user) {
+							res.redirect('/');
+						} else {
+							res.redirect('/' + user.userName);
+						}
+					});
+				} else {
+					res.send(templates.editTemplate(model));
+				}
+			});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.get('/followers', function(req, res) {
 		if (req.user) {
 			users.getFollowers(req.user.userName, function(users) {
 				var model = {};
-				model.loggedUser = req.user.userName;
 				model.title = 'Следват те';
 				model.users = manager.getUsersModel(users, model.loggedUser);
 				res.send(templates.usersTemplate(model));
@@ -101,7 +101,6 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getFollowing(req.user.userName, function(users) {
 				var model = {};
-				model.loggedUser = req.user.userName;
 				model.title = 'Следваш';
 				model.users = manager.getUsersModel(users, model.loggedUser);
 				res.send(templates.usersTemplate(model));
@@ -112,13 +111,16 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/users', function(req, res) {
-		users.getAll(function(users) {
-			var model = {};
-			model.loggedUser = req.user ? req.user.userName : undefined;
-			model.title = 'Потребители';
-			model.users = manager.getUsersModel(users, model.loggedUser);
-			res.send(templates.usersTemplate(model));
-		});
+		if (req.user) {
+			users.getAll(function(users) {
+				var model = {};
+				model.title = 'Потребители';
+				model.users = manager.getUsersModel(users, model.loggedUser);
+				res.send(templates.usersTemplate(model));
+			});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.post('/login', function(req, res) {
@@ -129,10 +131,8 @@ module.exports = function(database, templates) {
 				};
 				req.login(publicUser, function(err) {
 					if (err) {
-						return res.status(err.status).write(templates.errorTemplate({
-							message: err.message,
-							loggedUser: undefined
-						}));
+						user.generalError = err.message;
+						res.send(templates.homeTemplate(user));
 					}
 
 					res.redirect('/feed');
@@ -144,7 +144,10 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/logout', function(req, res) {
-		req.logout();
+		if (req.user) {
+			req.logout();
+		}
+
 		res.redirect('/');
 	});
 
@@ -154,10 +157,8 @@ module.exports = function(database, templates) {
 				req.body.password = manager.generateHash(req.body.password);
 				users.createUser(req.body, function(user, err) {
 					if (err) {
-						return res.status(err.status).write(templates.errorTemplate({
-							message: err.message,
-							loggedUser: req.user ? req.user.userName : undefined
-						}));
+						user.generalError = err.message;
+						res.send(templates.homeTemplate(user));
 					}
 					if (!user) {
 						res.redirect('/');
@@ -167,10 +168,8 @@ module.exports = function(database, templates) {
 						};
 						req.login(publicUser, function(err) {
 							if (err) {
-								return res.status(err.status).write(templates.errorTemplate({
-									message: err.message,
-									loggedUser: undefined
-								}));
+								user.generalError = err.message;
+								res.send(templates.homeTemplate(user));
 							}
 
 							res.redirect('/feed');
@@ -188,8 +187,7 @@ module.exports = function(database, templates) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
-						message: err.message,
-						loggedUser: req.user.userName
+						message: err.message
 					}));
 				}
 
@@ -198,8 +196,7 @@ module.exports = function(database, templates) {
 				messages.createMessage(req.body, author, function(message, err) {
 					if (err) {
 						return res.status(err.status).write(templates.errorTemplate({
-							message: err.message,
-							loggedUser: req.user.userName
+							message: err.message
 						}));
 					}
 
@@ -208,8 +205,7 @@ module.exports = function(database, templates) {
 						users.getUserByUserName(req.user.userName, function(user, err) {
 							if (err) {
 								return res.status(err.status).send(templates.errorTemplate({
-									message: err.message,
-									loggedUser: req.user.userName
+									message: err.message
 								}));
 							}
 
@@ -231,14 +227,12 @@ module.exports = function(database, templates) {
 
 	router.post('/delete', function(req, res) {
 		if (req.user) {
-			messages.deleteMessage(req.body.id, req.user.userName, function(success) {
-				var loggedUser = req.user.userName;
+			messages.deleteMessage(req.body.id, req.user.userName, function(success) {				
 				if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
 					users.getUserByUserName(req.user.userName, function(user, err) {
 						if (err) {
 							return res.status(err.status).send(templates.errorTemplate({
-								message: err.message,
-								loggedUser: req.user.userName
+								message: err.message
 							}));
 						}
 
@@ -247,7 +241,7 @@ module.exports = function(database, templates) {
 						});
 					});
 				} else {
-					manager.getUserProfileModel(req.user, loggedUser, function(model) {
+					manager.getUserProfileModel(req.user, req.user.userName, function(model) {
 						res.send(templates.messagesTemplate(model));
 					});
 				}
@@ -298,24 +292,29 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/search', function(req, res) {
-		// searches tvyts by hashtags
-		res.send(templates.searchTemplate());
+		if (req.user) {
+			res.send(templates.searchTemplate());
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	router.get('/:userName', function(req, res) {
-		users.getUserByUserName(req.params.userName, function(user, err) {
-			if (err) {
-				return res.status(err.status).send(templates.errorTemplate({
-					message: err.message,
-					loggedUser: req.user ? req.user.userName : undefined
-				}));
-			}
+		if (req.user) {
+			users.getUserByUserName(req.params.userName, function(user, err) {
+				if (err) {
+					return res.status(err.status).send(templates.errorTemplate({
+						message: err.message
+					}));
+				}
 
-			var loggedUser = req.user ? req.user.userName : undefined;
-			manager.getUserProfileModel(user, loggedUser, function(model) {
-				res.send(templates.mainTemplate(model));
+				manager.getUserProfileModel(user, req.user.userName, function(model) {
+					res.send(templates.mainTemplate(model));
+				});
 			});
-		});
+		} else {
+			res.redirect('/');
+		}
 	});
 
 	return router;
