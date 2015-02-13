@@ -19,11 +19,6 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/feed', function(req, res) {
-		// tvyter feed
-		// 	- profile preview : # of tvyts, followers, following
-		//	- popular tags
-		//	- last 20 tvyts of following users (endless scrolling), update in 20s
-		// VIEW: main.html, PARTIALS: profile.html (without description), popular.html, addMessage.html, messages.html
 		if (req.user) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
@@ -287,6 +282,20 @@ module.exports = function(database, templates) {
 		} else {
 			res.send(undefined);
 		}
+	});
+
+	router.get('/messages', function(req, res) {
+		users.getUserByUserName(req.user.userName, function(user, err) {
+			if (err) {
+				res.status(err.status).send(templates.errorTemplate({
+					message: err.message
+				}));
+			}
+
+			manager.getUserFeedModel(user, function(model) {
+				res.send(templates.messagesTemplate(model));
+			});
+		});
 	});
 
 	router.get('/search', function(req, res) {
