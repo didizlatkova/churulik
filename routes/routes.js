@@ -20,7 +20,7 @@ module.exports = function(database, templates) {
 
 	router.get('/feed', function(req, res) {
 		if (req.user) {
-			users.getUserByUserName(req.user.userName, function(user, err) {
+			users.getByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
@@ -38,7 +38,7 @@ module.exports = function(database, templates) {
 
 	router.get('/edit', function(req, res) {
 		if (req.user) {
-			users.getUserByUserName(req.user.userName, function(user, err) {
+			users.getByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
@@ -58,7 +58,7 @@ module.exports = function(database, templates) {
 			manager.validateEditModel(req.body, function(model, valid) {
 				if (valid) {
 					req.body.userName = req.user.userName;
-					users.updateUser(req.body, function(user, err) {
+					users.update(req.body, function(user, err) {
 						if (err) {
 							return res.status(err.status).write(templates.errorTemplate({
 								message: err.message
@@ -148,7 +148,7 @@ module.exports = function(database, templates) {
 		manager.validateRegisterModel(req.body, function(model, valid) {
 			if (valid) {
 				req.body.password = manager.generateHash(req.body.password);
-				users.createUser(req.body, function(user, err) {
+				users.create(req.body, function(user, err) {
 					if (err) {
 						user.generalError = err.message;
 						res.send(templates.homeTemplate(user));
@@ -177,7 +177,7 @@ module.exports = function(database, templates) {
 
 	router.post('/post', function(req, res) {
 		if (req.user && req.body.content) {
-			users.getUserByUserName(req.user.userName, function(user, err) {
+			users.getByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
@@ -186,14 +186,14 @@ module.exports = function(database, templates) {
 
 				var author = manager.getAuthorModel(user);
 				req.body.hashtags = manager.getMessageHashtags(req.body.content);
-				messages.createMessage(req.body, author, function(message, err) {
+				messages.create(req.body, author, function(message, err) {
 					if (err) {
 						return res.status(err.status).write(templates.errorTemplate({
 							message: err.message
 						}));
 					}
 
-					users.getUserByUserName(req.user.userName, function(user, err) {
+					users.getByUserName(req.user.userName, function(user, err) {
 						if (err) {
 							return res.status(err.status).send(templates.errorTemplate({
 								message: err.message
@@ -220,8 +220,8 @@ module.exports = function(database, templates) {
 
 	router.post('/delete', function(req, res) {
 		if (req.user) {
-			messages.deleteMessage(req.body.id, req.user.userName, function(success) {
-				users.getUserByUserName(req.user.userName, function(user, err) {
+			messages.delete(req.body.id, req.user.userName, function(success) {
+				users.getByUserName(req.user.userName, function(user, err) {
 					if (err) {
 						return res.status(err.status).send(templates.errorTemplate({
 							message: err.message
@@ -247,7 +247,7 @@ module.exports = function(database, templates) {
 
 	router.post('/follow', function(req, res) {
 		if (req.user) {
-			users.followUser(req.user.userName, req.body.user, function(success) {
+			users.follow(req.user.userName, req.body.user, function(success) {
 				var model = {
 					userName: req.body.user,
 					loggedUser: req.user.userName
@@ -267,7 +267,7 @@ module.exports = function(database, templates) {
 
 	router.post('/unfollow', function(req, res) {
 		if (req.user) {
-			users.unfollowUser(req.user.userName, req.body.user, function(success) {
+			users.unfollow(req.user.userName, req.body.user, function(success) {
 				var model = {
 					userName: req.body.user,
 					loggedUser: req.user.userName
@@ -287,7 +287,7 @@ module.exports = function(database, templates) {
 
 	router.get('/messages', function(req, res) {
 		if (req.user) {
-			users.getUserByUserName(req.user.userName, function(user, err) {
+			users.getByUserName(req.user.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
@@ -305,7 +305,7 @@ module.exports = function(database, templates) {
 
 	router.get('/search', function(req, res) {
 		if (req.user) {
-			messages.findMessagesByHashtags(req.query.query.split(' '), function(messages) {
+			messages.findByHashtags(req.query.query.split(' '), function(messages) {
 				var model = {
 					messageContents: manager.getMessagesModel(messages),
 					query: req.query.query
@@ -320,7 +320,7 @@ module.exports = function(database, templates) {
 
 	router.get('/:userName', function(req, res) {
 		if (req.user) {
-			users.getUserByUserName(req.params.userName, function(user, err) {
+			users.getByUserName(req.params.userName, function(user, err) {
 				if (err) {
 					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
