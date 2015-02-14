@@ -1,3 +1,4 @@
+<div>
 {{#each messageContents}}
     <div class="message-wrapper">
         <img class="tvit-avatar" src='{{author.picture}}'>
@@ -7,9 +8,10 @@
             </small>                                
             <p>{{{content}}}</p>
         </blockquote>
-        {{#ifCond author.userName '===' ../loggedUser}}
-            <img class="delete-btn" data-id="{{_id}}" src='../img/delete.png'>
+        {{#ifCond author.userName '===' ../loggedUser}}            
+            <img class="delete-btn" data-id="{{_id}}" src="../img/delete.png">
         {{/ifCond}}
         <div class="time">{{time}}</div>
     </div>
 {{/each}}
+</div>

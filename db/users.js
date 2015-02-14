@@ -97,7 +97,7 @@ module.exports = function(users) {
 		},
 
 		isUserAlreadyCreated: function(userName, callback) {
-			this.getUserByUserName(userName, function(user, err) {
+			this.getByUserName(userName, function(user, err) {
 				callback(user && user !== null);
 			});
 		},

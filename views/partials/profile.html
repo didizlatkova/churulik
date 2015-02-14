@@ -8,31 +8,29 @@
         </div>
     </a>
     <div class="panel-body profile-wrapper">
-        <a href="/{{userName}}">
-            <img class="tvit-avatar" src='{{picture}}'>
-            <div>{{userName}}</div>
-            {{#ifCond messagesCount '===' 1}}
-                <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твит</span></div>
-            {{else}}
-                <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твита</span></div>
-            {{/ifCond}}
+        <img class="tvit-avatar" src='{{picture}}'>
+        <div>{{userName}}</div>
+        {{#ifCond messagesCount '===' 1}}
+            <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твит</span></div>
+        {{else}}
+            <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твита</span></div>
+        {{/ifCond}}
 
-            {{#ifCond followingCount '===' 1}}
-                <div><span id="following-count-{{userName}}">{{followingCount}} </span> <span id="following-text-{{userName}}">следван</div>
-            {{else}}
-                <div><span id="following-count-{{userName}}">{{followingCount}} </span> <span id="following-text-{{userName}}">следвани</div>
-            {{/ifCond}}
+        {{#ifCond followingCount '===' 1}}
+            <div><span id="following-count-{{userName}}">{{followingCount}} </span> <span id="following-text-{{userName}}">следван</div>
+        {{else}}
+            <div><span id="following-count-{{userName}}">{{followingCount}} </span> <span id="following-text-{{userName}}">следвани</div>
+        {{/ifCond}}
 
-            {{#ifCond followersCount '===' 1}}
-                <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващ</span></div>
-            {{else}}
-                <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващи</span></div>
-            {{/ifCond}}
+        {{#ifCond followersCount '===' 1}}
+            <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващ</span></div>
+        {{else}}
+            <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващи</span></div>
+        {{/ifCond}}
 
             {{#ifCond description '!==' undefined}}
                 <div class="up-border">{{description}}</div>
             {{/ifCond}}
-        </a>
 
         <div id="follow-wrapper-{{userName}}">
             {{> follow}}  

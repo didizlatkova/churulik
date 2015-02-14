@@ -7,14 +7,19 @@ $('#tvit-content').keyup(function() {
 });
 
 $(document).on('mouseover', '.message-wrapper', function() {
-	$(this).find('img.delete-btn').show();
+	$(this).find('.delete-btn').show();
 });
 
 $(document).on('mouseleave', '.message-wrapper', function() {
-	$(this).find('img.delete-btn').hide();
+	$(this).find('.delete-btn').hide();
 });
 
 $(document).on('click', '.delete-btn', function() {
+	if ($(this).hasClass('deleted')) {
+		return;
+	}
+	
+	$(this).addClass('deleted');
 	var id = $(this).data("id");
 
 	$.post("/delete", {
@@ -34,11 +39,14 @@ $(document).on('click', '.delete-btn', function() {
 
 $(document).on('click', '#tvit-btn', function(e) {
 	e.preventDefault();
+	$('#tvit-btn').addClass('disabled');
 	var data = $('#add-tvit').serialize();
 
 	$.post("/post", data, function(data) {
 		if (data) {
-			$('#messages').html(data);
+			if (data) {
+				$('#messages').html(data);
+			}
 		}
 	});
 
@@ -54,6 +62,7 @@ $(document).on('click', '#tvit-btn', function(e) {
 });
 
 $(document).on('click', '.follow-btn', function() {
+	$(this).attr('disabled', true);
 	var user = $(this).data("user");
 	var loggedUser = $(this).data("logged");
 
@@ -85,6 +94,7 @@ $(document).on('click', '.follow-btn', function() {
 });
 
 $(document).on('click', '.unfollow-btn', function() {
+	$(this).attr('disabled', true);
 	var user = $(this).data("user");
 	var loggedUser = $(this).data("logged");
 
@@ -115,6 +125,7 @@ $(document).on('click', '.unfollow-btn', function() {
 	}
 });
 
-$('#search-reset').click(function(){
+$('#search-reset').click(function() {
 	$('#search-content').val('');
+	$('#messages').html('');
 });
