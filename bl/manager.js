@@ -11,7 +11,8 @@ module.exports = function(database) {
 		INVALID_LOGIN_DATA = 'Грешен потребител или парола',
 		SHORT_USERNAME = 'Името трябва да е поне 5 символа',
 		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
-		pattern = /(^|\s)#([a-zA-Z\u0400-\u04FF\d\-_]+)/ig,
+		PATTERN = /(^|\s)#([a-zA-Z\u0400-\u04FF\d\-_]+)/ig,
+		MESSAGES_TO_DISPLAY = 50,
 
 		getTimeInterval = function(datePublished) {
 			var interval = moment().diff(moment(datePublished), 'years');
@@ -57,7 +58,7 @@ module.exports = function(database) {
 
 		getMessageWithHashtags = function(content) {
 			var anchor = '$1<a href="/search?query=$2">#$2</a>';
-			return content.replace(pattern, anchor);
+			return content.replace(PATTERN, anchor);
 		},
 
 		getMessagesModel = function(messages) {
@@ -161,7 +162,7 @@ module.exports = function(database) {
 
 				model.description = undefined;
 				user.following = user.following || [];
-				messages.getLatestNByUsers(user.following.concat([user.userName]), 20, function(messages, err) {
+				messages.getLatestNByUsers(user.following.concat([user.userName]), MESSAGES_TO_DISPLAY, function(messages, err) {
 					if (!err) {
 						model.messageContents = getMessagesModel(messages);
 					}
@@ -179,7 +180,7 @@ module.exports = function(database) {
 			model.followersCount = user.followers ? user.followers.length : 0;
 			model.loggedUser = loggedUser;
 			model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
-			messages.getLatestNByUsers([user.userName], 20, function(messages, err) {
+			messages.getLatestNByUsers([user.userName], MESSAGES_TO_DISPLAY, function(messages, err) {
 				if (!err) {
 					model.messageContents = getMessagesModel(messages);
 				}
@@ -226,7 +227,7 @@ module.exports = function(database) {
 		getMessagesModel: getMessagesModel,
 
 		getMessageHashtags: function(message) {
-			var hashtags = message.match(pattern) || [];
+			var hashtags = message.match(PATTERN) || [];
 			hashtags = hashtags.map(function(x) {
 				return x.split('#')[1];
 			});

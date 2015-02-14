@@ -151,10 +151,10 @@ module.exports = function(database, templates) {
 				users.create(req.body, function(user, err) {
 					if (err) {
 						user.generalError = err.message;
-						res.send(templates.homeTemplate(user));
+						return res.send(templates.homeTemplate(user));
 					}
 					if (!user) {
-						res.redirect('/');
+						return res.redirect('/');
 					} else {
 						var publicUser = {
 							userName: user.userName
@@ -162,15 +162,15 @@ module.exports = function(database, templates) {
 						req.login(publicUser, function(err) {
 							if (err) {
 								user.passwordError = err.message;
-								res.send(templates.homeTemplate(user));
+								return res.send(templates.homeTemplate(user));
 							}
 
-							res.redirect('/feed');
+							return res.redirect('/feed');
 						});
 					}
 				});
 			} else {
-				res.send(templates.homeTemplate(model));
+				return res.send(templates.homeTemplate(model));
 			}
 		});
 	});
@@ -234,14 +234,14 @@ module.exports = function(database, templates) {
 							res.send(templates.messagesTemplate(model));
 						});
 					} else {
-						manager.getUserProfileModel(user, req.user.userName, function(model) {
+						manager.getUserProfileModel(user, req.user.userName, function(model) {							
 							res.send(templates.messagesTemplate(model));
 						});
 					}
 				});
 			});
 		} else {
-			res.redirect('/');
+			res.send(undefined);
 		}
 	});
 
