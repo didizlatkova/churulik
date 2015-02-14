@@ -7,7 +7,8 @@ var express = require('express'),
 	templates = require('./bl/templates'),
 	passport = require('passport'),
 	session = require('express-session'),
-	port = process.env.PORT || 5000;
+	port = process.env.PORT || 3000,
+	dburl = process.env.MONGOHQ_URL || 'mongodb://localhost/tvityr';
 
 function setup_express(routes) {
 	app.use(session({
@@ -44,8 +45,7 @@ function setup_express(routes) {
 	});
 }
 
-//'mongodb://localhost/tvityr'
-MongoClient.connect(process.env.MONGOHQ_URL, function(err, db) {
+MongoClient.connect(dburl, function(err, db) {
 	if (err) {
 		console.error('Cannot connect to the database', err);
 		return;

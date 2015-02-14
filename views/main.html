@@ -27,7 +27,7 @@
     </script>
 </head>
 <body>
-    {{> nav true}}
+    {{> nav }}
     <div class="container">
         <div class="page-header" id="banner">
             <div class="row">
@@ -38,7 +38,9 @@
                     {{/ifCond}}
                 </div>
                 <div class="col-lg-7 col-md-4 col-sm-4">
+                {{#ifCond userName '===' loggedUser}}
                     {{> addTvit}}
+                {{/ifCond}}
 
                     <div id="messages">
                         {{> messages}}

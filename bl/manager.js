@@ -11,7 +11,7 @@ module.exports = function(database) {
 		INVALID_LOGIN_DATA = 'Грешен потребител или парола',
 		SHORT_USERNAME = 'Името трябва да е поне 5 символа',
 		SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
-		pattern = /(^|\s)#([a-zA-Z\u0400-\u04FF\d\-]+)/ig,
+		pattern = /(^|\s)#([a-zA-Z\u0400-\u04FF\d\-_]+)/ig,
 
 		getTimeInterval = function(datePublished) {
 			var interval = moment().diff(moment(datePublished), 'years');
@@ -173,7 +173,7 @@ module.exports = function(database) {
 
 		getUserProfileModel: function(user, loggedUser, callback) {
 			var model = user;
-			user.followers = user.followers || [];
+			model.followers = model.followers || [];
 			model.messagesCount = user.messages ? user.messages.length : 0;
 			model.followingCount = user.following ? user.following.length : 0;
 			model.followersCount = user.followers ? user.followers.length : 0;
