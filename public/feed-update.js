@@ -1,6 +1,10 @@
 function updateFeed() {
 	$.get('/messages', function(data) {
-		$('#messages').html(data);
+		if (data) {
+			$('#messages').html(data);
+		} else {
+			window.location.href = '/';
+		}
 	});
 
 	setTimeout(updateFeed, 5000);

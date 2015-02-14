@@ -22,7 +22,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
-					res.status(err.status).send(templates.errorTemplate({
+					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
@@ -40,7 +40,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
-					res.status(err.status).send(templates.errorTemplate({
+					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
@@ -60,7 +60,7 @@ module.exports = function(database, templates) {
 					req.body.userName = req.user.userName;
 					users.updateUser(req.body, function(user, err) {
 						if (err) {
-							res.status(err.status).write(templates.errorTemplate({
+							return res.status(err.status).write(templates.errorTemplate({
 								message: err.message
 							}));
 						}
@@ -179,7 +179,7 @@ module.exports = function(database, templates) {
 		if (req.user && req.body.content) {
 			users.getUserByUserName(req.user.userName, function(user, err) {
 				if (err) {
-					res.status(err.status).send(templates.errorTemplate({
+					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
@@ -188,29 +188,29 @@ module.exports = function(database, templates) {
 				req.body.hashtags = manager.getMessageHashtags(req.body.content);
 				messages.createMessage(req.body, author, function(message, err) {
 					if (err) {
-						res.status(err.status).write(templates.errorTemplate({
+						return res.status(err.status).write(templates.errorTemplate({
 							message: err.message
 						}));
 					}
 
-					var loggedUser = req.user.userName;
-					if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
-						users.getUserByUserName(req.user.userName, function(user, err) {
-							if (err) {
-								res.status(err.status).send(templates.errorTemplate({
-									message: err.message
-								}));
-							}
+					users.getUserByUserName(req.user.userName, function(user, err) {
+						if (err) {
+							return res.status(err.status).send(templates.errorTemplate({
+								message: err.message
+							}));
+						}
 
+						var suffix = '://' + req.header('host') + '/feed';
+						if (req.header('referer').toString().indexOf(suffix, this.length - suffix.length) !== -1) {
 							manager.getUserFeedModel(user, function(model) {
 								res.send(templates.messagesTemplate(model));
 							});
-						});
-					} else {
-						manager.getUserProfileModel(req.user, loggedUser, function(model) {
-							res.send(templates.messagesTemplate(model));
-						});
-					}
+						} else {
+							manager.getUserProfileModel(user, req.user.userName, function(model) {
+								res.send(templates.messagesTemplate(model));
+							});
+						}
+					});
 				});
 			});
 		} else {
@@ -221,23 +221,24 @@ module.exports = function(database, templates) {
 	router.post('/delete', function(req, res) {
 		if (req.user) {
 			messages.deleteMessage(req.body.id, req.user.userName, function(success) {
-				if (req.header('referer') === req.protocol + '://' + req.header('host') + '/feed') {
-					users.getUserByUserName(req.user.userName, function(user, err) {
-						if (err) {
-							return res.status(err.status).send(templates.errorTemplate({
-								message: err.message
-							}));
-						}
+				users.getUserByUserName(req.user.userName, function(user, err) {
+					if (err) {
+						return res.status(err.status).send(templates.errorTemplate({
+							message: err.message
+						}));
+					}
 
+					var suffix = '://' + req.header('host') + '/feed';
+					if (req.header('referer').toString().indexOf(suffix, this.length - suffix.length) !== -1) {
 						manager.getUserFeedModel(user, function(model) {
 							res.send(templates.messagesTemplate(model));
 						});
-					});
-				} else {
-					manager.getUserProfileModel(req.user, req.user.userName, function(model) {
-						res.send(templates.messagesTemplate(model));
-					});
-				}
+					} else {
+						manager.getUserProfileModel(user, req.user.userName, function(model) {
+							res.send(templates.messagesTemplate(model));
+						});
+					}
+				});
 			});
 		} else {
 			res.redirect('/');
@@ -285,17 +286,21 @@ module.exports = function(database, templates) {
 	});
 
 	router.get('/messages', function(req, res) {
-		users.getUserByUserName(req.user.userName, function(user, err) {
-			if (err) {
-				res.status(err.status).send(templates.errorTemplate({
-					message: err.message
-				}));
-			}
+		if (req.user) {
+			users.getUserByUserName(req.user.userName, function(user, err) {
+				if (err) {
+					return res.status(err.status).send(templates.errorTemplate({
+						message: err.message
+					}));
+				}
 
-			manager.getUserFeedModel(user, function(model) {
-				res.send(templates.messagesTemplate(model));
+				manager.getUserFeedModel(user, function(model) {
+					res.send(templates.messagesTemplate(model));
+				});
 			});
-		});
+		} else {
+			res.send(undefined);
+		}
 	});
 
 	router.get('/search', function(req, res) {
@@ -317,7 +322,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getUserByUserName(req.params.userName, function(user, err) {
 				if (err) {
-					res.status(err.status).send(templates.errorTemplate({
+					return res.status(err.status).send(templates.errorTemplate({
 						message: err.message
 					}));
 				}
