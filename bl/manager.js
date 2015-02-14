@@ -93,7 +93,7 @@ module.exports = function(database) {
 				return callback(model, valid);
 			}
 
-			users.getUserByUserName(model.userNameLogin, function(user, err) {
+			users.getByUserName(model.userNameLogin, function(user, err) {
 				if (err) {
 					model.generalError = INVALID_LOGIN_DATA;
 					valid = false;
@@ -161,7 +161,7 @@ module.exports = function(database) {
 
 				model.description = undefined;
 				user.following = user.following || [];
-				messages.getLatestN(user.following.concat([user.userName]), 20, function(messages, err) {
+				messages.getLatestNByUsers(user.following.concat([user.userName]), 20, function(messages, err) {
 					if (!err) {
 						model.messageContents = getMessagesModel(messages);
 					}
@@ -179,7 +179,7 @@ module.exports = function(database) {
 			model.followersCount = user.followers ? user.followers.length : 0;
 			model.loggedUser = loggedUser;
 			model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
-			messages.getLatestN([user.userName], 20, function(messages, err) {
+			messages.getLatestNByUsers([user.userName], 20, function(messages, err) {
 				if (!err) {
 					model.messageContents = getMessagesModel(messages);
 				}

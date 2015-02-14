@@ -16,7 +16,7 @@ function to_database(message) {
 }
 
 module.exports = function(messages, users) {
-	var getNByIds = function(ids, n, callback) {
+	var getLatestN = function(ids, n, callback) {
 		messages.find({
 			_id: {
 				$in: ids
@@ -34,7 +34,7 @@ module.exports = function(messages, users) {
 	};
 
 	return {
-		getLatestN: function(userNames, n, callback) {
+		getLatestNByUsers: function(userNames, n, callback) {
 			if (userNames.length === 1) {
 				users.findOne({
 					userName: userNames[0]
@@ -46,7 +46,7 @@ module.exports = function(messages, users) {
 
 					if (user !== null) {
 						user.messages = user.messages || [];
-						getNByIds(user.messages, n, function(messages, err) {
+						getLatestN(user.messages, n, function(messages, err) {
 							if (err) {
 								return callback(null, err);
 							}
@@ -91,7 +91,7 @@ module.exports = function(messages, users) {
 				}
 			}, {
 				$limit: n
-			}, ], function(err, hashtags) {
+			}], function(err, hashtags) {
 				if (err) {
 					callback([]);
 				}
@@ -100,9 +100,7 @@ module.exports = function(messages, users) {
 			});
 		},
 
-		getNByIds: getNByIds,
-
-		createMessage: function(message, author, callback) {
+		create: function(message, author, callback) {
 			message = to_database(message);
 			message.author = author;
 			messages.insert(message, function(err) {
@@ -128,7 +126,7 @@ module.exports = function(messages, users) {
 			});
 		},
 
-		deleteMessage: function(id, authorName, callback) {
+		delete: function(id, authorName, callback) {
 			messages.remove({
 				_id: new ObjectID(id)
 			}, function(err) {
@@ -154,7 +152,7 @@ module.exports = function(messages, users) {
 			});
 		},
 
-		findMessagesByHashtags: function(hashtags, callback) {
+		findByHashtags: function(hashtags, callback) {
 			messages.find({
 				hashtags: {
 					$all: hashtags

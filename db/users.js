@@ -20,25 +20,7 @@ function to_database(user) {
 
 module.exports = function(users) {
 	return {
-		getUserById: function(id, callback) {
-			users.findOne({
-				_id: id
-			}, function(err, user) {
-				if (err) {
-					console.error('Cannot get user', err);
-					callback(null, err);
-				}
-				if (user !== null) {
-					callback(from_database(user));
-				} else {
-					var e = new Error(PAGE_NOT_FOUND_ERROR);
-					e.status = 404;
-					callback(null, e);
-				}
-			});
-		},
-
-		getUserByUserName: function(userName, callback) {
+		getByUserName: function(userName, callback) {
 			users.findOne({
 				userName: userName
 			}, function(err, user) {
@@ -102,7 +84,7 @@ module.exports = function(users) {
 			});
 		},
 
-		createUser: function(user, callback) {
+		create: function(user, callback) {
 			user = to_database(user);
 
 			users.insert(user, function(err) {
@@ -120,7 +102,7 @@ module.exports = function(users) {
 			});
 		},
 
-		updateUser: function(user, callback) {
+		update: function(user, callback) {
 			users.update({
 				userName: user.userName
 			}, {
@@ -135,7 +117,7 @@ module.exports = function(users) {
 			});
 		},
 
-		followUser: function(userName, followedUser, callback) {
+		follow: function(userName, followedUser, callback) {
 			users.update({
 				userName: userName
 			}, {
@@ -164,7 +146,7 @@ module.exports = function(users) {
 			});
 		},
 
-		unfollowUser: function(userName, followedUser, callback) {
+		unfollow: function(userName, followedUser, callback) {
 			users.update({
 				userName: userName
 			}, {
