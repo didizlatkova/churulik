@@ -11,6 +11,9 @@ var express = require('express'),
 	dburl = process.env.MONGOHQ_URL || 'mongodb://localhost/tvityr';
 
 function setup_express(routes) {
+	app.use('/public', express.static(path.join(__dirname, 'public')));
+	app.use('/img', express.static(path.join(__dirname, 'views/img')));
+
 	app.use(session({
 		secret: 'nodejsisreallyawesome',
 		resave: false,
@@ -23,8 +26,7 @@ function setup_express(routes) {
 	app.use(bodyParser.urlencoded({
 		extended: false
 	}));
-	app.use('/public', express.static(path.join(__dirname, 'public')));
-	app.use('/img', express.static(path.join(__dirname, 'views/img')));
+
 	app.use('/', routes);
 
 	// catch 404 and forward to error handler
