@@ -82,6 +82,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getFollowers(req.user.userName, function(users) {
 				var model = {};
+				model.loggedUser = req.user.userName;
 				model.title = 'Следват те';
 				model.users = manager.getUsersModel(users, req.user.userName);
 				res.send(templates.usersTemplate(model));
@@ -95,6 +96,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getFollowing(req.user.userName, function(users) {
 				var model = {};
+				model.loggedUser = req.user.userName;
 				model.title = 'Следваш';
 				model.users = manager.getUsersModel(users, req.user.userName);
 				res.send(templates.usersTemplate(model));
@@ -108,6 +110,7 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			users.getAll(function(users) {
 				var model = {};
+				model.loggedUser = req.user.userName;
 				model.title = 'Потребители';
 				model.users = manager.getUsersModel(users, req.user.userName);
 				res.send(templates.usersTemplate(model));
