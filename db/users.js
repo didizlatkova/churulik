@@ -53,34 +53,66 @@ module.exports = function(users) {
 		},
 
 		getFollowers: function(userName, callback) {
-			users.find({
-				following: userName
-			}).sort({
-				names: 1,
-				userName: 1
-			}).toArray(function(err, users) {
+			users.findOne({
+				userName: userName
+			}, function(err, user) {
 				if (err) {
-					console.error('Cannot get users', err);
-					callback(null, err);
+					console.error('Cannot get user', err);
+					return callback(null, err);
 				}
 
-				callback(users);
+				if (user !== null) {
+					user.followers = user.followers || [];
+					users.find({
+						userName: {
+							$in: user.followers
+						}
+					}).sort({
+						names: 1,
+						userName: 1
+					}).toArray(function(err, users) {
+						if (err) {
+							console.error('Cannot get users', err);
+							return callback(null, err);
+						}
+
+						return callback(users);
+					});
+				} else {
+					return callback(null);
+				}
 			});
 		},
 
 		getFollowing: function(userName, callback) {
-			users.find({
-				followers: userName
-			}).sort({
-				names: 1,
-				userName: 1
-			}).toArray(function(err, users) {
+			users.findOne({
+				userName: userName
+			}, function(err, user) {
 				if (err) {
-					console.error('Cannot get users', err);
-					callback(null, err);
+					console.error('Cannot get user', err);
+					return callback(null, err);
 				}
 
-				callback(users);
+				if (user !== null) {
+					user.following = user.following || [];
+					users.find({
+						userName: {
+							$in: user.following
+						}
+					}).sort({
+						names: 1,
+						userName: 1
+					}).toArray(function(err, users) {
+						if (err) {
+							console.error('Cannot get users', err);
+							return callback(null, err);
+						}
+
+						return callback(users);
+					});
+				} else {
+					return callback(null);
+				}
 			});
 		},
 
