@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/public/bootstrap/bootstrap.css" media="screen">
     <link rel="stylesheet" href="/public/bootstrap/bootswatch.css">
+    <link rel="stylesheet" href="/public/jcrop.css">
     <script src="/public/bootstrap/ga.js" async="" type="text/javascript"></script>
     <script>
         var _gaq = _gaq || [];
@@ -39,12 +40,32 @@
                                 <p class="text-danger">{{namesError}}</p>
                             </div>
                             <div class="panel-body">
-                                <img class="tvit-avatar" src='{{picture}}'>
-                                <p>{{userName}}</p>
-                                <div>
-                                <a href="#" class="btn btn-success btn-sm">Промени аватар</a>
+                                <div style="padding:10px">
+                                    <img class="tvit-avatar" id="avatar" src='{{picture}}'>
+                                    <p>{{userName}}</p>
+                                    <div>
+                                        <a href="#crop-modal" role="button" class="btn btn-success btn-sm" data-toggle="modal">Промени аватар</a>
+                                        <div class="modal" id="crop-modal">
+                                          <div class="modal-dialog">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title">Избери снимка</h4>
+                                              </div>
+                                            <div class="modal-body">
+                                              <img id="crop-preview" src="../img/upload-to-crop.png">
+                                            </div>
+                                                <div class="modal-footer">                                            
+                                                    <button type="button" id="upload" class="btn btn-primary">Качи снимка</button>
+                                                    <input id="upload-input" class="hidden" type="file" accept="image/*">
+                                                    <input type="button" id="crop-button" data-dismiss="modal" value="Изрежи" class="btn btn-primary hidden">
+                                                </div>
+                                            </div>
+                                          </div>
+                                        </div>                                    
+                                    </div>
                                 </div>
-                                    <textarea class="form-control" placeholder="Описание" rows="3" id="textArea" name="description">{{description}}</textarea>                                
+                                <textarea class="form-control" placeholder="Описание" rows="3" id="textArea" name="description">{{description}}</textarea>                                
                             </div>
                         </div>
                         <div class="form-group">
@@ -52,7 +73,15 @@
                             <button type="submit" class="btn btn-success">Запази</button>
                           </div>
                         </div>   
-                        <input type="hidden" value="{{picture}}" name="picture">                  
+                        <input type="hidden" value="{{picture}}" name="picture">                        
+                        <input id="x1" type="hidden" value="0" name="left">
+                        <input id="y1" type="hidden" value="0" name="top">
+                        <input id="x2" type="hidden" value="0" name="right">
+                        <input id="y2" type="hidden" value="0" name="bottom">
+                        <input id="w" type="hidden" value="73" name="width">
+                        <input id="h" type="hidden" value="73" name="height">
+                        <input id="src" type="hidden" value="" name="src">
+                        <input id="file-name" type="hidden" value="" name="fileName">                 
                     </form>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4">
@@ -63,8 +92,13 @@
             </div>
         </div>
     </div>
-    <script src="../public/bootstrap/jquery-1.js"></script>
-    <script src="../public/bootstrap/bootstrap.js"></script>
-    <script src="../public/bootstrap/bootswatch.js"></script>
+    
+    <script src="/public/jquery-2.0.3.js"></script>
+    <script src="/public/jquery-migrate.js"></script>
+    <script src="/public/bootstrap/bootstrap.js"></script>
+    <script src="/public/bootstrap/bootstrap-modal.js"></script>
+    <script src="/public/bootstrap/bootswatch.js"></script>
+    <script src="/public/jcrop.js"></script>
+    <script src="/public/crop.js"></script>
 </body>
 </html>
