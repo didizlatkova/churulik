@@ -62,7 +62,7 @@ $(document).on('click', '#tvit-btn', function(e) {
 });
 
 $(document).on('click', '.follow-btn', function() {
-	$(this).attr('disabled', true);
+	$(this).addClass('disabled');
 	var user = $(this).data("user");
 	var loggedUser = $(this).data("logged");
 
@@ -94,7 +94,7 @@ $(document).on('click', '.follow-btn', function() {
 });
 
 $(document).on('click', '.unfollow-btn', function() {
-	$(this).attr('disabled', true);
+	$(this).addClass('disabled');
 	var user = $(this).data("user");
 	var loggedUser = $(this).data("logged");
 
