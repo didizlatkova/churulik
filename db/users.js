@@ -171,7 +171,7 @@ module.exports = function(users) {
 				}, function(err) {
 					if (err) {
 						console.error('Cannot update user', err);
-						return callback(false, err);
+						return callback(false);
 					}
 					return callback(true);
 				});

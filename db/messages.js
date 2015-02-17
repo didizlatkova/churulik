@@ -106,7 +106,7 @@ module.exports = function(messages, users) {
 			messages.insert(message, function(err) {
 				if (err) {
 					console.error('Cannot insert message', err);
-					return callback(null, err);
+					return callback(err);
 				}
 
 				users.update({
@@ -118,10 +118,10 @@ module.exports = function(messages, users) {
 				}, function(err) {
 					if (err) {
 						console.error('Cannot update user', err);
-						return callback(null, err);
+						return callback(err);
 					}
 
-					return callback(message);
+					return callback();
 				});
 			});
 		},
@@ -132,7 +132,7 @@ module.exports = function(messages, users) {
 			}, function(err) {
 				if (err) {
 					console.error('Cannot remove message', err);
-					return false;
+					return callback(err);
 				}
 
 				users.update({
@@ -144,10 +144,10 @@ module.exports = function(messages, users) {
 				}, function(err) {
 					if (err) {
 						console.error('Cannot update user', err);
-						return callback(false);
+						return callback(err);
 					}
 
-					return callback(true);
+					return callback();
 				});
 			});
 		},
