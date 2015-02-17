@@ -2,7 +2,7 @@
 	var maximumImageSize = 10485760,
 		cropFirstLoad,
 		croppedCanvas,
-		fileName,
+		src,
 		allowedHeight = 73,
 		allowedWidth = 73,
 		setCropCoords = function(selection) {
@@ -20,8 +20,7 @@
 			ctx.drawImage(img, selection.x, selection.y, selection.w, selection.h,
 				0, 0, allowedWidth, allowedHeight);
 
-			$('#src').val(croppedCanvas.toDataURL());
-			$('#file-name').val(fileName);
+			src = croppedCanvas.toDataURL();
 		};
 
 	$('#upload').click(function() {
@@ -29,8 +28,9 @@
 		$("#upload-input").trigger('click');
 	});
 
-	$('#crop-button').click(function(e) {
-		$('#avatar').attr('src', $('#src').val());
+	$('#crop-button').click(function() {
+		$('#src').val(src);
+		$('#avatar').attr('src', src);
 	});
 
 	$('#upload-input').change(function(e) {
@@ -39,8 +39,6 @@
 		var file = e.dataTransfer !== undefined ? e.dataTransfer.files[0] : e.target.files[0];
 
 		if (file) {
-			fileName = file.name;
-
 			if (file.type.indexOf('image') <= -1) {
 				e.preventDefault();
 				alert("Позволено е качването само на картинки!");

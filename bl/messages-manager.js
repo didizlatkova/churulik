@@ -66,6 +66,8 @@ module.exports = function() {
 	return {
 		getMessagesModel: getMessagesModel,
 
+		getMessageWithHashtags: getMessageWithHashtags,
+
 		getMessageHashtags: function(message) {
 			var hashtags = message.match(PATTERN) || [];
 			hashtags = hashtags.map(function(x) {

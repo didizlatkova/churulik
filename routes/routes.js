@@ -59,17 +59,20 @@ module.exports = function(database, templates) {
 		if (req.user) {
 			validator.validateEditModel(req.body, function(model, valid) {
 				if (valid) {
-					req.body.userName = req.user.userName;
-					users.update(req.body, function(user, err) {
-						if (err) {
-							return res.status(err.status).write(templates.errorTemplate({
-								message: err.message
-							}));
-						}
-						if (!user) {
-							res.redirect('/');
-						}
-						res.redirect('/' + user.userName);
+					usersManager.getEditPostModel(req.body, req.user.userName, function(model) {
+						console.log(model);
+						users.update(model, function(user, err) {
+							console.log(user);
+							if (err) {
+								return res.status(err.status).write(templates.errorTemplate({
+									message: err.message
+								}));
+							}
+							if (!user) {
+								return res.redirect('/');
+							}
+							res.redirect('/' + user.userName);
+						});
 					});
 				} else {
 					res.send(templates.editTemplate(model));
@@ -189,24 +192,16 @@ module.exports = function(database, templates) {
 						}));
 					}
 
-					users.getByUserName(req.user.userName, function(user, err) {
-						if (err) {
-							return res.status(err.status).send(templates.errorTemplate({
-								message: err.message
-							}));
-						}
-
-						var suffix = '://' + req.header('host') + '/feed';
-						if (req.header('referer').toString().indexOf(suffix, this.length - suffix.length) !== -1) {
-							usersManager.getUserFeedModel(user, function(model) {
-								res.send(templates.messagesTemplate(model));
-							});
-						} else {
-							usersManager.getUserProfileModel(user, req.user.userName, function(model) {
-								res.send(templates.messagesTemplate(model));
-							});
-						}
-					});
+					var suffix = '://' + req.header('host') + '/feed';
+					if (req.header('referer').toString().indexOf(suffix, this.length - suffix.length) !== -1) {
+						usersManager.getUserFeedModel(user, function(model) {
+							res.send(templates.messagesTemplate(model));
+						});
+					} else {
+						usersManager.getUserProfileModel(user, req.user.userName, function(model) {
+							res.send(templates.messagesTemplate(model));
+						});
+					}
 				});
 			});
 		} else {
@@ -230,7 +225,7 @@ module.exports = function(database, templates) {
 							res.send(templates.messagesTemplate(model));
 						});
 					} else {
-						usersManager.getUserProfileModel(user, req.user.userName, function(model) {							
+						usersManager.getUserProfileModel(user, req.user.userName, function(model) {
 							res.send(templates.messagesTemplate(model));
 						});
 					}
