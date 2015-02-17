@@ -1,5 +1,7 @@
 var MESSAGES_TO_DISPLAY = 50,
-	messagesManager = require('../bl/messages-manager');	
+	messagesManager = require('../bl/messages-manager')(),
+	path = require('path'),
+	fs = require("fs");
 
 module.exports = function(database) {
 	var messagesDb = database.collection('messages'),
@@ -52,6 +54,31 @@ module.exports = function(database) {
 			model.description = user.description || '';
 			return model;
 		},
+
+		getEditPostModel: function(user, userName, callback) {
+			var model = {
+				userName: userName,
+				names: user.names,
+				description: user.description
+			};
+
+			if (user.src && user.src !== '') {
+				var imgPath = '../public/avatars/' + userName + '.' + 'png';
+				var diskPath = path.join(__dirname, imgPath);
+				var base64Data = user.src.replace(/^data:image\/png;base64,/, "");
+
+				fs.writeFile(diskPath, base64Data, 'base64', function(err) {
+					if (!err) {
+						model.picture = imgPath;
+					} else {
+						console.error('Cannot save image', err);
+					}
+					callback(model);
+				});
+			} else {
+				callback(model);
+			}
+ 		},
 
 		getAuthorModel: function(user) {
 			var model = {
