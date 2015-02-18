@@ -57,7 +57,7 @@ module.exports = function(database) {
 				valid = false;
 			}
 
-			users.isUserAlreadyCreated(model.userName, function(created) {
+			users.exists(model.userName, function(created) {
 				if (created) {
 					model.userNameError = EXISTING_USER_ERROR;
 					valid = false;
