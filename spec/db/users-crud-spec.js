@@ -1,4 +1,4 @@
-describe("database", function() {
+describe("users crud", function() {
     var mongoFunction = require('./mongo.js'),
         database,
         users;
