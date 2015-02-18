@@ -128,7 +128,7 @@ module.exports = function(users) {
 			});
 		},
 
-		isUserAlreadyCreated: function(userName, callback) {
+		exists: function(userName, callback) {
 			this.getByUserName(userName, function(user, err) {
 				callback(user && user !== null);
 			});
@@ -146,6 +146,19 @@ module.exports = function(users) {
 				}
 
 				return callback(user);
+			});
+		},
+
+		delete: function(userName, callback) {
+			users.remove({
+				userName: userName
+			}, function(err) {
+				if (err) {
+					console.error('Cannot delete user', err);
+					return callback(false);
+				}
+
+				return callback(true);
 			});
 		},
 
