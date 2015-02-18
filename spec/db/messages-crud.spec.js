@@ -2,6 +2,7 @@ describe("messages crud", function() {
     var mongoFunction = require('./mongo.js'),
         database,
         users,
+        usersDb,
         messages,
         author,
         messageId;
@@ -9,7 +10,7 @@ describe("messages crud", function() {
     beforeEach(function(done) {
         mongoFunction(function(db) {
             database = db;
-            var usersDb = database.collection('users');
+            usersDb = database.collection('users');
             var messagesDb = database.collection('messages');
             users = require('../../db/users')(usersDb);
             messages = require('../../db/messages')(messagesDb, usersDb);
@@ -57,10 +58,43 @@ describe("messages crud", function() {
             expect(messages).toBeDefined();
             expect(err).toBeUndefined();
             expect(messages.length).toEqual(1);
-            console.log(messages[0]);
             expect(messages[0].author).toEqual(author);
 
             done();
+        });
+    });
+
+    it("get latest n by two users", function(done) {
+        var userToCreate = {
+            userName: 'mimitests',
+            picture: 'some/other/path'
+        };
+        users.create(userToCreate, function() {
+            var author2 = {
+                userName: 'mimitests',
+                picture: 'some/other/path'
+            };
+            var messageToCreate1 = {
+                content: 'testing1',
+                location: 'in the office'
+            };
+            var messageToCreate2 = {
+                content: 'testing2',
+                location: 'in the office'
+            };
+            messages.create(messageToCreate1, author, function() {
+                messages.create(messageToCreate2, author2, function() {
+                    messages.getLatestNByUsers([author.userName, author2.userName], 2, function(messages, err) {
+                        expect(messages).toBeDefined();
+                        expect(err).toBeUndefined();
+                        expect(messages.length).toEqual(2);
+                        expect(messages[0].author).toEqual(author2);
+                        expect(messages[1].author).toEqual(author);
+
+                        done();
+                    });
+                });
+            });
         });
     });
 
@@ -72,7 +106,7 @@ describe("messages crud", function() {
                 expect(user.messages).toBeDefined();
                 expect(user.messages.indexOf(messageId) === -1);
 
-                users.delete(author.userName, function() {
+                usersDb.drop(function() {
                     done();
                 });
             });
