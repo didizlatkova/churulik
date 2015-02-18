@@ -1,22 +1,25 @@
 {
-  "name": "tvityr",
-  "version": "0.0.1",
-  "description": "clone of twitter",
-  "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.10.2",
-    "escape-html": "^1.0.1",
-    "express": "^4.11.1",
-    "express-session": "^1.10.2",
-    "handlebars": "^2.0.0",
-    "jasmine-node": "^1.14.5",
-    "moment": "^2.9.0",
-    "mongodb": "^1.4.29",
-    "passport": "^0.2.1",
-    "passport-local": "^1.0.0",
-    "path": "^0.11.14"
-  },
-  "engines": {
-    "node": "0.10.32"
-  }
+    "name": "tvityr",
+    "version": "0.0.1",
+    "description": "clone of twitter",
+    "dependencies": {
+        "bcrypt-nodejs": "0.0.3",
+        "body-parser": "^1.10.2",
+        "escape-html": "^1.0.1",
+        "express": "^4.11.1",
+        "express-session": "^1.10.2",
+        "handlebars": "^2.0.0",
+        "jasmine-node": "^1.14.5",
+        "moment": "^2.9.0",
+        "mongodb": "^1.4.29",
+        "passport": "^0.2.1",
+        "passport-local": "^1.0.0",
+        "path": "^0.11.14"
+    },
+    "engines": {
+        "node": "0.10.32"
+    },
+    "scripts": {
+        "test": "jasmine-node spec/*/*.spec.js"
+    }
 }
