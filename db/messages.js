@@ -103,7 +103,7 @@ module.exports = function(messages, users) {
 		create: function(message, author, callback) {
 			message = to_database(message);
 			message.author = author;
-			messages.insert(message, function(err) {
+			messages.insert(message, function(err, records) {
 				if (err) {
 					console.error('Cannot insert message', err);
 					return callback(err);
@@ -121,7 +121,7 @@ module.exports = function(messages, users) {
 						return callback(err);
 					}
 
-					return callback();
+					return callback(null, records[0]);
 				});
 			});
 		},
