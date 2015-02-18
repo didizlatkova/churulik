@@ -63,6 +63,11 @@ module.exports = function(database) {
 			};
 
 			if (user.src && user.src !== '') {
+				var dir = path.join(__dirname, '../public/avatars/');				
+                if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir);
+                }
+                
 				var imgPath = '../public/avatars/' + userName + '.' + 'png';
 				var diskPath = path.join(__dirname, imgPath);
 				var base64Data = user.src.replace(/^data:image\/png;base64,/, "");

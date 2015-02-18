@@ -60,9 +60,7 @@ module.exports = function(database, templates) {
 			validator.validateEditModel(req.body, function(model, valid) {
 				if (valid) {
 					usersManager.getEditPostModel(req.body, req.user.userName, function(model) {
-						console.log(model);
 						users.update(model, function(user, err) {
-							console.log(user);
 							if (err) {
 								return res.status(err.status).write(templates.errorTemplate({
 									message: err.message
