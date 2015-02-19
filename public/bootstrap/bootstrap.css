@@ -6875,26 +6875,12 @@ a:hover {
   padding-bottom: 50px;
 }
 
-.crop-wrapper {
-    /*background: none repeat scroll 0 0 #f2f2f2;
-    display: table-cell;
-    height: 400px;
-    position: relative;
-    text-align: center;
-    vertical-align: middle;*/
-    width: 585px;
-/*    height: 400px;
-    width: 585px;
-    text-align: center;*/
-}
-
-.crop-img-placeholder > div {
-    display: inline-block;
-}
-.crop-preview-wrap {
-    min-width: 215px;
-}
-
 #textArea {
   margin-top: 10px;
+}
+
+.tvit-pic {
+  margin: 10px 600px 20px 0px;
+  max-width: 600px;
+  max-height: 800px;  
 }
