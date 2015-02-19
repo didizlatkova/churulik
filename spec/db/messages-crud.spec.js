@@ -3,6 +3,7 @@ describe("messages crud", function() {
         database,
         users,
         usersDb,
+        messagesDb,
         messages,
         author,
         messageId;
@@ -11,7 +12,7 @@ describe("messages crud", function() {
         mongoFunction(function(db) {
             database = db;
             usersDb = database.collection('users');
-            var messagesDb = database.collection('messages');
+            messagesDb = database.collection('messages');
             users = require('../../db/users')(usersDb);
             messages = require('../../db/messages')(messagesDb, usersDb);
 
@@ -107,7 +108,9 @@ describe("messages crud", function() {
                 expect(user.messages.indexOf(messageId) === -1);
 
                 usersDb.drop(function() {
-                    done();
+                    messagesDb.drop(function() {
+                        done();
+                    });
                 });
             });
         });
