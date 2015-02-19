@@ -1,6 +1,6 @@
 var HASHTAG_PATTERN = /(^|\s)#([a-zA-Z\u0400-\u04FF\d\-_]+)/ig,
-    URL_PATTERN = /(^|\s)(https?:\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)*\/?($|\s)/ig,
-    IMG_PATTERN = /(^|\s)(https?:\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)\.(jpe?g|png|gif)($|\s)/i,
+    URL_PATTERN = /(^|\s)(https?:\/\/)(([\w\-]+\.)+)([a-z]{2,63})([\/][\S]*)?\/?($|\s)/ig,
+    IMG_PATTERN = /(^|\s)(https?:\/\/)(([\w\-]+\.)+)([a-z]{2,63})([\/][\S]*)\.(jpe?g|png|gif)($|\s)/i,
     moment = require('moment'),
     escape = require('escape-html');
 
@@ -11,12 +11,12 @@ module.exports = function() {
         },
 
         getMessageWithUrls = function(content) {
-            var anchor = '<a target="_blank" href="$2$3.$4$5">$1$3.$4$5</a>';
+            var anchor = '<a target="_blank" href="$2$3$5$6">$1$3$5$6$7</a>';
             return content.replace(URL_PATTERN, anchor);
         },
 
         getMessageWithImg = function(content) {
-            var anchor = '<img class="tvit-pic" src="$2$3.$4$5.$6">';
+            var anchor = '<img class="tvit-pic" src="$2$3$5$6.$7">';
             return content.replace(IMG_PATTERN, anchor);
         },
 
