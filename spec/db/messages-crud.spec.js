@@ -47,7 +47,7 @@ describe("messages crud", function() {
 
             users.getByUserName(author.userName, function(user) {
                 expect(user.messages).toBeDefined();
-                expect(user.messages.map(function(m){return m.toString();}).indexOf(messageId.toString()) !== -1).toBeTruthy();
+                expect(user.messages.map(function(m){return m.toString();})).toContain(messageId.toString());
                 done();
             });
         });
@@ -103,7 +103,7 @@ describe("messages crud", function() {
 
             users.getByUserName(author.userName, function(user) {
                 expect(user.messages).toBeDefined();
-                expect(user.messages.indexOf(messageId) === -1).toBeTruthy();
+                expect(user.messages.map(function(m){return m.toString();})).toNotContain(messageId.toString());
 
                 usersDb.drop(function() {
                     messagesDb.drop(function() {
