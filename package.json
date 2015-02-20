@@ -20,6 +20,6 @@
         "node": "0.10.32"
     },
     "scripts": {
-        "test": "jasmine-node spec/*/*.spec.js"
+        "test": "for test in spec/*/*.spec.js; do echo ${test}; jasmine-node --forceexit ${test}; done"
     }
 }
