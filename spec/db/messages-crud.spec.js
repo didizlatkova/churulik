@@ -47,8 +47,7 @@ describe("messages crud", function() {
 
             users.getByUserName(author.userName, function(user) {
                 expect(user.messages).toBeDefined();
-                expect(user.messages.indexOf(messageId) !== -1);
-
+                expect(user.messages.map(function(m){return m.toString();}).indexOf(messageId.toString()) !== -1).toBeTruthy();
                 done();
             });
         });
@@ -91,7 +90,6 @@ describe("messages crud", function() {
                         expect(messages.length).toEqual(2);
                         expect(messages[0].author).toEqual(author2);
                         expect(messages[1].author).toEqual(author);
-
                         done();
                     });
                 });
@@ -105,7 +103,7 @@ describe("messages crud", function() {
 
             users.getByUserName(author.userName, function(user) {
                 expect(user.messages).toBeDefined();
-                expect(user.messages.indexOf(messageId) === -1);
+                expect(user.messages.indexOf(messageId) === -1).toBeTruthy();
 
                 usersDb.drop(function() {
                     messagesDb.drop(function() {

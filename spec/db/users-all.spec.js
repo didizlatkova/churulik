@@ -34,9 +34,9 @@ describe("users all", function() {
             allUsers.push(user2);
             allUsers.push(user3);
 
-            users.create(user1, function(user) {
-                users.create(user2, function(user) {
-                    users.create(user3, function(user) {
+            users.create(user1, function() {
+                users.create(user2, function() {
+                    users.create(user3, function() {
                         done();
                     });
                 });
@@ -61,13 +61,12 @@ describe("users all", function() {
             users.getFollowing(allUsers[0].userName, function(following, err) {
                 expect(following).toBeDefined();
                 expect(err).toBeUndefined();
-                expect(following.indexOf(allUsers[1]) !== -1);
+                expect(following.map(function(m){return m.toString();}).indexOf(allUsers[1].toString()) !== -1).toBeTruthy();
 
                 users.getFollowers(allUsers[1].userName, function(followers, err) {
                     expect(followers).toBeDefined();
                     expect(err).toBeUndefined();
-                    expect(followers.indexOf(allUsers[0]) !== -1);
-
+                    expect(followers.map(function(m){return m.toString();}).indexOf(allUsers[0].toString()) !== -1).toBeTruthy();
                     done();
                 });
             });
@@ -75,7 +74,7 @@ describe("users all", function() {
     });
 
     it("unfollow", function(done) {
-        users.follow(allUsers[0].userName, allUsers[1].userName, function(success, err) {
+        users.follow(allUsers[0].userName, allUsers[1].userName, function() {
             users.unfollow(allUsers[0].userName, allUsers[1].userName, function(success, err) {
                 expect(success).toBeTruthy();
                 expect(err).toBeUndefined();
@@ -83,13 +82,12 @@ describe("users all", function() {
                 users.getFollowing(allUsers[0].userName, function(following, err) {
                     expect(following).toBeDefined();
                     expect(err).toBeUndefined();
-                    expect(following.indexOf(allUsers[1]) === -1);
+                    expect(following.indexOf(allUsers[1]) === -1).toBeTruthy();
 
                     users.getFollowers(allUsers[1].userName, function(followers, err) {
                         expect(followers).toBeDefined();
                         expect(err).toBeUndefined();
-                        expect(followers.indexOf(allUsers[0]) === -1);
-
+                        expect(followers.indexOf(allUsers[0]) === -1).toBeTruthy();
                         done();
                     });
                 });

@@ -43,7 +43,7 @@ describe("messages crud", function() {
                     expect(found).toBeDefined();
                     expect(err).toBeUndefined();
                     expect(found.length).toBe(1);
-                    expect(found[0].content.indexOf('test') !== -1);
+                    expect(found[0].content.indexOf('test') !== -1).toBeTruthy();
                     done();
                 });
             });
@@ -62,8 +62,8 @@ describe("messages crud", function() {
                 expect(found).toBeDefined();
                 expect(err).toBeUndefined();
                 expect(found.length).toBe(1);
-                expect(found[0].content.indexOf('test') !== -1);
-                expect(found[0].content.indexOf('awesome') !== -1);
+                expect(found[0].content.indexOf('test') !== -1).toBeTruthy();
+                expect(found[0].content.indexOf('awesome') !== -1).toBeTruthy();
 
                 done();
             });
