@@ -61,12 +61,12 @@ describe("users all", function() {
             users.getFollowing(allUsers[0].userName, function(following, err) {
                 expect(following).toBeDefined();
                 expect(err).toBeUndefined();
-                expect(following.map(function(m){return m.toString();}).indexOf(allUsers[1].toString()) !== -1).toBeTruthy();
+                expect(following.map(function(m){return m.toString();})).toContain(allUsers[1].toString());
 
                 users.getFollowers(allUsers[1].userName, function(followers, err) {
                     expect(followers).toBeDefined();
                     expect(err).toBeUndefined();
-                    expect(followers.map(function(m){return m.toString();}).indexOf(allUsers[0].toString()) !== -1).toBeTruthy();
+                    expect(followers.map(function(m){return m.toString();})).toContain(allUsers[0].toString());
                     done();
                 });
             });
@@ -82,12 +82,12 @@ describe("users all", function() {
                 users.getFollowing(allUsers[0].userName, function(following, err) {
                     expect(following).toBeDefined();
                     expect(err).toBeUndefined();
-                    expect(following.indexOf(allUsers[1]) === -1).toBeTruthy();
+                    expect(following.map(function(m){return m.toString();})).toNotContain(allUsers[1].toString());
 
                     users.getFollowers(allUsers[1].userName, function(followers, err) {
                         expect(followers).toBeDefined();
                         expect(err).toBeUndefined();
-                        expect(followers.indexOf(allUsers[0]) === -1).toBeTruthy();
+                        expect(followers.map(function(m){return m.toString();})).toNotwContain(allUsers[0].toString());
                         done();
                     });
                 });

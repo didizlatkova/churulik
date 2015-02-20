@@ -28,7 +28,7 @@ describe("validator", function() {
             expect(valid).toBeFalsy();
             expect(user.generalError).toBeUndefined();
             expect(user.userNameLoginError).toBeDefined();
-            expect(user.userNameLoginError.indexOf(requiredText) !== -1).toBeTruthy();
+            expect(user.userNameLoginError).toContain(requiredText);
             expect(user.passwordLoginError).toBeUndefined();
             done();
         });
@@ -44,7 +44,7 @@ describe("validator", function() {
             expect(user.generalError).toBeUndefined();
             expect(user.userNameLoginError).toBeUndefined();
             expect(user.passwordLoginError).toBeDefined();
-            expect(user.passwordLoginError.indexOf(requiredText) !== -1).toBeTruthy();
+            expect(user.passwordLoginError).toContain(requiredText);
             done();
         });
     });
@@ -58,7 +58,7 @@ describe("validator", function() {
             expect(user).toBeDefined();
             expect(valid).toBeFalsy();
             expect(user.generalError).toBeDefined();
-            expect(user.generalError.indexOf(wrongText) !== -1).toBeTruthy();
+            expect(user.generalError).toContain(wrongText);
             expect(user.userNameLoginError).toBeUndefined();
             expect(user.passwordLoginError).toBeUndefined();
             done();
@@ -70,7 +70,7 @@ describe("validator", function() {
         var hash = validator.generateHash(password);
         expect(hash).toBeDefined();
         expect(hash).toNotEqual(password);
-        expect(hash.indexOf(password) === -1);
+        expect(hash).toNotContain(password);
         expect(hash.length).toBe(60);
     });
 
@@ -89,7 +89,7 @@ describe("validator", function() {
                 expect(user).toBeDefined();
                 expect(valid).toBeFalsy();
                 expect(user.generalError).toBeDefined();
-                expect(user.generalError.indexOf(wrongText) !== -1).toBeTruthy();
+                expect(user.generalError).toContain(wrongText);
                 expect(user.userNameLoginError).toBeUndefined();
                 expect(user.passwordLoginError).toBeUndefined();
                 done();
@@ -117,11 +117,11 @@ describe("validator", function() {
             expect(user).toBeDefined();
             expect(valid).toBeFalsy();
             expect(user.namesError).toBeDefined();
-            expect(user.namesError.indexOf(requiredText) !== -1).toBeTruthy();
+            expect(user.namesError).toContain(requiredText);
             expect(user.userNameError).toBeDefined();
-            expect(user.userNameError.indexOf(requiredText) !== -1).toBeTruthy();
+            expect(user.userNameError).toContain(requiredText);
             expect(user.passwordError).toBeDefined();
-            expect(user.passwordError.indexOf(requiredText) !== -1).toBeTruthy();
+            expect(user.passwordError).toContain(requiredText);
             done();
         });
     });
@@ -137,9 +137,9 @@ describe("validator", function() {
             expect(user).toBeDefined();
             expect(valid).toBeFalsy();
             expect(user.userNameError).toBeDefined();
-            expect(user.userNameError.indexOf(shortText) !== -1).toBeTruthy();
+            expect(user.userNameError).toContain(shortText);
             expect(user.passwordError).toBeDefined();
-            expect(user.passwordError.indexOf(shortText) !== -1).toBeTruthy();
+            expect(user.passwordError).toContain(shortText);
             done();
         });
     });
@@ -155,7 +155,7 @@ describe("validator", function() {
             expect(user).toBeDefined();
             expect(valid).toBeFalsy();
             expect(user.userNameError).toBeDefined();
-            expect(user.userNameError.indexOf(existingText) !== -1).toBeTruthy();
+            expect(user.userNameError).toContain(existingText);
             done();
         });
     });
@@ -173,7 +173,7 @@ describe("validator", function() {
             expect(user.userNameError).toBeUndefined();
             expect(user.namesError).toBeUndefined();
             expect(user.passwordError).toBeUndefined();
-            
+
             users.delete(userToCreate.userName, function() {
                 users.delete('nonexisting', function() {
                     done();
