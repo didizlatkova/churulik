@@ -1,5 +1,5 @@
 describe("users crud", function() {
-    var mongoFunction = require('./mongo.js'),
+    var mongoFunction = require('../mongo.js'),
         database,
         users;
 

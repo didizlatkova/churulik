@@ -1,5 +1,5 @@
 describe("users all", function() {
-    var mongoFunction = require('./mongo.js'),
+    var mongoFunction = require('../mongo.js'),
         database,
         usersDb,
         users,
