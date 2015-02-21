@@ -289,7 +289,8 @@ module.exports = function(database, templates) {
             messages.findByHashtags(req.query.query.split(' '), function(messages) {
                 var model = {
                     messageContents: messagesManager.getMessagesModel(messages),
-                    query: req.query.query
+                    query: req.query.query,
+                    loggedUser: req.user.userName
                 };
 
                 res.send(templates.searchTemplate(model));
