@@ -6,6 +6,10 @@
             <small><a href="/{{author.userName}}">{{author.userName}}</a>{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
                 {{/ifCond}}
             </small>                                
+            <a data-user="{{author.userName}}" data-content="{{plainContent}}" data-location="{{location}}" class="retvit">Retvit!</a>   
+            {{#ifCond retvitedFrom '!==' undefined}}
+            <div>Retvited from: {{retvitedFrom}}</div>  
+             {{/ifCond}}                       
             <p>{{{content}}}</p>
         </blockquote>
         {{#ifCond author.userName '===' ../loggedUser}}            

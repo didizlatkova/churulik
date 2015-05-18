@@ -129,3 +129,16 @@ $('#search-reset').click(function() {
     $('#search-content').val('');
     $('#messages').html('');
 });
+
+$(document).on('click', '.retvit', function() {
+    var user = $(this).data("user");
+    var content = $(this).data("content");
+    var location = $(this).data("location");
+    $.post("/post", {
+        retvitedFrom: user,
+        content: content,
+        location: location
+    }, function(data) {
+        $('#messages').html(data);
+    });
+});

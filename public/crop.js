@@ -5,6 +5,10 @@
         src,
         allowedHeight = 73,
         allowedWidth = 73,
+        minHeight = 73,
+        minWidth = 73,
+        FIXED_WIDTH = 555.0,
+        FIXED_HEIGHT = 400.0,
         setCropCoords = function(selection) {
             if (cropFirstLoad) {
                 croppedCanvas = document.createElement('canvas');
@@ -34,7 +38,6 @@
     });
 
     $('#upload-input').change(function(e) {
-        e.stopPropagation();
         e.preventDefault();
         var file = e.dataTransfer !== undefined ? e.dataTransfer.files[0] : e.target.files[0];
 
@@ -58,11 +61,6 @@
             }
 
             $('#upload').hide();
-
-            var minHeight = 73;
-            var minWidth = 73;
-            var FIXED_WIDTH = 555.0;
-            var FIXED_HEIGHT = 400.0;
 
             var reader = new FileReader();
             reader.onload = (function() {

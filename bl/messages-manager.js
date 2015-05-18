@@ -64,6 +64,7 @@ module.exports = function() {
 
         getMessagesModel = function(messages) {
             messages.forEach(function(message) {
+                message.plainContent = message.content;
                 message.content = getMessageWithImg(escape(message.content));
                 message.content = getMessageWithUrls(message.content);
                 message.content = getMessageWithHashtags(message.content);
