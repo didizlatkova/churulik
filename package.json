@@ -17,7 +17,7 @@
         "path": "^0.11.14"
     },
     "engines": {
-        "node": "0.10.32"
+        "node": "0.10.25"
     },
     "scripts": {
         "test": "for test in spec/*/*.spec.js; do echo ${test}; jasmine-node --forceexit ${test}; done"

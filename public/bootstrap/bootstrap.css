@@ -6836,7 +6836,7 @@ img.tvit-avatar {
   padding-top: 10px;
 }
 
-.delete-btn {
+.delete-btn, .retvit {
   position: absolute;
   top: 0;
   right: 0;

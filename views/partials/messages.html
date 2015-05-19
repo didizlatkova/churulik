@@ -5,15 +5,16 @@
         <blockquote>
             <small><a href="/{{author.userName}}">{{author.userName}}</a>{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
                 {{/ifCond}}
-            </small>                                
-            <a data-user="{{author.userName}}" data-content="{{plainContent}}" data-location="{{location}}" class="retvit">Retvit!</a>   
+            </small>
             {{#ifCond retvitedFrom '!==' undefined}}
-            <div>Retvited from: {{retvitedFrom}}</div>  
+            <div>Препубликувано от: {{retvitedFrom}}</div>  
              {{/ifCond}}                       
             <p>{{{content}}}</p>
         </blockquote>
         {{#ifCond author.userName '===' ../loggedUser}}            
-            <img class="delete-btn" data-id="{{_id}}" src="../img/delete.png">
+            <img class="delete-btn" title="Изтрий" data-id="{{_id}}" src="../img/delete.png">
+        {{else}}
+            <img title="Препубликувай" data-user="{{author.userName}}" data-content="{{plainContent}}" data-location="{{location}}" class="retvit" src="../img/retweet.png">
         {{/ifCond}}
         <div class="time">{{time}}</div>
     </div>

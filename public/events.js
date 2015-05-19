@@ -1,3 +1,15 @@
+(function () {
+
+var increaseMessageCount = function(){
+    var count = parseInt($('#messages-count').text(), 10) + 1;
+    $('#messages-count').text(count);
+    if (count === 1) {
+        $('#messages-text').text('твит');
+    } else {
+        $('#messages-text').text('твита');
+    }
+};
+
 $('#tvit-content').keyup(function() {
     if ($('#tvit-btn').hasClass('disabled') && this.value.length > 0 && this.value.length <= 140) {
         $('#tvit-btn').removeClass('disabled');
@@ -8,10 +20,12 @@ $('#tvit-content').keyup(function() {
 
 $(document).on('mouseover', '.message-wrapper', function() {
     $(this).find('.delete-btn').show();
+    $(this).find('.retvit').show();
 });
 
 $(document).on('mouseleave', '.message-wrapper', function() {
     $(this).find('.delete-btn').hide();
+    $(this).find('.retvit').hide();
 });
 
 $(document).on('click', '.delete-btn', function() {
@@ -52,13 +66,7 @@ $(document).on('click', '#tvit-btn', function(e) {
 
     $('#add-tvit').trigger('reset');
 
-    var count = parseInt($('#messages-count').text(), 10) + 1;
-    $('#messages-count').text(count);
-    if (count === 1) {
-        $('#messages-text').text('твит');
-    } else {
-        $('#messages-text').text('твита');
-    }
+    increaseMessageCount();
 });
 
 $(document).on('click', '.follow-btn', function() {
@@ -141,4 +149,7 @@ $(document).on('click', '.retvit', function() {
     }, function(data) {
         $('#messages').html(data);
     });
+
+    increaseMessageCount();
 });
+})();
