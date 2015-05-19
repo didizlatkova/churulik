@@ -1,27 +1,29 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Твитър</title>
+    <title>Чурулик</title>
     <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
     <link rel="stylesheet" href="/public/bootstrap/bootstrap.css" media="screen">
 </head>
 <body>
     <div id="background">
-        <img src="/img/wallpaper.png" class="stretch" alt="cover" />
+        <img src="/img/wallpaper.jpg" class="stretch" alt="cover" />
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 100px; color: #fff">
-        <h1 style="text-align: center">Добре дошли в Твитър!</h1>
+    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 100px;">
+        
+        {{> login}}
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4" style="color: #fff">
+        <h1 id="title">Чурулик</h1>
+        <h1 style="text-align: center">Добре дошли в Чурулик!</h1>
         <p class="lead">
-            Следвайте приятели и непознати - вижте какво правят навяскъде и по всяко време! 
-            Опишете всяко едно незначително събитие от деня си и спамете непрестанно своите преследвачи! Сега с ограничение от 140 символа, за да 
-            не бъдете ненужно подробни и досадни.
+            Място, където всеки може да чурулика на воля. Вашата нова социална мрежа!
         </p>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4">
-        <h1 id="title">Твитър</h1>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 60px">
-        {{> login}}
+    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 60px">    
+    <p class="lead">
+            Още не си регистриран? Ще си изпееш песента!
+        </p>    
         {{> register}}        
     </div>
 </body>

@@ -1283,6 +1283,8 @@ p {
   font-size: 17px;
   font-weight: 300;
   line-height: 1.4;
+  text-align: center;
+  color:#fff;
 }
 @media (min-width: 768px) {
   .lead {
@@ -6883,4 +6885,13 @@ a:hover {
   margin: 10px 345px 20px 0px;
   max-width: 600px;
   max-height: 800px;  
+}
+
+#login-heading-homepage, #register-heading-homepage{
+  background-color: #fb6123;
+  border-color: #fb6123;
+}
+
+#login-warning-homepage, #register-warning-homepage{
+  border-color: #fb6123;
 }
