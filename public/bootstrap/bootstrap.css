@@ -6887,11 +6887,16 @@ a:hover {
   max-height: 800px;  
 }
 
-#login-heading-homepage, #register-heading-homepage{
+#login-heading-homepage, #register-heading-homepage {
   background-color: #fb6123;
   border-color: #fb6123;
 }
 
-#login-warning-homepage, #register-warning-homepage{
+#login-warning-homepage, #register-warning-homepage {
   border-color: #fb6123;
+}
+
+.retvited-from {
+  color: grey;
+  font-size: 15px;
 }

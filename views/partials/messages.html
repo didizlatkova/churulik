@@ -7,7 +7,7 @@
                 {{/ifCond}}
             </small>
             {{#ifCond retvitedFrom '!==' undefined}}
-            <div>Препубликувано от {{retvitedFrom}}</div>  
+            <div class="retvited-from">Препубликувано от <a href="/{{retvitedFrom}}">{{retvitedFrom}}</a></div>  
              {{/ifCond}}                       
             <p>{{{content}}}</p>
         </blockquote>
