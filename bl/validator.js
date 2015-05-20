@@ -1,6 +1,7 @@
 var REQUIRED_ERROR = 'Полето е задължително',
     EXISTING_USER_ERROR = 'Такъв потребител вече съществува',
     EXISTING_EMAIL_ERROR = 'Потребител с такава електронна поща вече съществува',
+    PASSWORDS_MISMATCH_ERROR = 'Паролите не съвпадат',
     INVALID_LOGIN_DATA = 'Грешен потребител или парола',
     SHORT_USERNAME = 'Името трябва да е поне 5 символа',
     SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
@@ -65,6 +66,14 @@ module.exports = function(database) {
                 valid = false;
             } else if (model.password.length < 5) {
                 model.passwordError = SHORT_PASSWORD;
+                valid = false;
+            }
+
+            if (!model.repeatPassword || model.repeatPassword === null) {
+                model.repeatPasswordError = REQUIRED_ERROR;
+                valid = false;
+            } else if (model.repeatPassword !== model.password) {
+                model.repeatPasswordError = PASSWORDS_MISMATCH_ERROR;
                 valid = false;
             }
 
