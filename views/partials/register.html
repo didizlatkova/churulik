@@ -2,8 +2,9 @@
     <div class="panel-heading" id="register-heading-homepage">
         <h3 class="panel-title">Регистрирай се</h3>
     </div>
-    <div class="panel-body">
+    <div class="panel-body">        
         <form method="post" action="/register">
+            <p>Всички полета са задължителни.</p>
             <div class="form-group">
                 <input class="form-control" value="{{names}}" placeholder="Имена" title="Имена" type="text" name="names">
                 <p class="text-danger">{{namesError}}</p>
