@@ -12,7 +12,8 @@ function from_database(user) {
 
 function to_database(user) {
     user._id = new ObjectID(user.id);
-    user.dateRegistered = moment(user.dateRegistered).toDate();
+    user.dateRegistered = moment().toDate();
+    user.birthdate = moment(user.birthdate, "MM/DD/YYYY").toDate();    
     user.picture = '../img/avatar.png';
     delete user.id;
     return user;

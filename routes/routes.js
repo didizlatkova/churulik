@@ -145,6 +145,7 @@ module.exports = function(database, templates) {
         validator.validateRegisterModel(req.body, function(model, valid) {
             if (valid) {
                 req.body.password = validator.generateHash(req.body.password);
+                delete req.body['repeatPassword'];
                 users.create(req.body, function(user, err) {
                     if (err) {
                         user.generalError = err.message;

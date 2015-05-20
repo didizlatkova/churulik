@@ -6,8 +6,10 @@ var REQUIRED_ERROR = 'Полето е задължително',
     SHORT_USERNAME = 'Името трябва да е поне 5 символа',
     SHORT_PASSWORD = 'Паролата трябва да е поне 8 символа',
     INVALID_EMAIL = 'Невалидна електронна поща',
+    INVALID_BIRTHDATE = 'Трябва да бъдете поне на 14 години, за да ползвате системата',
     EMAIL_PATTERN = /^([\w\-]+(?:\.[\w\-]+)*)@((?:[\w\-]+\.)*\w[\w\-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
-    bcrypt = require('bcrypt-nodejs');
+    bcrypt = require('bcrypt-nodejs'),
+    moment = require('moment');
 
 module.exports = function(database) {
     var usersDb = database.collection('users'),
@@ -58,6 +60,14 @@ module.exports = function(database) {
                 valid = false;
             } else if (!EMAIL_PATTERN.test(model.email)) {
                 model.emailError = INVALID_EMAIL;
+                valid = false;
+            }
+
+            if (!model.birthdate || model.birthdate === null) {
+                model.birthdateError = REQUIRED_ERROR;
+                valid = false;
+            } else if (moment().diff(moment(model.birthdate), 'years') < 14) {
+                model.birthdateError = INVALID_BIRTHDATE;
                 valid = false;
             }
 
