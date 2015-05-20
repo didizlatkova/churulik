@@ -4,7 +4,7 @@ var REQUIRED_ERROR = 'Полето е задължително',
     PASSWORDS_MISMATCH_ERROR = 'Паролите не съвпадат',
     INVALID_LOGIN_DATA = 'Грешен потребител или парола',
     SHORT_USERNAME = 'Името трябва да е поне 5 символа',
-    SHORT_PASSWORD = 'Паролата трябва да е поне 5 символа',
+    SHORT_PASSWORD = 'Паролата трябва да е поне 8 символа',
     INVALID_EMAIL = 'Невалидна електронна поща',
     EMAIL_PATTERN = /^([\w\-]+(?:\.[\w\-]+)*)@((?:[\w\-]+\.)*\w[\w\-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
     bcrypt = require('bcrypt-nodejs');
@@ -64,7 +64,7 @@ module.exports = function(database) {
             if (!model.password || model.password === null) {
                 model.passwordError = REQUIRED_ERROR;
                 valid = false;
-            } else if (model.password.length < 5) {
+            } else if (model.password.length < 8) {
                 model.passwordError = SHORT_PASSWORD;
                 valid = false;
             }
