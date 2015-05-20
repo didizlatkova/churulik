@@ -141,13 +141,11 @@
     $(document).on('click', '.retvit', function() {
         var retvitedFromUser = $(this).data("retvitedfrom");
         var user = $(this).data("user");
-        var retvitedFrom = retvitedFromUser ? retvitedFromUser : user;
         var content = $(this).data("content");
-        var location = $(this).data("location");
         $.post("/post", {
-            retvitedFrom: retvitedFrom,
+            retvitedFrom: retvitedFromUser || user,
             content: content,
-            location: location
+            location: ''
         }, function(data) {
             $('#messages').html(data);
         });

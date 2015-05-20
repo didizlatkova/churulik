@@ -18,7 +18,7 @@
         {{#ifCond author.userName '!==' ../loggedUser}}
         {{#ifCond retvitedFrom '!==' undefined}}
         {{#ifCond retvitedFrom '!==' ../../../loggedUser}}  
-            <img title="Препубликувай" data-retvitedfrom="{{retvitedFrom}}" data-user="{{author.userName}}" data-content="{{plainContent}}" data-location="{{location}}" class="retvit" src="../img/retweet.png">
+            <img title="Препубликувай" data-retvitedfrom="{{retvitedFrom}}" data-user="{{author.userName}}" data-content="{{plainContent}}" class="retvit" src="../img/retweet.png">
         {{/ifCond}}
         {{else}}
         <img title="Препубликувай" data-retvitedfrom="{{retvitedFrom}}" data-user="{{author.userName}}" data-content="{{plainContent}}" data-location="{{location}}" class="retvit" src="../img/retweet.png">
