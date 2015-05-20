@@ -1,15 +1,19 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Чурулик</title>
-    <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
-    <link rel="stylesheet" href="/public/bootstrap/bootstrap.css" media="screen">
+    <link rel="shortcut icon" type="image/png" href="img/favicon.png" />    
+    <link rel="stylesheet" href="/public/bootstrap/bootstrap-datepicker.css" media="screen">  
+    <link rel="stylesheet" href="/public/bootstrap/bootstrap-datepicker-styles.css" media="screen">  
+    <link rel="stylesheet" href="/public/bootstrap/bootstrap.css" media="screen">    
 </head>
+
 <body>
     <div id="background">
         <img src="/img/wallpaper.jpg" class="stretch" alt="cover" />
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 100px;">        
+    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 100px;">
         {{> login}}
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4" style="color: #fff">
@@ -19,11 +23,23 @@
             Място, където всеки може да чурулика на воля. Вашата нова социална мрежа!
         </p>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 60px">    
-    <p class="lead">
+    <div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 60px">
+        <p class="lead">
             Още не си регистриран? Ще си изпееш песента!
-        </p>    
-        {{> register}}        
+        </p>
+        {{> register}}
     </div>
+    <script src="../public/bootstrap/jquery-1.js"></script>
+    <script src="../public/bootstrap/bootstrap.js"></script>
+    <script src="../public/bootstrap/bootstrap-datepicker.min.js"></script>
+    <script src="../public/bootstrap/bootstrap-datepicker.bg.min.js"></script>
+    <script type="text/javascript">
+    $('#sandbox-container .input-append.date').datepicker({
+        endDate: "05/20/2015",
+        startView: 2,
+        language: "bg"
+    });
+    </script>
 </body>
+
 </html>

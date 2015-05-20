@@ -2,7 +2,7 @@
     <div class="panel-heading" id="register-heading-homepage">
         <h3 class="panel-title">Регистрирай се</h3>
     </div>
-    <div class="panel-body">        
+    <div class="panel-body">
         <form method="post" action="/register">
             <p>Всички полета са задължителни.</p>
             <div class="form-group">
@@ -16,6 +16,13 @@
             <div class="form-group">
                 <input class="form-control" value="{{email}}" placeholder="Електронна поща" title="Електронна поща" type="text" name="email">
                 <p class="text-danger">{{emailError}}</p>
+            </div>
+            <div id="sandbox-container">
+                <div class="input-append date">
+                    <input type="text" class="span2" placeholder="Рождена дата" title="Рождена дата">
+                    <span class="add-on"><i class="icon-th"></i>
+                    </span>
+                </div>
             </div>
             <div class="form-group">
                 <input class="form-control" placeholder="Парола" title="Парола" type="password" name="password">
