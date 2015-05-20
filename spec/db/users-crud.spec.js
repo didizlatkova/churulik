@@ -40,7 +40,7 @@ describe("users crud", function() {
 
     it("user exists", function(done) {
         var userName = 'diditests';
-        users.exists(userName, function(success) {
+        users.existsUserName(userName, function(success) {
             expect(success).toBeTruthy();
             done();
         });
@@ -88,7 +88,7 @@ describe("users crud", function() {
 
     it("user exists after deletion", function(done) {
         var userName = 'diditests';
-        users.exists(userName, function(success) {
+        users.existsUserName(userName, function(success) {
             expect(success).toBeFalsy();
             done();
         });

@@ -38,6 +38,24 @@ module.exports = function(users) {
             });
         },
 
+        getByEmail: function(email, callback) {
+            users.findOne({
+                email: email
+            }, function(err, user) {
+                if (err) {
+                    console.error('Cannot get user', err);
+                    callback(null, err);
+                }
+                if (user !== null) {
+                    callback(from_database(user));
+                } else {
+                    err = new Error(PAGE_NOT_FOUND_ERROR);
+                    err.status = 404;
+                    callback(null, err);
+                }
+            });
+        },
+
         getAll: function(callback) {
             users.find({}).sort({
                 names: 1,
@@ -128,8 +146,14 @@ module.exports = function(users) {
             });
         },
 
-        exists: function(userName, callback) {
+        existsUserName: function(userName, callback) {
             this.getByUserName(userName, function(user, err) {
+                callback(user && user !== null);
+            });
+        },
+
+        existsEmail: function(email, callback) {
+            this.getByEmail(email, function(user, err) {
                 callback(user && user !== null);
             });
         },
