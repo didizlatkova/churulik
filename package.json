@@ -19,7 +19,7 @@
     "engines": {
         "node": "0.10.25"
     },
-    "scripts": {
-        "test": "for test in spec/*/*.spec.js; do echo ${test}; jasmine-node --forceexit ${test}; done"
-    }
+    // "scripts": {
+    //     "test": "for test in spec/*/*.spec.js; do echo ${test}; jasmine-node --forceexit ${test}; done"
+    // }
 }
