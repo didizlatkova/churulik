@@ -141,6 +141,16 @@ module.exports = function(database, templates) {
         res.redirect('/');
     });
 
+    router.post('/forgot', function(req, res) {
+        validator.validateForgotPasswordModel(req.body, function(model, valid) {
+            if (valid === true) {
+                res.send(templates.forgotSuccessTemplate());
+            } else {
+                res.send(templates.forgotTemplate(model));
+            }
+        });
+    });
+
     router.post('/register', function(req, res) {
         validator.validateRegisterModel(req.body, function(model, valid) {
             if (valid) {

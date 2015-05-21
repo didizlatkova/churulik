@@ -16,7 +16,9 @@ var fs = require("fs"),
     addTvitTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/add-tvit.html'), 'utf8'),
     messagesTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/messages.html'), 'utf8'),
     followTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/follow.html'), 'utf8'),
-    searchWidgetTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/search-widget.html'), 'utf8');
+    searchWidgetTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/search-widget.html'), 'utf8'),
+    forgotTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/forgot.html'), 'utf8'),
+    forgotSuccessTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/forgot-success.html'), 'utf8');
 
 module.exports = {
     setup: function() {
@@ -30,7 +32,8 @@ module.exports = {
             addTvit: addTvitTemplateFile,
             messages: messagesTemplateFile,
             follow: followTemplateFile,
-            searchWidget: searchWidgetTemplateFile
+            searchWidget: searchWidgetTemplateFile,
+            forgot: forgotTemplateFile
         });
 
         handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -66,7 +69,9 @@ module.exports = {
             messagesTemplate: handlebars.compile(messagesTemplateFile),
             usersTemplate: handlebars.compile(usersTemplateFile),
             followTemplate: handlebars.compile(followTemplateFile),
-            searchTemplate: handlebars.compile(searchTemplateFile)
+            searchTemplate: handlebars.compile(searchTemplateFile),
+            forgotTemplate: handlebars.compile(forgotTemplateFile),
+            forgotSuccessTemplate: handlebars.compile(forgotSuccessTemplateFile)
         };
     }
 };

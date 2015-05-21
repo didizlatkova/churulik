@@ -152,4 +152,13 @@
 
         increaseMessageCount();
     });
+
+    $(document).on('click', '#forgot-btn', function() {      
+        $.post("/forgot", {
+            userName: $('#userNameForgot').val(),
+            email: $('#emailForgot').val()
+        }, function(data) {
+            $('#forgot-modal').html(data);
+        });
+    });
 })();
