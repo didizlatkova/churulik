@@ -6900,3 +6900,8 @@ a:hover {
   color: grey;
   font-size: 15px;
 }
+
+a#forgot-pass{
+  color: #2c3e50;
+  text-decoration: underline;
+}
