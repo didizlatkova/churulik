@@ -7,6 +7,8 @@
     <meta charset="utf-8">
     <title>Чурулик</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/public/bootstrap/bootstrap-datepicker.css" media="screen">
+    <link rel="stylesheet" href="/public/bootstrap/bootstrap-datepicker-styles.css" media="screen">
     <link rel="stylesheet" href="/public/bootstrap/bootstrap.css" media="screen">
     <link rel="stylesheet" href="/public/bootstrap/bootswatch.css">
     <link rel="stylesheet" href="/public/jcrop.css">
@@ -35,46 +37,91 @@
         <div class="page-header" id="banner">
             <div class="row">
                 <div class="col-lg-8 col-md-8 col-sm-8">
-                    <form method="post" action="/edit">
-                        <div class="panel panel-success has-success">
-                            <div class="panel-heading">
-                                <input class="form-control" id="inputSuccess" value="{{names}}" placeholder="Имена" type="text" name="names">
-                                <p class="text-danger">{{namesError}}</p>
-                            </div>
-                            <div class="panel-body">
-                                <div style="padding:10px">
-                                    <img class="tvit-avatar" id="avatar" src='{{picture}}'>
-                                    <p>{{userName}}</p>
-                                    <div>
-                                        <a href="#crop-modal" role="button" class="btn btn-success btn-sm" data-toggle="modal">Промени аватар</a>
-                                        <div class="modal" id="crop-modal">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" id="close-crop" data-dismiss="modal" aria-hidden="true">×</button>
-                                                        <h4 class="modal-title">Избери снимка</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <img id="crop-preview" src="../img/upload-to-crop.png">
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" id="upload" class="btn btn-primary">Качи снимка</button>
-                                                        <input id="upload-input" class="hidden" type="file" accept="image/*">
-                                                        <input type="button" id="crop-button" data-dismiss="modal" value="Изрежи" class="btn btn-primary hidden">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                    <form class="form-horizontal" method="post" action="/edit">
+                        <fieldset>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Промяна на аватара</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <img class="tvit-avatar" id="avatar" src='{{picture}}'>
+                                        <p>{{userName}}</p>
+                                        {{> crop}}
                                     </div>
                                 </div>
-                                <textarea class="form-control" placeholder="Описание" rows="3" id="textArea" name="description">{{description}}</textarea>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-lg-10 col-lg-offset-10">
-                                <button type="submit" class="btn btn-success">Запази</button>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Промяна на профила</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="inputNames" class="col-lg-3 control-label">Имена</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="inputNames" placeholder="Имена" type="text" value="{{names}}" name="names">
+                                        </div>
+                                        <p class="text-danger">{{namesError}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail" class="col-lg-3 control-label">Електронна поща</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="inputEmail" placeholder="Електронна поща" type="text" value="{{email}}" name="email">
+                                        </div>
+                                        <p class="text-danger">{{emailError}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description" class="col-lg-3 control-label">Описание</label>
+                                        <div class="col-lg-9">
+                                            <textarea class="form-control" rows="3" id="description" name="description">{{description}}</textarea>
+                                            <span class="help-block">Напишете няколко изречения за себе си, например какви са Вашите интереси и хобита.</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputTown" class="col-lg-3 control-label">Местонахождение</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="inputTown" placeholder="Местонахождение" type="text" value="{{town}}" name="town">
+                                        </div>
+                                        <p class="text-danger">{{emailError}}</p>
+                                    </div>
+                                    {{> gender}}
+                                </div>
                             </div>
-                        </div>
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Промяна на паролата</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label for="inputOldPassword" class="col-lg-3 control-label">Стара парола</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="inputOldPassword" placeholder="Стара парола" type="password" name="oldPassword">
+                                        </div>
+                                        <p class="text-danger">{{oldPasswordError}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword" class="col-lg-3 control-label">Нова парола</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="inputPassword" placeholder="Нова парола" type="password" name="password">
+                                        </div>
+                                        <p class="text-danger">{{passwordError}}</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputRepeatPassword" class="col-lg-3 control-label">Повтори новата парола</label>
+                                        <div class="col-lg-9">
+                                            <input class="form-control" id="inputRepeatPassword" placeholder="Повтори новата парола" type="password" name="repeatPassword">
+                                        </div>
+                                        <p class="text-danger">{{repeatPasswordError}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-9 col-lg-offset-2">
+                                    <a href="/" class="btn btn-default">Отказ</a>                                 
+                                    <button type="submit" class="btn btn-primary">Промени</button>
+                                </div>
+                            </div>
+                        </fieldset>
                         <input type="hidden" value="{{picture}}" name="picture">
                         <input id="x1" type="hidden" value="0" name="left">
                         <input id="y1" type="hidden" value="0" name="top">
@@ -98,8 +145,18 @@
     <script src="/public/bootstrap/bootstrap.js"></script>
     <script src="/public/bootstrap/bootstrap-modal.js"></script>
     <script src="/public/bootstrap/bootswatch.js"></script>
+    <script src="../public/bootstrap/bootstrap-datepicker.min.js"></script>
+    <script src="../public/bootstrap/bootstrap-datepicker.bg.min.js"></script>
     <script src="/public/jcrop.js"></script>
     <script src="/public/crop.js"></script>
+    <script type="text/javascript">
+    $('#sandbox-container .input-append.date').datepicker({
+        endDate: "05/20/2015",
+        startView: 2,
+        language: "bg",
+        autoclose: true
+    });
+    </script>
 </body>
 
 </html>

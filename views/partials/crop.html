@@ -1,0 +1,21 @@
+<div>
+    <a href="#crop-modal" role="button" class="btn btn-primary btn-sm" data-toggle="modal">Промени аватар</a>
+    <div class="modal" id="crop-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" id="close-crop" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">Избери снимка</h4>
+                </div>
+                <div class="modal-body">
+                    <img id="crop-preview" src="../img/upload-to-crop.png">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="upload" class="btn btn-primary">Качи снимка</button>
+                    <input id="upload-input" class="hidden" type="file" accept="image/*">
+                    <input type="button" id="crop-button" data-dismiss="modal" value="Изрежи" class="btn btn-primary hidden">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
