@@ -57,18 +57,18 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <label for="inputNames" class="col-lg-3 control-label">Имена</label>
+                                        <label for="inputNames" class="col-lg-3 control-label">Имена<span class="red">*</span></label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="inputNames" placeholder="Имена" type="text" value="{{names}}" name="names">
+                                            <p class="text-danger">{{namesError}}</p>
                                         </div>
-                                        <p class="text-danger">{{namesError}}</p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputEmail" class="col-lg-3 control-label">Електронна поща</label>
+                                        <label for="inputEmail" class="col-lg-3 control-label">Електронна поща<span class="red">*</span></label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="inputEmail" placeholder="Електронна поща" type="text" value="{{email}}" name="email">
+                                            <p class="text-danger">{{emailError}}</p>
                                         </div>
-                                        <p class="text-danger">{{emailError}}</p>
                                     </div>
                                     <div class="form-group">
                                         <label for="description" class="col-lg-3 control-label">Описание</label>
@@ -82,47 +82,47 @@
                                         <div class="col-lg-9">
                                             <input class="form-control" id="inputTown" placeholder="Местонахождение" type="text" value="{{town}}" name="town">
                                         </div>
-                                        <p class="text-danger">{{emailError}}</p>
                                     </div>
                                     {{> gender}}
                                 </div>
                             </div>
                             <div class="panel panel-primary">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Промяна на паролата</h3>
+                                    <h3 class="panel-title">Промяна на паролата (незадължителна форма)</h3>
                                 </div>
                                 <div class="panel-body">
                                     <div class="form-group">
-                                        <label for="inputOldPassword" class="col-lg-3 control-label">Стара парола</label>
+                                        <label for="inputOldPassword" class="col-lg-3 control-label">Стара парола<span class="red">*</span></label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="inputOldPassword" placeholder="Стара парола" type="password" name="oldPassword">
+                                            <p class="text-danger">{{oldPasswordError}}</p>
                                         </div>
-                                        <p class="text-danger">{{oldPasswordError}}</p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputPassword" class="col-lg-3 control-label">Нова парола</label>
+                                        <label for="inputPassword" class="col-lg-3 control-label">Нова парола<span class="red">*</span></label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="inputPassword" placeholder="Нова парола" type="password" name="password">
+                                            <p class="text-danger">{{passwordError}}</p>
                                         </div>
-                                        <p class="text-danger">{{passwordError}}</p>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputRepeatPassword" class="col-lg-3 control-label">Повтори новата парола</label>
+                                        <label for="inputRepeatPassword" class="col-lg-3 control-label">Повтори новата парола<span class="red">*</span></label>
                                         <div class="col-lg-9">
                                             <input class="form-control" id="inputRepeatPassword" placeholder="Повтори новата парола" type="password" name="repeatPassword">
+                                            <p class="text-danger">{{repeatPasswordError}}</p>
                                         </div>
-                                        <p class="text-danger">{{repeatPasswordError}}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-9 col-lg-offset-2">
-                                    <a href="/" class="btn btn-default">Отказ</a>                                 
+                                    <a href="/" class="btn btn-default">Отказ</a>
                                     <button type="submit" class="btn btn-primary">Промени</button>
                                 </div>
                             </div>
                         </fieldset>
                         <input type="hidden" value="{{picture}}" name="picture">
+                        <input type="hidden" value="{{userName}}" name="userName">
                         <input id="x1" type="hidden" value="0" name="left">
                         <input id="y1" type="hidden" value="0" name="top">
                         <input id="x2" type="hidden" value="0" name="right">

@@ -6,6 +6,7 @@ var REQUIRED_ERROR = 'Полето е задължително',
     INVALID_LOGIN_DATA = 'Грешен потребител или парола',
     SHORT_USERNAME = 'Името трябва да е поне 5 символа',
     SHORT_PASSWORD = 'Паролата трябва да е поне 8 символа',
+    WRONG_PASSWORD = 'Паролата е грешна',
     INVALID_EMAIL = 'Невалидна електронна поща',
     INVALID_BIRTHDATE = 'Трябва да бъдете поне на 14 години, за да ползвате системата',
     EMAIL_PATTERN = /^([\w\-]+(?:\.[\w\-]+)*)@((?:[\w\-]+\.)*\w[\w\-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i,
@@ -58,7 +59,7 @@ module.exports = function(database) {
             }
 
             if (valid === true) {
-                users.existsUserNameAndEmail(model.userName, model.email, function(created) {                    
+                users.existsUserNameAndEmail(model.userName, model.email, function(created) {
                     if (created !== true) {
                         model.emailError = USERNAME_EMAIL_MISMATCH_ERROR;
                         valid = false;
@@ -141,7 +142,60 @@ module.exports = function(database) {
                 valid = false;
             }
 
-            callback(model, valid);
+            if (!model.email || model.email === null) {
+                model.emailError = REQUIRED_ERROR;
+                valid = false;
+            } else if (!EMAIL_PATTERN.test(model.email)) {
+                model.emailError = INVALID_EMAIL;
+                valid = false;
+            }
+
+            if (model.oldPassword || model.password || model.repeatPassword) {
+                if (!model.oldPassword || model.oldPassword === null) {
+                    model.oldPasswordError = REQUIRED_ERROR;
+                    valid = false;
+                }
+
+                if (!model.password || model.password === null) {
+                    model.passwordError = REQUIRED_ERROR;
+                    valid = false;
+                } else if (model.password.length < 8) {
+                    model.passwordError = SHORT_PASSWORD;
+                    valid = false;
+                }
+
+                if (!model.repeatPassword || model.repeatPassword === null) {
+                    model.repeatPasswordError = REQUIRED_ERROR;
+                    valid = false;
+                } else if (model.repeatPassword !== model.password) {
+                    model.repeatPasswordError = PASSWORDS_MISMATCH_ERROR;
+                    valid = false;
+                }
+            }
+
+            if (!valid) {
+                return callback(model, valid);
+            }
+
+            users.existsEmail(model.email, function(created) {
+                if (created) {
+                    model.emailError = EXISTING_EMAIL_ERROR;
+                    valid = false;
+                }
+
+                if (model.password !== null) {
+                    users.getByUserName(model.userName, function(user, err) {
+                        if (err || !bcrypt.compareSync(model.oldPassword, user.password)) {
+                            model.oldPasswordError = WRONG_PASSWORD;
+                            valid = false;
+                        }
+
+                        callback(model, valid);
+                    });
+                } else {
+                    callback(model, valid);
+                }
+            });
         },
 
         generateHash: function(password) {
