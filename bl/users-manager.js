@@ -1,6 +1,7 @@
 var MESSAGES_TO_DISPLAY = 50,
     messagesManager = require('../bl/messages-manager')(),
     path = require('path'),
+    moment = require('moment'),
     fs = require("fs");
 
 module.exports = function(database) {
@@ -16,6 +17,7 @@ module.exports = function(database) {
             model.followingCount = user.following ? user.following.length : 0;
             model.followersCount = user.followers ? user.followers.length : 0;
             model.loggedUser = loggedUser;
+            model.birthdate = moment(user.birthdate).format("D.M.YYYY");
             model.isFollowedByLoggedUser = user.followers.indexOf(loggedUser) > -1;
             messages.getLatestNByUsers([user.userName], MESSAGES_TO_DISPLAY, function(messages, err) {
                 if (!err) {
@@ -29,6 +31,7 @@ module.exports = function(database) {
         getUserFeedModel: function(user, callback) {
             var model = user;
             model.loggedUser = user.userName;
+            model.birthdate = moment(user.birthdate).format("D.M.YYYY");
             model.messagesCount = user.messages ? user.messages.length : 0;
             model.followingCount = user.following ? user.following.length : 0;
             model.followersCount = user.followers ? user.followers.length : 0;
@@ -51,6 +54,7 @@ module.exports = function(database) {
 
         getUserEditModel: function(user) {
             var model = user;
+            model.loggedUser = user.userName;
             model.description = user.description || '';
             return model;
         },
@@ -63,23 +67,8 @@ module.exports = function(database) {
             };
 
             if (user.src && user.src !== '') {
-                var dir = path.join(__dirname, '../public/avatars/');
-                if (!fs.existsSync(dir)) {
-                    fs.mkdirSync(dir);
-                }
-
-                var imgPath = '../public/avatars/' + userName + '.' + 'png';
-                var diskPath = path.join(__dirname, imgPath);
-                var base64Data = user.src.replace(/^data:image\/png;base64,/, "");
-
-                fs.writeFile(diskPath, base64Data, 'base64', function(err) {
-                    if (!err) {
-                        model.picture = imgPath;
-                    } else {
-                        console.error('Cannot save image', err);
-                    }
-                    callback(model);
-                });
+                model.picture = user.src;
+                messages.changePictures(userName, user.src, callback, model);
             } else {
                 callback(model);
             }

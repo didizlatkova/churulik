@@ -167,6 +167,20 @@ module.exports = function(messages, users) {
 
                 callback(messages);
             });
+        },
+
+        changePictures: function(userName, src, callback, model) {
+            messages.update({
+                "author.userName": userName
+            }, {
+                $set: {
+                    "author.picture": src
+                }
+            }, {
+                multi: true
+            }, function(err, result) {
+                callback(model);
+            });
         }
     };
 };

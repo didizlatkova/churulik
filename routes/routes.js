@@ -69,7 +69,7 @@ module.exports = function(database, templates) {
                             if (!user) {
                                 return res.redirect('/');
                             }
-                            res.redirect('/' + user.userName);
+                            return res.redirect('/' + user.userName);
                         });
                     });
                 } else {
