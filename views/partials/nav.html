@@ -17,6 +17,9 @@
                         </li>
                         <li><a href="/edit">Промяна</a>
                         </li>
+                        <li>
+                            <a href="/logout">Излез</a>
+                        </li>
                     </ul>
                 </li>
                 <li><a href="/feed">Стена</a>
@@ -24,45 +27,20 @@
                 <li class="dropdown">
                     <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" id="users">Потребители <span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="users">
-                         <li>
-                    <a href="/users">Всички</a>
-                </li>
+                        <li>
+                            <a href="/users">Всички</a>
+                        </li>
                         <li><a href="/followers">Следват те</a>
                         </li>
                         <li><a href="/following">Следваш</a>
                         </li>
                     </ul>
                 </li>
-               <!--  <li>
-                    <a href="/followers">Следват те</a>
-                </li>
-                <li>
-                    <a href="/following">Следваш</a>
-                </li>
-                <li>
-                    <a href="/users">Потребители</a>
-                </li> -->
             </ul>
-
-<form class="navbar-form navbar-right" role="search" method="get" action="/search">
-        <input class="form-control col-lg-10" placeholder="Търси по хештагове" type="text" name="query">
-                        <button type="submit" class="btn btn-warning" id="search-btn">Търси</button>
-      </form>
-      <!-- <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-      </ul> -->
-            <!-- <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form class="navbar-form navbar-left" method="get" action="/search">
-                        <input class="form-control col-lg-10" placeholder="Търси по хештагове" type="text" name="query">
-                        <button type="submit" class="btn btn-warning" id="search-btn">Търси</button>
-                    </form>
-                </li>
-                <li>
-                    <a href="/logout">Излез</a>
-                </li>
-            </ul> -->
-
+            <form class="navbar-form navbar-right" role="search" method="get" action="/search">
+                <input class="form-control col-lg-10" placeholder="Търси по хештагове" type="text" name="query">
+                <button type="submit" class="btn btn-warning" id="search-btn">Търси</button>
+            </form>
         </div>
     </div>
 </div>

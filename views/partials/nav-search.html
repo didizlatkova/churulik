@@ -11,30 +11,30 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
-                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">Профил <span class="caret"></span></a>
-                    <ul class="dropdown-menu" aria-labelledby="themes">
+                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" id="profile">Профил <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="profile">
                         <li><a href="/{{loggedUser}}">Преглед</a>
                         </li>
                         <li><a href="/edit">Промяна</a>
+                        </li>
+                        <li>
+                            <a href="/logout">Излез</a>
                         </li>
                     </ul>
                 </li>
                 <li><a href="/feed">Стена</a>
                 </li>
-                <li>
-                    <a href="/followers">Следват те</a>
-                </li>
-                <li>
-                    <a href="/following">Следваш</a>
-                </li>
-                <li>
-                    <a href="/users">Потребители</a>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="/logout">Излез</a>
+                <li class="dropdown">
+                    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#" id="users">Потребители <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="users">
+                        <li>
+                            <a href="/users">Всички</a>
+                        </li>
+                        <li><a href="/followers">Следват те</a>
+                        </li>
+                        <li><a href="/following">Следваш</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
 
