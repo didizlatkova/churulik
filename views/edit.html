@@ -130,6 +130,7 @@
                         <input id="w" type="hidden" value="73" name="width">
                         <input id="h" type="hidden" value="73" name="height">
                         <input id="src" type="hidden" value="" name="src">
+                        <input id="gender" type="hidden" value="{{gender}}">
                     </form>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-4">
@@ -149,14 +150,7 @@
     <script src="../public/bootstrap/bootstrap-datepicker.bg.min.js"></script>
     <script src="/public/jcrop.js"></script>
     <script src="/public/crop.js"></script>
-    <script type="text/javascript">
-    $('#sandbox-container .input-append.date').datepicker({
-        endDate: "05/20/2015",
-        startView: 2,
-        language: "bg",
-        autoclose: true
-    });
-    </script>
+    <script src="/public/edit-events.js"></script>
 </body>
 
 </html>

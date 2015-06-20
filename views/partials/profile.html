@@ -27,19 +27,21 @@
         <div class="up-border"></div>
         {{/ifCond}} 
 
+        {{#ifCond gender '!==' ''}}
         {{#ifCond gender '!==' undefined}}
         <div>
             <img src="../img/person.png">
             <span>{{gender}}</span>
         </div>
-        {{/ifCond}}
+        {{/ifCond}} {{/ifCond}}
 
         {{#ifCond town '!==' undefined}}
+        {{#ifCond town '!==' ''}}
         <div>
             <img src="../img/planet.png">
             <span>{{town}}</span>
         </div>
-        {{/ifCond}} 
+        {{/ifCond}} {{/ifCond}} 
 
         {{#ifCond birthdate '!==' undefined}}
         <div>

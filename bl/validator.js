@@ -183,7 +183,7 @@ module.exports = function(database) {
                     valid = false;
                 }
 
-                if (model.password !== null) {
+                if (model.password) {
                     users.getByUserName(model.userName, function(user, err) {
                         if (err || !bcrypt.compareSync(model.oldPassword, user.password)) {
                             model.oldPasswordError = WRONG_PASSWORD;

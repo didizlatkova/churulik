@@ -161,7 +161,6 @@ module.exports = function(users) {
 
         existsUserNameAndEmail: function(userName, email, callback) {
             this.getByUserName(userName, function(user, err) {
-                // console.log(user);
                 callback(user !== null && user && user.email === email);
             });
         },

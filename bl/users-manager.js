@@ -63,7 +63,10 @@ module.exports = function(database) {
             var model = {
                 userName: userName,
                 names: user.names,
-                description: user.description
+                description: user.description,
+                email: user.email,
+                town: user.town,
+                gender: user.gender
             };
 
             if (user.src && user.src !== '') {
