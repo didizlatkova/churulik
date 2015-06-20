@@ -13,7 +13,7 @@ function from_database(user) {
 function to_database(user) {
     user._id = new ObjectID(user.id);
     user.dateRegistered = moment().toDate();
-    user.birthdate = moment(user.birthdate, "MM/DD/YYYY").toDate();    
+    user.birthdate = moment(user.birthdate, "MM/DD/YYYY").toDate();
     user.picture = '../img/avatar.png';
     delete user.id;
     return user;
@@ -153,9 +153,9 @@ module.exports = function(users) {
             });
         },
 
-        existsEmail: function(email, callback) {
+        existsEmail: function(email, userName, callback) {
             this.getByEmail(email, function(user, err) {
-                callback(user && user !== null);
+                callback(user && user !== null && user.userName != userName);
             });
         },
 

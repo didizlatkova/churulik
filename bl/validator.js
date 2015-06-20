@@ -177,7 +177,7 @@ module.exports = function(database) {
                 return callback(model, valid);
             }
 
-            users.existsEmail(model.email, function(created) {
+            users.existsEmail(model.email, model.userName, function(created) {
                 if (created) {
                     model.emailError = EXISTING_EMAIL_ERROR;
                     valid = false;
