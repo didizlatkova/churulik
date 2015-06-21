@@ -6910,6 +6910,6 @@ a#forgot-pass{
   color:red;
 }
 
-/*#tvit-btn {
-  margin-top: 5px;
-}*/
+span { 
+    word-wrap:break-word;
+}

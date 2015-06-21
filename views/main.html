@@ -31,13 +31,13 @@
     <div class="container">
         <div class="page-header" id="banner">
             <div class="row">
-                <div class="col-lg-3 col-md-4 col-sm-4">
+                <div class="col-lg-3 col-md-2 col-sm-2">
                     {{> profile}}
                     {{#ifCond popular '!==' undefined}}
                         {{> popular}}
                     {{/ifCond}}
                 </div>
-                <div class="col-lg-7 col-md-4 col-sm-4">
+                <div class="col-lg-7 col-md-7 col-sm-7">
                 {{#ifCond userName '===' loggedUser}}
                     {{> addTvit}}
                 {{/ifCond}}
@@ -46,7 +46,7 @@
                         {{> messages}}
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-4">
+                <div class="col-lg-2 col-md-3 col-sm-3s">
                     <div class="sponsor">
                         <img src="/img/tweety.png" alt="Туити">
                     </div>
