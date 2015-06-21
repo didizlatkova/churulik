@@ -28,8 +28,5 @@ node_modules/*
 # Users Environment Variables
 .lock-wscript
 
-#index.js file because of db credentials
-index.js
-
 #dbDump folder
 dbDump/*
