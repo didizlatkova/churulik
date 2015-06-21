@@ -124,7 +124,7 @@ module.exports = function(database) {
                     valid = false;
                 }
 
-                users.existsEmail(model.email, function(created) {
+                users.existsEmail(model.email, "", function(created) {
                     if (created) {
                         model.emailError = EXISTING_EMAIL_ERROR;
                         valid = false;

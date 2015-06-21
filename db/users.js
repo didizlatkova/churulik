@@ -155,7 +155,11 @@ module.exports = function(users) {
 
         existsEmail: function(email, userName, callback) {
             this.getByEmail(email, function(user, err) {
-                callback(user && user !== null && user.userName != userName);
+                if (user && user !== null) {
+                    callback(user.userName != userName);
+                } else {
+                    callback(false);
+                }
             });
         },
 
