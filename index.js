@@ -47,7 +47,7 @@ function setup_express(routes) {
     });
 }
 
-MongoClient.connect(dburl, function(err, db) {
+MongoClient.connect('mongodb://didizlatkova:Didi123@ds043981.mongolab.com:43981/tvityr', function(err, db) {
 	if (err) {
 		console.error('Cannot connect to the database', err);
 		return;

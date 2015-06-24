@@ -1390,7 +1390,7 @@ a.bg-danger:hover {
 }
 .page-header {
   padding-bottom: 9.5px;
-  margin: 42px 0 21px;
+  margin: 72px 0 21px;
   border-bottom: 1px solid transparent;
 }
 ul,
@@ -1564,8 +1564,8 @@ pre code {
 .container {
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+ /* padding-left: 15px;
+  padding-right: 15px;*/
 }
 @media (min-width: 768px) {
   .container {
