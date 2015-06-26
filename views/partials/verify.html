@@ -1,0 +1,7 @@
+{{#ifCond userName '!==' loggedUser}}
+    {{#if verified}}
+        <button href="#" class="btn btn-warning btn-sm unverify-btn" data-user="{{userName}}" data-logged="{{loggedUser}}">Деверифицирай</button>
+    {{else}}
+        <button href="#" class="btn btn-success btn-sm verify-btn" data-user="{{userName}}" data-logged="{{loggedUser}}">Верифицирай</button>
+    {{/if}}            
+{{/ifCond}}

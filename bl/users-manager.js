@@ -7,6 +7,7 @@ var MESSAGES_TO_DISPLAY = 50,
 module.exports = function(database) {
     var messagesDb = database.collection('messages'),
         usersDb = database.collection('users'),
+        users = require('../db/users')(usersDb),
         messages = require('../db/messages')(messagesDb, usersDb);
 
     return {
@@ -86,21 +87,26 @@ module.exports = function(database) {
             return model;
         },
 
-        getUsersModel: function(allUsers, loggedUser, title) {
-            var resultUsers = [];
+        getUsersModel: function(allUsers, loggedUser, title, isLoggedUserAdministrator) {
+            var resultUsers = [], isLoggedUserAdministrator;
+
             allUsers.forEach(function(user) {
                 user.followers = user.followers || [];
-                resultUsers.push({
-                    names: user.names,
-                    userName: user.userName,
-                    picture: user.picture,
-                    verified: user.verified,
-                    loggedUser: loggedUser,
-                    isFollowedByLoggedUser: user.followers.indexOf(loggedUser) > -1,
-                    messagesCount: user.messages ? user.messages.length : 0,
-                    followingCount: user.following ? user.following.length : 0,
-                    followersCount: user.followers ? user.followers.length : 0
-                });
+                if (!user.isAdministrator) {
+                    resultUsers.push({
+                        names: user.names,
+                        userName: user.userName,
+                        picture: user.picture,
+                        verified: user.verified,
+                        isAdministrator: user.isAdministrator,
+                        loggedUser: loggedUser,
+                        isLoggedUserAdministrator: isLoggedUserAdministrator,
+                        isFollowedByLoggedUser: user.followers.indexOf(loggedUser) > -1,
+                        messagesCount: user.messages ? user.messages.length : 0,
+                        followingCount: user.following ? user.following.length : 0,
+                        followersCount: user.followers ? user.followers.length : 0
+                    });
+                };
             });
 
             return {

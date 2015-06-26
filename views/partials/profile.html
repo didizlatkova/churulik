@@ -1,8 +1,12 @@
 <div class="panel panel-success">
     <a href="/{{userName}}">
         <div class="panel-heading message-wrapper">
-            <h3 class="panel-title">{{names}}</h3> {{#ifCond verified '===' true}}
-            <img src="../img/verified.png" class="verified" title="верифициран"> {{/ifCond}}
+            <h3 class="panel-title">{{names}}</h3> 
+            {{#ifCond verified '===' true}}
+            <img src="../img/verified.png" class="verified" title="верифициран" id="verified-{{userName}}"> 
+            {{else}}
+            <img src="../img/verified.png" class="verified hidden" title="верифициран" id="verified-{{userName}}"> 
+            {{/ifCond}}
         </div>
     </a>
     <div class="panel-body profile-wrapper">
@@ -61,8 +65,18 @@
         <div>{{description}}</div>
         {{/ifCond}}
 
-        <div id="follow-wrapper-{{userName}}">
-            {{> follow}}
-        </div>
+        {{#if isLoggedUserAdministrator}}
+            <div id="verify-wrapper-{{userName}}">
+                {{> verify}}
+            </div>
+            <div id="delete-wrapper-{{userName}}">
+                {{> delete}}
+            </div>
+        {{else}}
+            <div id="follow-wrapper-{{userName}}">
+                {{> follow}}
+            </div>
+        {{/if}} 
+        
     </div>
-</div>
+</div><!--  -->

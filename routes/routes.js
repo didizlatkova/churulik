@@ -20,6 +20,10 @@ module.exports = function(database, templates) {
         }
     });
 
+    router.get('/admin', function(req, res) {
+        res.send(templates.adminTemplate({}));
+    });
+
     router.get('/feed', function(req, res) {
         if (req.user) {
             users.getByUserName(req.user.userName, function(user, err) {
@@ -105,9 +109,11 @@ module.exports = function(database, templates) {
 
     router.get('/users', function(req, res) {
         if (req.user) {
-            users.getAll(function(users) {
-                var model = usersManager.getUsersModel(users, req.user.userName, 'Потребители');
-                res.send(templates.usersTemplate(model));
+            users.getAll(function(usersData) {
+                users.getByUserName(req.user.userName, function(loggedUserData, err) {
+                    var model = usersManager.getUsersModel(usersData, req.user.userName, 'Потребители', loggedUserData.isAdministrator);
+                    res.send(templates.usersTemplate(model));
+                });
             });
         } else {
             res.redirect('/');
@@ -245,6 +251,16 @@ module.exports = function(database, templates) {
         }
     });
 
+    router.post('/delete-user', function(req, res) {
+        if (req.user && req.body.user) {
+            users.delete(req.body.user, function(success) {
+                res.send(success);
+            });
+        } else {
+            res.send(undefined);
+        }
+    });
+
     router.post('/follow', function(req, res) {
         if (req.user) {
             users.follow(req.user.userName, req.body.user, function(success) {
@@ -271,6 +287,38 @@ module.exports = function(database, templates) {
                 };
 
                 res.send(templates.followTemplate(model));
+            });
+        } else {
+            res.send(undefined);
+        }
+    });
+
+    router.post('/verify', function(req, res) {
+        if (req.user) {
+            users.verify(req.body.user, function(success) {
+                var model = {
+                    userName: req.body.user,
+                    loggedUser: req.user.userName,
+                    verified: success
+                };
+
+                res.send(templates.verifyTemplate(model));
+            });
+        } else {
+            res.send(undefined);
+        }
+    });
+
+    router.post('/unverify', function(req, res) {
+        if (req.user) {
+            users.unverify(req.body.user, function(success) {
+                var model = {
+                    userName: req.body.user,
+                    loggedUser: req.user.userName,
+                    verified: !success
+                };
+
+                res.send(templates.verifyTemplate(model));
             });
         } else {
             res.send(undefined);

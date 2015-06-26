@@ -133,6 +133,59 @@
         }
     });
 
+    $(document).on('click', '.verify-btn', function() {
+        $(this).addClass('disabled');
+        var user = $(this).data("user");
+        var loggedUser = $(this).data("logged");
+
+        $.post("/verify", {
+            user: user
+        }, function(data) {
+            if (data) {
+                $('#verify-wrapper-' + user).html(data);
+            } else {
+                window.location.href = '/';
+            }
+        });
+
+        $('#verified-' + user).removeClass('hidden');
+    });
+
+    $(document).on('click', '.unverify-btn', function() {
+        $(this).addClass('disabled');
+        var user = $(this).data("user");
+        var loggedUser = $(this).data("logged");
+
+        $.post("/unverify", {
+            user: user
+        }, function(data) {
+            if (data) {
+                $('#verify-wrapper-' + user).html(data);
+            } else {
+                window.location.href = '/';
+            }
+        });
+
+        $('#verified-' + user).addClass('hidden');
+    });
+
+    $(document).on('click', '.delete-user-btn', function() {
+        $(this).addClass('disabled');
+        var user = $(this).data("user");
+        var loggedUser = $(this).data("logged");
+
+        $.post("/delete-user", {
+            user: user
+        }, function(data) {
+            if (data) {
+                $('#profile-' + user).addClass('hidden');
+            } else {
+                window.location.href = '/';
+            }
+        });
+
+    });
+
     $('#search-reset').click(function() {
         $('#search-content').val('');
         $('#messages').html('');

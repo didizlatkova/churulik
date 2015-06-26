@@ -253,6 +253,42 @@ module.exports = function(users) {
                     return callback(true);
                 });
             });
+        },
+
+        verify: function(verifiedUser, callback) {
+            users.update({
+                userName: verifiedUser
+            }, {
+                $set: {
+                    "verified": true
+                }
+            }, {
+                multi: true
+            }, function(err) {
+                if (err) {
+                    console.error('Cannot update user', err);
+                    return callback(false, err);
+                }
+                return callback(true);
+            });
+        },
+
+        unverify: function(verifiedUser, callback) {
+            users.update({
+                userName: verifiedUser
+            }, {
+                $set: {
+                    "verified": false
+                }
+            }, {
+                multi: true
+            }, function(err) {
+                if (err) {
+                    console.error('Cannot update user', err);
+                    return callback(false, err);
+                }
+                return callback(true);
+            });
         }
     };
 };
