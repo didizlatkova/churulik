@@ -14,7 +14,13 @@ module.exports = function(database, templates) {
 
     router.get('/', function(req, res) {
         if (req.user) {
-            res.redirect('/feed');
+            users.getByUserName(req.user.userName, function(user, err) {
+                if (err || !user.isAdministrator) {
+                    res.redirect('/feed');
+                } else {
+                    res.redirect('/users');
+                }
+            });
         } else {
             res.send(templates.homeTemplate({}));
         }

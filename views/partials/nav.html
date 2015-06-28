@@ -41,12 +41,14 @@
                 {{/if}} 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form class="navbar-form navbar-left" method="get" action="/search">
-                        <input class="form-control col-lg-10" placeholder="Търси по хештагове" type="text" name="query">
-                        <button type="submit" class="btn btn-warning" id="search-btn">Търси</button>
-                    </form>
-                </li>
+                {{#ifCond isLoggedUserAdministrator '==' undefined}}
+                    <li>
+                        <form class="navbar-form navbar-left" method="get" action="/search">
+                            <input class="form-control col-lg-10" placeholder="Търси по хештагове" type="text" name="query">
+                            <button type="submit" class="btn btn-warning" id="search-btn">Търси</button>
+                        </form>
+                    </li>
+                {{/ifCond}}
                 <li>
                     <a href="/logout">Излез</a>
                 </li>
