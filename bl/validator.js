@@ -34,6 +34,7 @@ module.exports = function(database) {
             }
 
             users.getByUserName(model.userNameLogin, function(user, err) {
+                model.isAdministrator = user.isAdministrator;
                 if (err || !bcrypt.compareSync(model.passwordLogin, user.password)) {
                     model.generalError = INVALID_LOGIN_DATA;
                     valid = false;

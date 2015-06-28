@@ -112,6 +112,7 @@ module.exports = function(database) {
             return {
                 loggedUser: loggedUser,
                 title: title,
+                isLoggedUserAdministrator: isLoggedUserAdministrator,
                 users: resultUsers
             };
         }

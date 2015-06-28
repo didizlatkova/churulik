@@ -132,7 +132,11 @@ module.exports = function(database, templates) {
                         return res.send(templates.homeTemplate(user));
                     }
 
-                    res.redirect('/feed');
+                    if (user.isAdministrator) {
+                        res.redirect('/users');
+                    } else {
+                        res.redirect('/feed');
+                    }
                 });
             } else {
                 res.send(templates.homeTemplate(user));
