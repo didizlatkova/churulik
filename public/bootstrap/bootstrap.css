@@ -6925,3 +6925,11 @@ a#forgot-pass{
 span { 
     word-wrap:break-word;
 }
+
+.facebook {
+  margin-top: 10px;
+}
+
+.facebook:hover {
+  cursor: pointer;
+}

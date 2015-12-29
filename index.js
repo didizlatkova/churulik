@@ -53,7 +53,7 @@ MongoClient.connect(dburl, function(err, db) {
 		return;
 	}
 
-    require('./bl/passport')(passport);
+    require('./bl/passport')(passport, db);
     setup_express(routes(db, templates.setup()));
 
     db.collection("users").ensureIndex({

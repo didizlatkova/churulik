@@ -1,7 +1,8 @@
 var express = require('express'),
     router = express.Router(),
     handlebars = require("handlebars"),
-    path = require('path');
+    path = require('path'),
+    passport = require('passport');
 
 module.exports = function(database, templates) {
     var usersDb = database.collection('users'),
@@ -386,6 +387,20 @@ module.exports = function(database, templates) {
             res.redirect('/');
         }
     });
+
+    router.get('/auth/facebook',
+        passport.authenticate('facebook', {
+            scope: ['email', 'user_birthday']
+        }),
+        function(req, res) {});
+
+    router.get('/auth/facebook/callback',
+        passport.authenticate('facebook', {
+            failureRedirect: '/'
+        }),
+        function(req, res) {
+            res.redirect('/feed');
+        });
 
     return router;
 };
