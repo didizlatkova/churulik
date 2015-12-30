@@ -6804,6 +6804,8 @@ a.list-group-item-danger.active:focus {
 img.tvit-avatar {
     float: left;
     margin: 5px 10px 0px 5px;
+    width: 73px;
+    height: 73px;
 }
 
 .float-left{
