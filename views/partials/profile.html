@@ -1,17 +1,13 @@
 <div class="panel panel-success">
     <a href="/{{userName}}">
         <div class="panel-heading message-wrapper">
-            <h3 class="panel-title">{{names}}</h3> 
-            {{#ifCond verified '===' true}}
-            <img src="../img/verified.png" class="verified" title="верифициран" id="verified-{{userName}}"> 
-            {{else}}
-            <img src="../img/verified.png" class="verified hidden" title="верифициран" id="verified-{{userName}}"> 
-            {{/ifCond}}
+            <h3 class="panel-title">{{names}}</h3> {{#ifCond verified '===' true}}
+            <img src="../img/verified.png" class="verified" title="верифициран" id="verified-{{userName}}"> {{else}}
+            <img src="../img/verified.png" class="verified hidden" title="верифициран" id="verified-{{userName}}"> {{/ifCond}}
         </div>
     </a>
     <div class="panel-body profile-wrapper">
-        <img class="tvit-avatar" src='{{picture}}'>
-        {{#ifCond messagesCount '===' 1}}
+        <img class="tvit-avatar" src='{{picture}}'> {{#ifCond messagesCount '===' 1}}
         <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твит</span></div>
         {{else}}
         <div><span id="messages-count">{{messagesCount}}</span> <span id="messages-text">твита</span></div>
@@ -25,57 +21,47 @@
             <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващ</span></div>
         {{else}}
         <div><span id="followers-count-{{userName}}">{{followersCount}}</span> <span id="followers-text-{{userName}}">следващи</span></div>
-        {{/ifCond}} 
-        {{#ifCond description '!==' undefined}}
+        {{/ifCond}} {{#ifCond description '!==' undefined}}
         <div class="up-border"></div>
-        {{/ifCond}} 
-
-        {{#ifCond gender '!==' ''}}
-        {{#ifCond gender '!==' undefined}}
+        {{/ifCond}} {{#ifCond gender '!==' ''}} {{#ifCond gender '!==' undefined}}
         <div>
             <img src="../img/person.png">
             <span>{{gender}}</span>
         </div>
-        {{/ifCond}} {{/ifCond}}
-
-        {{#ifCond town '!==' undefined}}
-        {{#ifCond town '!==' ''}}
+        {{/ifCond}} {{/ifCond}} {{#ifCond town '!==' undefined}} {{#ifCond town '!==' ''}}
         <div>
             <img src="../img/planet.png">
             <span>{{town}}</span>
         </div>
-        {{/ifCond}} {{/ifCond}} 
-
-        {{#ifCond birthdate '!==' undefined}}
+        {{/ifCond}} {{/ifCond}} {{#ifCond birthdate '!==' undefined}}
         <div>
             <img src="../img/calendar.png">
             <span>{{birthdate}}</span>
         </div>
-        {{/ifCond}} 
-
-        {{#ifCond email '!==' undefined}}
+        {{/ifCond}} {{#ifCond email '!==' undefined}}
         <div>
             <img src="../img/mail.png">
             <span>{{email}}</span>
         </div>
-        {{/ifCond}} 
-
-        {{#ifCond description '!==' undefined}}
+        {{/ifCond}} {{#ifCond description '!==' undefined}}
         <div>{{description}}</div>
-        {{/ifCond}}
-
-        {{#if isLoggedUserAdministrator}}
-            <div id="verify-wrapper-{{userName}}">
-                {{> verify}}
-            </div>
-            <div id="delete-wrapper-{{userName}}">
-                {{> delete}}
-            </div>
+        {{/ifCond}} {{#if isLoggedUserAdministrator}}
+        <div id="verify-wrapper-{{userName}}">
+            {{> verify}}
+        </div>
+        <div id="delete-wrapper-{{userName}}">
+            {{> delete}}
+        </div>
         {{else}}
-            <div id="follow-wrapper-{{userName}}">
-                {{> follow}}
-            </div>
-        {{/if}} 
-        
+        {{#ifCond userName '!==' loggedUser}}
+        <div>
+            <a href="/connection?logged={{loggedUser}}&user={{userName}}" class="btn btn-warning btn-sm connection-btn">Виж връзка</a>
+        </div>
+        {{/ifCond}}
+        <div id="follow-wrapper-{{userName}}">
+            {{> follow}}
+        </div>
+        {{/if}}
     </div>
-</div><!--  -->
+</div>
+<!--  -->

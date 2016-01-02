@@ -6878,7 +6878,7 @@ a:hover {
   margin-right: 5px;
 }
 
-.verify-btn, .unverify-btn {
+.connection-btn, .verify-btn, .unverify-btn {
   position: absolute;
   bottom: 0;
   left: 0;
