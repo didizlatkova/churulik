@@ -52,12 +52,7 @@
         <div id="delete-wrapper-{{userName}}">
             {{> delete}}
         </div>
-        {{else}}
-        {{#ifCond userName '!==' loggedUser}}
-        <div>
-            <a href="/connection?logged={{loggedUser}}&user={{userName}}" class="btn btn-warning btn-sm connection-btn">Виж връзка</a>
-        </div>
-        {{/ifCond}}
+        {{else}}        
         <div id="follow-wrapper-{{userName}}">
             {{> follow}}
         </div>
