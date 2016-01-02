@@ -73,6 +73,17 @@ module.exports = function(users) {
             });
         },
 
+        getAllFollowings: function(callback) {
+            users.find({}, { userName: 1, following: 1 })
+            .toArray(function(err, users) {
+                if (err) {
+                    console.error('Cannot get user followings', err);
+                    callback(null, err);
+                }
+                callback(users);
+            });
+        },
+
         getFollowers: function(userName, callback) {
             users.findOne({
                 userName: userName
