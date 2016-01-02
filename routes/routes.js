@@ -2,7 +2,8 @@ var express = require('express'),
     router = express.Router(),
     handlebars = require("handlebars"),
     path = require('path'),
-    passport = require('passport');
+    passport = require('passport'),
+    graphService = require('../bl/graph-service.js');
 
 module.exports = function(database, templates) {
     var usersDb = database.collection('users'),
@@ -121,6 +122,18 @@ module.exports = function(database, templates) {
                     var model = usersManager.getUsersModel(usersData, req.user.userName, 'Потребители', loggedUserData.isAdministrator);
                     res.send(templates.usersTemplate(model));
                 });
+            });
+        } else {
+            res.redirect('/');
+        }
+    });
+
+    router.get('/connection', function(req, res) {
+        console.log("DEBUG DEBUG DEBUG: req.params.to:" + JSON.stringify(req.params.to));
+        if (true || req.params.to) {
+            users.getAllFollowings(function(userFollowingsData) {
+                graphService.sendGraphRequest(userFollowingsData);
+               // res.send({blah:blah});
             });
         } else {
             res.redirect('/');
