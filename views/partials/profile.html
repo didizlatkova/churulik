@@ -55,7 +55,7 @@
         {{else}}
         {{#ifCond userName '!==' loggedUser}}
         <div>
-            <a href="/connection?logged={{loggedUser}}&user={{userName}}" class="btn btn-warning btn-sm connection-btn">Виж връзка</a>
+            <a href="/connection/{{userName}}" class="btn btn-warning btn-sm connection-btn">Виж връзка</a>
         </div>
         {{/ifCond}}
         <div id="follow-wrapper-{{userName}}">
