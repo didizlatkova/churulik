@@ -100,6 +100,29 @@ module.exports = function(messages, users) {
             });
         },
 
+        getAllRetvitedMeta: function(callback) {
+            messages.aggregate([
+                { $match: {"retvitedFrom": { "$exists": true }} },
+                {
+                    $group: {
+                        "_id": {
+                            "author": "$author.userName",
+                            "retvitedFrom": "$retvitedFrom"
+                        },
+                        "count": {
+                            $sum: 1
+                        }
+                    }
+                }
+            ], function(err, retvitedMeta) {
+                if (err) {
+                    console.error('Cannot get retvited messages metadata', err);
+                    callback(null, err);
+                }
+                callback(retvitedMeta);
+            });
+        },
+
         create: function(message, author, callback) {
             message = to_database(message);
             message.author = author;

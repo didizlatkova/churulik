@@ -131,11 +131,19 @@ module.exports = function(database, templates) {
     router.get('/connection/:to', function(req, res) {
         var from = req.user.userName;
         var to = req.params.to;
-        console.log("DEBUG DEBUG DEBUG: req.params.to:" + req.params.to);
-        if (req.params.to) {
+        if (req.user && req.params.to) {
             users.getAllFollowings(function(userFollowingsData) {
-                graphService.sendGraphRequest(userFollowingsData);
-               // res.send({blah:blah});
+                messages.getAllRetvitedMeta(function(retvitedMessagesMetadata){
+                    graphService.sendGraphRequest(
+                        userFollowingsData,
+                        retvitedMessagesMetadata,
+                        from,
+                        to,
+                        function callback(result){
+                            res.send(result);
+                        }
+                    );
+                });
             });
         } else {
             res.redirect('/');
