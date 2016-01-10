@@ -74,13 +74,15 @@ var update = function () {
 
 	// renderer.renderRect(Math.floor(mouseX / 50) * 50, Math.floor(mouseY / 50) * 50, 50, 50, "green", 1);
 
-	for (var i = inPath.length - 1; i >= 1; i--) {
-		var vertexData = inputGraphData.vertices[inPath[i]];
-		renderer.renderText(vertexData.x, vertexData.y - 15, inPath[i], "black");
-		renderer.renderEdge(inputGraphData, inPath[i], inPath[i -1]);
+	if (inPath.length > 0) {
+		for (var i = inPath.length - 1; i >= 1; i--) {
+			var vertexData = inputGraphData.vertices[inPath[i]];
+			renderer.renderText(vertexData.x, vertexData.y - 15, inPath[i], "black");
+			renderer.renderEdge(inputGraphData, inPath[i], inPath[i -1]);
+		}
+		var vertexData = inputGraphData.vertices[inPath[0]];
+		renderer.renderText(vertexData.x, vertexData.y - 15, inPath[0], "black");
 	}
-	var vertexData = inputGraphData.vertices[inPath[0]];
-	renderer.renderText(vertexData.x, vertexData.y - 15, inPath[0], "black");
 
 	if (board[Math.floor(mouseX / 50)][Math.floor(mouseY / 50)]) {
 		renderer.renderText(mouseX, mouseY, board[Math.floor(mouseX / 50)][Math.floor(mouseY / 50)], "black");
@@ -104,9 +106,9 @@ Renderer.prototype.renderVertices = function (graphData) {
 
 Renderer.prototype.renderNode = function (vertexName, graphData) {
 	var vertexData = graphData.vertices[vertexName];
-	if (inPath.length > 0 && inPath.indexOf(vertexName) == inPath.length - 1) { // This is first node
+	if (vertexName == graphData.start) { // This is first node
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 1, "yellow");
-	} else if (inPath.indexOf(vertexName) >= 0) {
+	} else if (inPath.indexOf(vertexName) >= 0 || vertexName == graphData.target) {
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 1, "green");
 	} else {
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 0);
