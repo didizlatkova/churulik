@@ -1,18 +1,35 @@
 'use strict'
 
 var http = require('http');
-    //var _ = require('lodash');
 
-function statusCallback(res) {
-  console.log('STATUS: ' + res.statusCode);
-  console.log('HEADERS: ' + JSON.stringify(res.headers));
-  res.setEncoding('utf8');
-  res.on('data', function (chunk) {
-    console.log('BODY: ' + chunk);
-  });
-  res.on('end', function() {
-    console.log('No more data in response.')
-  })
+function resultPollingCallback(callback, res) {
+    res.setEncoding('utf8');
+    res.on('data', function(body) {
+        pollData(body, callback);
+    });
+}
+
+function pollDataCallback(idStr, callback, res) {
+    res.setEncoding('utf8');
+    res.on('data', function(body) {
+        console.log("maybe null body", body);
+        if (body === 'null') {
+            setTimeout(pollData, 1000, idStr, callback);
+        } else {
+            callback(body);
+        }
+    });
+}
+
+function pollData(idStr, callback) {
+    var req = http.request({
+        hostname: 'localhost',
+        port: '8080',
+        path: '/receive?key=' + idStr.substring(1, 6),
+        method: 'GET'
+    },
+    pollDataCallback.bind(null, idStr, callback));
+    req.end();
 }
 
 var BASIC_DIRECT_DISTANCE = 10;
@@ -70,29 +87,27 @@ module.exports = {
             }
         };
 
-        userCallback(postData);
-
-        postData = JSON.stringify(postData);
-
-        console.log(postData);
+        var postDataStr = JSON.stringify(postData);
 
         var req = http.request({
-            hostname: '94.236.137.234',
+            hostname: 'localhost',
             port: '8080',
             path: '/task?index=0',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': byteCount(postData)
+                'Content-Length': byteCount(postDataStr)
             }
         },
-        statusCallback);
+        resultPollingCallback.bind(null, function(path) {
+            userCallback({graphConnection: postData, path: path});
+        }));
 
         req.on('error', function(e) {
           console.log('problem with request: ' + e.message);
         });
 
-        req.write(postData);
+        req.write(postDataStr);
         req.end();
     }
 

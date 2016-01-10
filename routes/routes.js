@@ -140,7 +140,7 @@ module.exports = function(database, templates) {
                         from,
                         to,
                         function callback(result){
-                            res.send(result);
+                            res.send(templates.graphConnectionTemplate(result));
                         }
                     );
                 });

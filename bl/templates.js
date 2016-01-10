@@ -23,7 +23,8 @@ var fs = require("fs"),
     forgotTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/forgot.html'), 'utf8'),
     forgotSuccessTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/forgot-success.html'), 'utf8'),
     cropTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/crop.html'), 'utf8'),
-    genderTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/gender.html'), 'utf8');
+    genderTemplateFile = fs.readFileSync(path.join(__dirname, '../views/partials/gender.html'), 'utf8'),
+    graphConnectionTemplateFile = fs.readFileSync(path.join(__dirname, '../views/graph-connection.html'), 'utf8');
 
 module.exports = {
     setup: function() {
@@ -43,6 +44,10 @@ module.exports = {
             forgot: forgotTemplateFile,
             crop: cropTemplateFile,
             gender: genderTemplateFile
+        });
+
+        handlebars.registerHelper('json', function(context) {
+            return JSON.stringify(context);
         });
 
         handlebars.registerHelper('ifCond', function(v1, operator, v2, options) {
@@ -83,7 +88,8 @@ module.exports = {
             deleteTemplate: handlebars.compile(deleteTemplateFile),
             searchTemplate: handlebars.compile(searchTemplateFile),
             forgotTemplate: handlebars.compile(forgotTemplateFile),
-            forgotSuccessTemplate: handlebars.compile(forgotSuccessTemplateFile)
+            forgotSuccessTemplate: handlebars.compile(forgotSuccessTemplateFile),
+            graphConnectionTemplate: handlebars.compile(graphConnectionTemplateFile)
         };
     }
 };
