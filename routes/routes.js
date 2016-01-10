@@ -139,8 +139,14 @@ module.exports = function(database, templates) {
                         retvitedMessagesMetadata,
                         from,
                         to,
-                        function callback(result){
-                            res.send(templates.graphConnectionTemplate(result));
+                        function callback(result) {
+                            if (result === null) {
+                                res.status(504).send(templates.errorTemplate({
+                                    message: 'Няма връзка с Java сървър'
+                                }));
+                            } else {
+                                res.send(templates.graphConnectionTemplate(result));
+                            }
                         }
                     );
                 });
