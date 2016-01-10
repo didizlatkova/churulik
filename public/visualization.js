@@ -104,7 +104,7 @@ Renderer.prototype.renderVertices = function (graphData) {
 
 Renderer.prototype.renderNode = function (vertexName, graphData) {
 	var vertexData = graphData.vertices[vertexName];
-	if (inPath.indexOf(vertexName) == inPath.length - 1) { // This is first node
+	if (inPath.length > 0 && inPath.indexOf(vertexName) == inPath.length - 1) { // This is first node
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 1, "yellow");
 	} else if (inPath.indexOf(vertexName) >= 0) {
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 1, "green");
