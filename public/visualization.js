@@ -75,8 +75,12 @@ var update = function () {
 	// renderer.renderRect(Math.floor(mouseX / 50) * 50, Math.floor(mouseY / 50) * 50, 50, 50, "green", 1);
 
 	for (var i = inPath.length - 1; i >= 1; i--) {
+		var vertexData = inputGraphData.vertices[inPath[i]];
+		renderer.renderText(vertexData.x, vertexData.y - 15, inPath[i], "black");
 		renderer.renderEdge(inputGraphData, inPath[i], inPath[i -1]);
 	}
+	var vertexData = inputGraphData.vertices[inPath[0]];
+	renderer.renderText(vertexData.x, vertexData.y - 15, inPath[0], "black");
 
 	if (board[Math.floor(mouseX / 50)][Math.floor(mouseY / 50)]) {
 		renderer.renderText(mouseX, mouseY, board[Math.floor(mouseX / 50)][Math.floor(mouseY / 50)], "black");
@@ -100,9 +104,10 @@ Renderer.prototype.renderVertices = function (graphData) {
 
 Renderer.prototype.renderNode = function (vertexName, graphData) {
 	var vertexData = graphData.vertices[vertexName];
-	if (inPath.indexOf(vertexName) >= 0) {
+	if (inPath.indexOf(vertexName) == inPath.length - 1) { // This is first node
+		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 1, "yellow");
+	} else if (inPath.indexOf(vertexName) >= 0) {
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 1, "green");
-		this.renderText(vertexData.x, vertexData.y, vertexName, "black");
 	} else {
 		this.renderCircle(vertexData.x, vertexData.y, 15, "red", 0);
 	}
@@ -133,6 +138,26 @@ Renderer.prototype.renderEdge = function (graphData, from, to) {
 				x: neighbourData.x + dir.x * 15,
 				y: neighbourData.y + dir.y * 15
 			}, edgeColor, LINE_WIDTH);
+
+			var point1 = {
+				x: ((neighbourData.x + dir.x * 15) + (dir.x) * ARROW_LENGTH) + (-dir.y * ARROW_LENGTH),
+				y: ((neighbourData.y + dir.y * 15) + (dir.y) * ARROW_LENGTH) + (dir.x * ARROW_LENGTH)
+			};
+
+			var point2 = {
+				x: ((neighbourData.x + dir.x * 15) + (dir.x) * ARROW_LENGTH) + (dir.y * ARROW_LENGTH),
+				y: ((neighbourData.y + dir.y * 15) + (dir.y) * ARROW_LENGTH) + (-dir.x * ARROW_LENGTH)
+			};
+
+			this.renderLine({
+				x: neighbourData.x + dir.x * 15,
+				y: neighbourData.y + dir.y * 15
+			}, point1, EDGE_STROKE_STYLE, LINE_WIDTH);
+
+			this.renderLine({
+				x: neighbourData.x + dir.x * 15,
+				y: neighbourData.y + dir.y * 15
+			}, point2, EDGE_STROKE_STYLE, LINE_WIDTH);
 
 			this.renderText((vertexData.x + neighbourData.x) / 2, (vertexData.y + neighbourData.y) / 2 - 15, neighbours[i].distance, "red");
 		}
