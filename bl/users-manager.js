@@ -81,6 +81,7 @@ module.exports = function(database) {
         getAuthorModel: function(user) {
             var model = {
                 userName: user.userName,
+                names: user.names,
                 picture: user.picture
             };
 

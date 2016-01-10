@@ -3,7 +3,7 @@
     <div class="message-wrapper">
         <img class="tvit-avatar" src='{{author.picture}}'>
         <blockquote>
-            <small><a href="/{{author.userName}}">{{author.userName}}</a>{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
+            <small><a href="/{{author.userName}}">{{author.names}}</a>{{#ifCond location '!==' ''}}<cite title="Source Title">, {{location}}</cite>
                 {{/ifCond}}
             </small>
             {{#ifCond retvitedFrom '!==' undefined}}
