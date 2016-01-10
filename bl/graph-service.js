@@ -29,6 +29,10 @@ function pollData(idStr, callback) {
         method: 'GET'
     },
     pollDataCallback.bind(null, idStr, callback));
+    req.on('error', function(e) {
+        console.log('problem with request: ' + e.message);
+        callback(null);
+    });
     req.end();
 }
 
@@ -100,11 +104,16 @@ module.exports = {
             }
         },
         resultPollingCallback.bind(null, function(path) {
-            userCallback({graphConnection: postData, path: path});
+            if (path === null) {
+                userCallback(null);
+            } else {
+                userCallback({graphConnection: postData, path: path});
+            }
         }));
 
         req.on('error', function(e) {
-          console.log('problem with request: ' + e.message);
+            console.log('problem with request: ' + e.message);
+            userCallback(null);
         });
 
         req.write(postDataStr);
