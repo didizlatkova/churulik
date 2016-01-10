@@ -1,3 +1,4 @@
+inPath = JSON.parse(JSON.parse(inPath));
 var context, canvas;
 var canvasBoundaries;
 var renderer;
@@ -73,6 +74,10 @@ var update = function () {
 
 	// renderer.renderRect(Math.floor(mouseX / 50) * 50, Math.floor(mouseY / 50) * 50, 50, 50, "green", 1);
 
+	for (var i = inPath.length - 1; i >= 1; i--) {
+		renderer.renderEdge(inputGraphData, inPath[i], inPath[i -1]);
+	}
+
 	if (board[Math.floor(mouseX / 50)][Math.floor(mouseY / 50)]) {
 		renderer.renderText(mouseX, mouseY, board[Math.floor(mouseX / 50)][Math.floor(mouseY / 50)], "black");
 	}
@@ -103,6 +108,37 @@ Renderer.prototype.renderNode = function (vertexName, graphData) {
 	}
 }
 
+Renderer.prototype.renderEdge = function (graphData, from, to) {
+	var vertices = graphData.vertices;
+	var vertexData = vertices[from];
+	var neighbours = vertexData.neighbours;
+	for (var i = 0; i < neighbours.length; i++) {
+		if (neighbours[i].neighbourKey == to) {
+			var neighbourData = vertices[neighbours[i].neighbourKey];
+			var dir = {
+				x: vertexData.x - neighbourData.x,
+				y: vertexData.y - neighbourData.y
+			};
+			var len = Math.sqrt(dir.x * dir.x + dir.y * dir.y);
+			if (len != 0) {
+				dir.x /= len;
+				dir.y /= len;
+			}
+
+			edgeColor = "orange";
+			this.renderLine({
+				x: vertexData.x + (-1) * dir.x * 15,
+				y: vertexData.y + (-1) * dir.y * 15
+			}, {
+				x: neighbourData.x + dir.x * 15,
+				y: neighbourData.y + dir.y * 15
+			}, edgeColor, LINE_WIDTH);
+
+			this.renderText((vertexData.x + neighbourData.x) / 2, (vertexData.y + neighbourData.y) / 2 - 15, neighbours[i].distance, "red");
+		}
+	}
+}
+
 Renderer.prototype.renderEdges = function(vertexName, graphData) {
 	var neighbours = graphData.vertices[vertexName].neighbours;
 	var vertexData = graphData.vertices[vertexName];
@@ -122,17 +158,19 @@ Renderer.prototype.renderEdges = function(vertexName, graphData) {
 
 		var edgeColor = "blue";
 		if (inPath.indexOf(vertexName) >= 0 && inPath.indexOf(neighbours[i].neighbourKey) >= 0) {
-			edgeColor = "orange";
+			// DO NOT RENDER EDJES IN PATH ON THIS WAY, THEY WILL BE RENDERED SEPARATELY
 
-			this.renderLine({
-				x: vertexData.x + (-1) * dir.x * 15,
-				y: vertexData.y + (-1) * dir.y * 15
-			}, {
-				x: neighbourData.x + dir.x * 15,
-				y: neighbourData.y + dir.y * 15
-			}, edgeColor, LINE_WIDTH);
+			// edgeColor = "orange";
 
-      //this.renderText((vertexData.x + neighbourData.x) / 2, (vertexData.y + neighbourData.y) / 2 - 15, neighbours[i].distance, "red");
+			// this.renderLine({
+			// 	x: vertexData.x + (-1) * dir.x * 15,
+			// 	y: vertexData.y + (-1) * dir.y * 15
+			// }, {
+			// 	x: neighbourData.x + dir.x * 15,
+			// 	y: neighbourData.y + dir.y * 15
+			// }, edgeColor, LINE_WIDTH);
+
+		      //this.renderText((vertexData.x + neighbourData.x) / 2, (vertexData.y + neighbourData.y) / 2 - 15, neighbours[i].distance, "red");
 
 		} else if (SHOW_ALL_EDGES) {
 			this.renderLine({
@@ -206,33 +244,6 @@ Renderer.prototype.renderGraph = function (graph) {
 Renderer.prototype.clear = function () {
 	this.context.clearRect(0, 0, 1500, 2000);
 }
-
-
-// Renderer.prototype.renderNodes = function (nodes) {
-// 	for (var id in nodes) {
-// 		var node = nodes[id];
-
-// 		this.renderCircle(transform.x, transform.y,
-// 						  transform.radius,
-// 						  animationState.color,
-// 						  animationState.fill,
-// 						  animationState.fillColor);
-
-// 		if (state.level || state.level == 0) {
-// 			this.renderText(transform.x, transform.y,
-// 							state.level, LEVEL_FONT_COLOR);
-// 		}
-
-// 		if (state.distance) {
-// 			this.renderText(transform.x, transform.y,
-// 							state.distance != Infinity ? (state.distance) :
-// 							"∞", DISTANCE_FONT_COLOR);
-// 		}
-
-// 		this.renderEdges(node.edges);
-// 	}
-// };
-
 
 var VISITED_FILL_STYLE = "black";
 var VISITED_OUTLINE_STYLE = "red";
@@ -412,4 +423,4 @@ var DEFAULT_NODE_RADIUS = 30;
 //   }
 // };
 
-//var inPath = ["gosho", "vanko42", "didi93", "loloto"];
+// var inPath = ["gosho", "vanko42", "didi93", "loloto"];
